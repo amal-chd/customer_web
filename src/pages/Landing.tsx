@@ -300,7 +300,7 @@ export default function Landing() {
             {/* Right Nav Links */}
             <div className="flex items-center gap-6 sm:gap-8 text-[15px] font-medium">
               <Link
-                to="/about"
+                to="/investor-relations"
                 className="hidden sm:inline-block hover:text-white/80 transition-colors"
               >
                 Investor Relations
@@ -864,7 +864,7 @@ export default function Landing() {
                 <li><Link to="/about" className="hover:text-slate-900">Who We Are</Link></li>
                 <li><Link to="/blog" className="hover:text-slate-900">Blog</Link></li>
                 <li><Link to="/contact" className="hover:text-slate-900">Work With Us</Link></li>
-                <li><Link to="/about" className="hover:text-slate-900">Investor Relations</Link></li>
+                <li><Link to="/investor-relations" className="hover:text-slate-900 font-bold text-blue-600">Investor Relations</Link></li>
                 <li><Link to="/contact" className="hover:text-slate-900">Report Fraud</Link></li>
                 <li><Link to="/contact" className="hover:text-slate-900">Contact Us</Link></li>
               </ul>

@@ -155,7 +155,7 @@ function Footer() {
           </div>
           
           <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
-            <FooterCol title="Company" links={[["About Us", "/about"], ["Community Blog", "/blog"], ["Contact Us", "/contact"], ["Careers", "/careers"]]} />
+            <FooterCol title="Company" links={[["About Us", "/about"], ["Investor Relations", "/investor-relations"], ["Contact Us", "/contact"], ["How It Works", "/how-it-works"]]} />
             <FooterCol title="Legal" links={[["Privacy Policy", "/legal/privacy"], ["Terms of Service", "/legal/terms"], ["Refund Policy", "/legal/refund"], ["Delete Account", "/delete-account"]]} />
             <FooterCol title="Get Started" links={[["Order Now", "/order"], ["Sign In", "/login"], ["Add Restaurant", "/add-restaurant"], ["Partner with us", "/partner"]]} />
           </div>

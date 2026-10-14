@@ -50,6 +50,21 @@
       "priority": 0.6
     },
     {
+      "path": "/investor-relations",
+      "title": "Investor Relations - The Kada Hyperlocal Commerce",
+      "description": "Financial reports, quarterly earnings, operating metrics, corporate governance, ESG impact, and investor presentations for The Kada.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 0.8
+    },
+    {
+      "path": "/investors",
+      "title": "Investor Relations - The Kada Hyperlocal Commerce",
+      "description": "Financial reports, quarterly earnings, operating metrics, corporate governance, ESG impact, and investor presentations for The Kada.",
+      "indexable": true,
+      "sitemap": false
+    },
+    {
       "path": "/contact",
       "title": "Contact The Kada Customer Support",
       "description": "Contact The Kada about food orders, delivery, refunds or account support. Reach our customer support team in Kannur, Kerala.",

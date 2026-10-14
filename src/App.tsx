@@ -18,6 +18,7 @@ import { About, HowItWorks, Contact, Faq } from "./pages/Info";
 import { Privacy, Terms, Refund, Cookies, Shipping } from "./pages/Legal";
 import DeleteAccount from "./pages/DeleteAccount";
 import PartnerWithUs from "./pages/PartnerWithUs";
+import InvestorRelations from "./pages/InvestorRelations";
 import RouteSeo from "./components/RouteSeo";
 
 const pageVariants = {
@@ -64,6 +65,8 @@ function AnimatedRoutes() {
           <Route path="/add-restaurant" element={<PageTransition><PartnerWithUs /></PageTransition>} />
           <Route path="/partner" element={<PageTransition><PartnerWithUs /></PageTransition>} />
           <Route path="/partner-with-us" element={<PageTransition><PartnerWithUs /></PageTransition>} />
+          <Route path="/investor-relations" element={<PageTransition><InvestorRelations /></PageTransition>} />
+          <Route path="/investors" element={<PageTransition><InvestorRelations /></PageTransition>} />
           <Route path="/delete-account" element={<PageTransition><DeleteAccount /></PageTransition>} />
           <Route path="/legal/delete-account" element={<PageTransition><DeleteAccount /></PageTransition>} />
         </Route>
