@@ -3,6 +3,7 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -17,6 +18,7 @@ interface AuthValue {
   signInEmail: (email: string, password: string) => Promise<void>;
   signUpEmail: (name: string, email: string, password: string) => Promise<void>;
   signInGoogle: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -26,6 +28,7 @@ const Ctx = createContext<AuthValue>({
   signInEmail: async () => {},
   signUpEmail: async () => {},
   signInGoogle: async () => {},
+  sendPasswordReset: async () => {},
   logout: async () => {},
 });
 
@@ -52,6 +55,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     signInGoogle: async () => {
       await signInWithPopup(auth, new GoogleAuthProvider());
+    },
+    sendPasswordReset: async (email: string) => {
+      await sendPasswordResetEmail(auth, email.trim());
     },
     logout: async () => {
       await signOut(auth);

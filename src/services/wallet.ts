@@ -70,3 +70,11 @@ export async function topUpWallet(opts: {
   const credited = (verify.data as { newBalance?: number }).newBalance;
   return typeof credited === "number" ? credited : opts.amountRupees;
 }
+
+/** Pay for an order using The Kada Wallet balance */
+export async function payWithWallet(orderId: string): Promise<{ newBalance: number }> {
+  const call = httpsCallable(functions, "payOrderWithWallet");
+  const res = await call({ orderId });
+  return res.data as { newBalance: number };
+}
+

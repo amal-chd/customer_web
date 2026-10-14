@@ -8,6 +8,11 @@ import {
   ReceiptText,
   User,
   Compass,
+  Bike,
+  Sparkles,
+  UtensilsCrossed,
+  ShoppingBasket,
+  HeartPulse,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -17,7 +22,21 @@ import {
   onLocationChange,
   type DeliveryLocation,
 } from "@/services/location";
+import { subscribeMyOrders } from "@/services/orders";
+import type { CustomerOrder } from "@/types";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
+
+const ACTIVE_ORDER_STATUSES = [
+  "new",
+  "pending",
+  "preparing",
+  "cooking",
+  "accepted",
+  "in_progress",
+  "ready",
+  "out_for_delivery",
+  "dispatched",
+];
 
 export function DesktopHeader() {
   const { pathname } = useLocation();
@@ -29,12 +48,27 @@ export function DesktopHeader() {
   const [loc, setLoc] = useState<DeliveryLocation>(getDiscoveryLocation());
   const [showPicker, setShowPicker] = useState(false);
   const [query, setQuery] = useState("");
+  const [activeOrder, setActiveOrder] = useState<CustomerOrder | null>(null);
 
   useEffect(() => {
     return onLocationChange((newLoc) => {
       setLoc(newLoc);
     });
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setActiveOrder(null);
+      return;
+    }
+    const unsub = subscribeMyOrders((orders) => {
+      const active = orders.find((o) =>
+        ACTIVE_ORDER_STATUSES.includes(o.status.toLowerCase())
+      );
+      setActiveOrder(active || null);
+    });
+    return unsub;
+  }, [user]);
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -107,10 +141,23 @@ export function DesktopHeader() {
           </form>
 
           {/* Nav Actions */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
+            {/* Active Live Order Pill */}
+            {activeOrder && (
+              <Link
+                to={`/orders/${activeOrder.id}`}
+                className="flex items-center gap-2 rounded-2xl bg-emerald-50 border border-emerald-200/80 px-3 py-1.5 text-xs font-black text-emerald-800 shadow-xs hover:bg-emerald-100 transition-colors animate-pulse"
+              >
+                <Bike className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                <span className="truncate max-w-[130px]">
+                  Tracking Order · {activeOrder.status.replace(/_/g, " ")}
+                </span>
+              </Link>
+            )}
+
             <Link
               to="/order"
-              className={`flex items-center gap-2 text-sm font-bold transition-colors ${
+              className={`flex items-center gap-1.5 text-sm font-bold transition-colors ${
                 isHome ? "text-primary font-black" : "text-slate-600 hover:text-slate-900"
               }`}
             >
@@ -119,7 +166,7 @@ export function DesktopHeader() {
 
             <Link
               to="/orders"
-              className={`flex items-center gap-2 text-sm font-bold transition-colors ${
+              className={`flex items-center gap-1.5 text-sm font-bold transition-colors ${
                 isOrders ? "text-primary font-black" : "text-slate-600 hover:text-slate-900"
               }`}
             >

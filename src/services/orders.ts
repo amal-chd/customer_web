@@ -77,7 +77,7 @@ export async function quoteOrder(req: QuoteRequest): Promise<OrderQuote> {
 /** Create the order from the exact quote the customer saw. */
 export async function placeQuotedOrder(opts: {
   quote: OrderQuote;
-  paymentMethod: "cod" | "razorpay";
+  paymentMethod: "cod" | "razorpay" | "wallet";
   customerName: string;
   customerPhone: string;
   instructions: string;

@@ -13,8 +13,12 @@ import {
   Clock,
   Sparkles,
   Building,
+  MapPin,
+  Repeat,
+  Headphones,
+  HelpCircle,
 } from "lucide-react";
-import type { CustomerOrder, Restaurant } from "@/types";
+import type { CustomerOrder, MenuItem, Restaurant } from "@/types";
 import { subscribeOrder, submitReview, getRestaurant } from "@/services/orders";
 import { formatMoney } from "@/lib/currency";
 import { Spinner, Stars } from "@/components/bits";
@@ -22,6 +26,7 @@ import { toast } from "@/components/Toast";
 import { displayOrderNumber } from "@/lib/orderNumber";
 import { BillCard } from "@/components/BillCard";
 import { DeliveryTrackingMap } from "@/components/DeliveryTrackingMap";
+import { useCart } from "@/context/CartContext";
 
 const STAGES = [
   { key: "placed", label: "Order Placed", desc: "Sent to restaurant", icon: Check },
@@ -44,8 +49,10 @@ export default function OrderTracking() {
   const { id } = useParams<{ id: string }>();
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const cart = useCart();
   const [order, setOrder] = useState<CustomerOrder | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [reordering, setReordering] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -56,6 +63,51 @@ export default function OrderTracking() {
       }
     });
   }, [id, restaurant]);
+
+  async function handleReorder() {
+    if (!order) return;
+    setReordering(true);
+    try {
+      const rest = restaurant || (await getRestaurant(order.restaurantId));
+      if (!rest) {
+        toast("Restaurant is currently unavailable.");
+        return;
+      }
+
+      if (cart.restaurant && cart.restaurant.id !== rest.id && !cart.isEmpty) {
+        cart.clear();
+      }
+
+      for (let i = 0; i < order.items.length; i++) {
+        const it = order.items[i];
+        const menuItem: MenuItem = {
+          id: it.id || it.menuItemId || `reorder-${i}`,
+          restaurantId: order.restaurantId,
+          name: it.name || "Item",
+          price: it.price || 0,
+          category: it.category || "General",
+          image: it.image || it.imageUrl,
+          isVeg: it.isVeg ?? true,
+          isAvailable: true,
+          isRecommended: false,
+          variants: it.variants || [],
+          addons: it.addons || [],
+        };
+        cart.add(rest, menuItem, {
+          variant: it.variant || it.selectedVariant,
+          addons: it.addons || it.selectedAddons || [],
+          qty: it.qty || 1,
+        });
+      }
+
+      toast("Items added to your cart!");
+      navigate("/cart");
+    } catch {
+      toast("Could not reorder. Please browse the restaurant menu.");
+    } finally {
+      setReordering(false);
+    }
+  }
 
   if (!order) {
     return (
@@ -68,6 +120,7 @@ export default function OrderTracking() {
   const idx = stageIndex(order.status);
   const cancelled = ["cancelled", "canceled", "rejected"].includes(order.status.toLowerCase());
   const delivered = idx === 4;
+  const orderNumStr = displayOrderNumber(order.orderNumber, order.id);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
@@ -87,14 +140,28 @@ export default function OrderTracking() {
                   Track Order
                 </h1>
                 <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-black text-primary">
-                  {displayOrderNumber(order.orderNumber, order.id)}
+                  {orderNumStr}
                 </span>
               </div>
               <p className="text-xs font-semibold text-slate-500">
-                {order.restaurantName} · {order.paymentStatus === "paid" ? "Paid Online" : order.paymentMethod.toUpperCase()}
+                {order.restaurantName} ·{" "}
+                {order.paymentStatus === "paid"
+                  ? "Paid Online"
+                  : order.paymentMethod.toUpperCase() || "COD"}
               </p>
             </div>
           </div>
+
+          {(delivered || cancelled) && (
+            <button
+              onClick={handleReorder}
+              disabled={reordering}
+              className="hidden sm:flex items-center gap-2 rounded-2xl bg-primary px-4 py-2.5 text-xs font-black text-white shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+            >
+              <Repeat className="h-4 w-4" />
+              <span>{reordering ? "Adding…" : "Reorder Meal"}</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -103,13 +170,19 @@ export default function OrderTracking() {
         {params.get("placed") === "1" && !cancelled && (
           <div className="mb-6 flex items-center gap-4 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 shadow-xs">
             <div className="h-16 w-16 overflow-hidden rounded-2xl bg-emerald-100 p-1 shrink-0">
-              <img src="/character-2.jpg" alt="Order Placed" className="h-full w-full object-cover rounded-xl" />
+              <img
+                src="/character-2.jpg"
+                alt="Order Placed"
+                className="h-full w-full object-cover rounded-xl"
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5 text-emerald-800 text-xs font-black uppercase tracking-wider">
                 <Sparkles className="h-3.5 w-3.5 text-emerald-600" /> Confirmed
               </div>
-              <h2 className="text-lg font-black text-emerald-950 mt-0.5">Order placed successfully!</h2>
+              <h2 className="text-lg font-black text-emerald-950 mt-0.5">
+                Order placed successfully!
+              </h2>
               <p className="text-xs font-semibold text-emerald-700 mt-0.5">
                 The restaurant has accepted your order and is getting it ready.
               </p>
@@ -135,9 +208,15 @@ export default function OrderTracking() {
                         : "Preparing your delicious meal"}
                     </span>
                   </div>
-                  <span className="text-xs font-bold text-slate-400">
-                    {order.deliveryAddress ? order.deliveryAddress.split(",")[0] : "Doorstep drop"}
-                  </span>
+                  {order.estimatedDeliveryAt && !delivered && !cancelled && (
+                    <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-black text-emerald-700 border border-emerald-200">
+                      ETA:{" "}
+                      {new Date(order.estimatedDeliveryAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -155,6 +234,23 @@ export default function OrderTracking() {
                 status={order.status}
               />
             </div>
+
+            {/* Delivery Address Card */}
+            {order.deliveryAddress && (
+              <div className="flex items-center gap-3.5 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-xs">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary shrink-0">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-400">
+                    Delivery Drop Location
+                  </span>
+                  <p className="text-xs font-bold text-slate-800 mt-0.5 leading-relaxed">
+                    {order.deliveryAddress}
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Delivery OTP Card */}
             {order.otp && !delivered && !cancelled && (
@@ -215,6 +311,43 @@ export default function OrderTracking() {
                 </div>
               </div>
             )}
+
+            {/* Support Help Hub */}
+            <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                  <Headphones className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-black text-slate-900">Need help with this order?</h3>
+                  <p className="text-xs font-medium text-slate-500">
+                    Our 24/7 resolution desk is available via WhatsApp or Phone
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <a
+                  href={`https://wa.me/918078304878?text=${encodeURIComponent(
+                    `Hi Support, I need help with my Order ${orderNumStr} from ${order.restaurantName}.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 py-3 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4 text-emerald-600" />
+                  <span>WhatsApp Support</span>
+                </a>
+
+                <a
+                  href="tel:+918078304878"
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 py-3 text-xs font-black text-slate-800 hover:bg-slate-100 transition-colors"
+                >
+                  <Phone className="h-4 w-4 text-slate-600" />
+                  <span>Call Toll-Free Helpline</span>
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Right Column: Progress Timeline, Bill & Review (5 Cols) */}

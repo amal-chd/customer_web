@@ -14,13 +14,18 @@ import {
   ChevronRight,
   Home,
   Briefcase,
+  Wallet,
+  Calendar,
 } from "lucide-react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { placeQuotedOrder, quoteOrder, type OrderQuote } from "@/services/orders";
 import { BillCard } from "@/components/BillCard";
 import { formatPaise } from "@/lib/billFormat";
 import { payForOrder } from "@/services/payment";
+import { payWithWallet } from "@/services/wallet";
 import {
   getDiscoveryLocation,
   getSavedAddresses,
@@ -66,12 +71,24 @@ export default function Checkout() {
   const [savedAddresses, setSavedAddresses] = useState<DeliveryAddress[]>([]);
   const [selectedAddrId, setSelectedAddrId] = useState<string | null>(null);
 
-  const [payment, setPayment] = useState<"cod" | "razorpay">("razorpay");
+  const [payment, setPayment] = useState<"cod" | "razorpay" | "wallet">("razorpay");
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [fulfillmentType, setFulfillmentType] = useState<"now" | "scheduled">("now");
+  const [scheduledSlot, setScheduledSlot] = useState<number>(45); // minutes from now
   const [note, setNote] = useState("");
   const [optCutlery, setOptCutlery] = useState(false);
-  const [scheduledFor, setScheduledFor] = useState<Date | null>(null);
   const [placing, setPlacing] = useState(false);
   const idempotencyKey = useRef(crypto.randomUUID());
+
+  // Listen to customer wallet balance
+  useEffect(() => {
+    if (!user) return;
+    const unsub = onSnapshot(doc(db, "customer_users", user.uid), (snap) => {
+      const val = snap.data()?.walletBalance;
+      setWalletBalance(typeof val === "number" ? val : 0);
+    });
+    return unsub;
+  }, [user]);
 
   // Load saved addresses on start
   useEffect(() => {
@@ -218,20 +235,40 @@ export default function Checkout() {
       // Save address for future orders
       saveAddressToStorage(addressPayload, user?.uid).catch(() => {});
 
+      if (payment === "wallet") {
+        const orderTotal = q.totalPaise / 100;
+        if (walletBalance == null || walletBalance < orderTotal) {
+          toast(
+            `Insufficient wallet balance (₹${(walletBalance ?? 0).toFixed(
+              2
+            )} available, ₹${orderTotal.toFixed(2)} required). Please choose Razorpay or top up.`
+          );
+          setPlacing(false);
+          return;
+        }
+      }
+
+      const scheduledDate =
+        fulfillmentType === "scheduled"
+          ? new Date(Date.now() + scheduledSlot * 60_000)
+          : undefined;
+
       const placed = await placeQuotedOrder({
         quote: q,
         paymentMethod: payment,
         customerName: name.trim() || user?.displayName || "Customer",
         customerPhone: phone.trim(),
         instructions: fullInstructions,
-        scheduledFor: scheduledFor ?? undefined,
+        scheduledFor: scheduledDate,
         address: addressPayload,
         idempotencyKey: idempotencyKey.current,
       });
 
       const orderId = placed.orderId;
 
-      if (payment === "razorpay") {
+      if (payment === "wallet") {
+        await payWithWallet(orderId);
+      } else if (payment === "razorpay") {
         const paid = await payForOrder({
           orderId,
           amountRupees: placed.totalPaise / 100,
@@ -489,10 +526,150 @@ export default function Checkout() {
               </label>
             </div>
 
+            {/* Delivery Time Preference */}
+            <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Clock className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-base font-black text-slate-900">Delivery Preference</h2>
+                    <p className="text-xs font-semibold text-slate-400">Choose when you want your meal</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setFulfillmentType("now")}
+                  className={`rounded-2xl border p-3.5 text-left transition-all ${
+                    fulfillmentType === "now"
+                      ? "border-primary bg-primary/5 shadow-xs"
+                      : "border-slate-200 bg-white hover:border-slate-300"
+                  }`}
+                >
+                  <p className="text-xs font-black text-slate-900">Deliver Now</p>
+                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5">
+                    Standard Hyperlocal (~30–45m)
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setFulfillmentType("scheduled")}
+                  className={`rounded-2xl border p-3.5 text-left transition-all ${
+                    fulfillmentType === "scheduled"
+                      ? "border-primary bg-primary/5 shadow-xs"
+                      : "border-slate-200 bg-white hover:border-slate-300"
+                  }`}
+                >
+                  <p className="text-xs font-black text-slate-900">Schedule Order</p>
+                  <p className="text-[11px] font-semibold text-slate-500 mt-0.5">
+                    Pick a convenient delivery time
+                  </p>
+                </button>
+              </div>
+
+              {fulfillmentType === "scheduled" && (
+                <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-2.5">
+                  <p className="text-xs font-black uppercase tracking-wider text-primary">
+                    Select Delivery Slot
+                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { minutes: 45, label: "In 45 mins" },
+                      { minutes: 60, label: "In 1 hour" },
+                      { minutes: 90, label: "In 1.5 hours" },
+                      { minutes: 120, label: "In 2 hours" },
+                      { minutes: 180, label: "In 3 hours" },
+                      { minutes: 240, label: "In 4 hours" },
+                    ].map((slot) => {
+                      const isSel = scheduledSlot === slot.minutes;
+                      return (
+                        <button
+                          key={slot.minutes}
+                          type="button"
+                          onClick={() => setScheduledSlot(slot.minutes)}
+                          className={`rounded-xl border py-2 text-xs font-bold transition-all ${
+                            isSel
+                              ? "border-primary bg-primary text-white shadow-xs"
+                              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                          }`}
+                        >
+                          {slot.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="text-[11px] font-medium text-slate-500">
+                    Your order will be freshly cooked and delivered around{" "}
+                    <span className="font-bold text-slate-800">
+                      {new Date(Date.now() + scheduledSlot * 60_000).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                    .
+                  </p>
+                </div>
+              )}
+            </div>
+
             {/* Payment Options */}
             <div className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-xs space-y-4">
               <h2 className="text-base font-black text-slate-900">Payment Method</h2>
               <div className="space-y-3">
+                {/* The Kada Wallet */}
+                <label
+                  onClick={() => {
+                    const orderTotal = (quote?.totalPaise ?? totals.total * 100) / 100;
+                    if (walletBalance != null && walletBalance >= orderTotal) {
+                      setPayment("wallet");
+                    } else {
+                      toast(
+                        `Insufficient wallet balance (₹${(walletBalance ?? 0).toFixed(
+                          2
+                        )}). Please select Razorpay or refill in Account.`
+                      );
+                    }
+                  }}
+                  className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
+                    payment === "wallet"
+                      ? "border-primary bg-primary/5 shadow-xs"
+                      : "border-slate-200 bg-white hover:border-slate-300"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-600 text-white shadow-xs">
+                      <Wallet className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-black text-slate-900">The Kada Wallet</p>
+                        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black text-emerald-700 border border-emerald-200">
+                          1-TAP PAY
+                        </span>
+                      </div>
+                      <p className="text-xs font-semibold text-slate-500">
+                        Available Balance:{" "}
+                        <span className="font-bold text-slate-800">
+                          {walletBalance == null ? "…" : `₹${walletBalance.toFixed(2)}`}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <input
+                    type="radio"
+                    name="pay"
+                    checked={payment === "wallet"}
+                    onChange={() => {}}
+                    className="h-4 w-4 text-primary focus:ring-primary"
+                  />
+                </label>
+
+                {/* Razorpay Online */}
                 <label
                   onClick={() => setPayment("razorpay")}
                   className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
@@ -523,6 +700,7 @@ export default function Checkout() {
                   />
                 </label>
 
+                {/* Cash on Delivery */}
                 <label
                   onClick={() => setPayment("cod")}
                   className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
