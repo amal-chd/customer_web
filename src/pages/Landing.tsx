@@ -5,7 +5,6 @@ import {
   Search,
   ChevronDown,
   ChevronRight,
-  Smartphone,
   Navigation,
   Sparkles,
   ArrowRight,
@@ -14,7 +13,6 @@ import {
   Store,
   Compass,
   CheckCircle2,
-  Globe,
   ChevronUp,
 } from "lucide-react";
 import {
@@ -261,15 +259,10 @@ export default function Landing() {
     toast("Download link sent to your device!");
   }
 
-  function scrollToApp() {
-    const el = document.getElementById("get-app-section");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  }
-
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
-      <section className="relative min-h-[580px] sm:min-h-[640px] md:min-h-[700px] w-full overflow-hidden flex flex-col justify-between">
+      <section className="relative min-h-[500px] sm:min-h-[560px] md:min-h-[620px] w-full overflow-hidden flex flex-col justify-center py-12 sm:py-16">
         {/* Background Video */}
         <video
           autoPlay
@@ -284,48 +277,6 @@ export default function Landing() {
 
         {/* Ambient Overlay Gradient (Zomato style) */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85" />
-
-        {/* ── Top Zomato Navigation Bar ── */}
-        <header className="relative z-20 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-4">
-          <div className="flex items-center justify-between text-white text-sm font-semibold">
-            {/* Get the App Button */}
-            <button
-              onClick={scrollToApp}
-              className="flex items-center gap-2 hover:text-white/80 transition-colors py-1 text-sm font-bold"
-            >
-              <Smartphone className="h-4 w-4" />
-              <span>Get the App</span>
-            </button>
-
-            {/* Right Nav Links */}
-            <div className="flex items-center gap-6 sm:gap-8 text-[15px] font-medium">
-              <Link
-                to="/investor-relations"
-                className="hidden sm:inline-block hover:text-white/80 transition-colors"
-              >
-                Investor Relations
-              </Link>
-              <Link
-                to="/add-restaurant"
-                className="hidden sm:inline-block hover:text-white/80 transition-colors font-bold"
-              >
-                Add restaurant
-              </Link>
-              <Link
-                to="/login"
-                className="hover:text-white/80 transition-colors font-bold"
-              >
-                Log in
-              </Link>
-              <Link
-                to="/login"
-                className="hover:text-white/80 transition-colors font-bold"
-              >
-                Sign up
-              </Link>
-            </div>
-          </div>
-        </header>
 
         {/* ── Hero Center Content ── */}
         <div className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12">
@@ -831,120 +782,6 @@ export default function Landing() {
           )}
         </div>
       </section>
-
-      {/* ─── 7. ZOMATO SIGNATURE FOOTER ────────────────────────────────────── */}
-      <footer className="bg-slate-50 border-t border-slate-200 text-slate-600 pt-14 pb-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Top Bar with Brand and Country / Language Pills */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-slate-200/80">
-            <h2 className="text-3xl font-black italic tracking-tighter text-slate-900">
-              The Kada
-            </h2>
-
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700">
-                <span>🇮🇳 India</span>
-                <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
-              </div>
-              <div className="flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700">
-                <Globe className="h-3.5 w-3.5 text-slate-500" />
-                <span>English</span>
-                <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
-              </div>
-            </div>
-          </div>
-
-          {/* 5 Footer Columns */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-10">
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">
-                About Kada
-              </p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-500">
-                <li><Link to="/about" className="hover:text-slate-900">Who We Are</Link></li>
-                <li><Link to="/blog" className="hover:text-slate-900">Blog</Link></li>
-                <li><Link to="/contact" className="hover:text-slate-900">Work With Us</Link></li>
-                <li><Link to="/investor-relations" className="hover:text-slate-900 font-bold text-blue-600">Investor Relations</Link></li>
-                <li><Link to="/contact" className="hover:text-slate-900">Report Fraud</Link></li>
-                <li><Link to="/contact" className="hover:text-slate-900">Contact Us</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">
-                Kadaverse
-              </p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-500">
-                <li><Link to="/order" className="hover:text-slate-900">The Kada</Link></li>
-                <li><Link to="/order" className="hover:text-slate-900">Kada Host</Link></li>
-                <li><Link to="/order" className="hover:text-slate-900">Kada Vendor</Link></li>
-                <li><Link to="/order" className="hover:text-slate-900">Kada Rider</Link></li>
-                <li><Link to="/order" className="hover:text-slate-900">Kada Stays</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">
-                For Restaurants
-              </p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-500">
-                <li><Link to="/add-restaurant" className="hover:text-slate-900 font-bold text-primary">Partner With Us</Link></li>
-                <li><a href={getVendorOnboardingUrl("/signup")} target="_blank" rel="noopener noreferrer" className="hover:text-slate-900">Register Restaurant</a></li>
-                <li><a href={getVendorOnboardingUrl("/login")} target="_blank" rel="noopener noreferrer" className="hover:text-slate-900">Vendor Dashboard</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">
-                Learn More
-              </p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-500">
-                <li><Link to="/legal/privacy" className="hover:text-slate-900">Privacy Policy</Link></li>
-                <li><Link to="/legal/terms" className="hover:text-slate-900">Terms of Service</Link></li>
-                <li><Link to="/legal/refund" className="hover:text-slate-900">Refund Policy</Link></li>
-                <li><Link to="/faq" className="hover:text-slate-900">Security & Safety</Link></li>
-                <li><Link to="/delete-account" className="hover:text-slate-900">Delete Account</Link></li>
-              </ul>
-            </div>
-
-            <div className="col-span-2 md:col-span-1">
-              <p className="text-xs font-black uppercase tracking-widest text-slate-900 mb-4">
-                Social Links
-              </p>
-              <div className="flex items-center gap-3 mb-6">
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-primary transition-colors text-xs font-bold">
-                  IG
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-primary transition-colors text-xs font-bold">
-                  X
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noreferrer" className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-primary transition-colors text-xs font-bold">
-                  YT
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-primary transition-colors text-xs font-bold">
-                  IN
-                </a>
-              </div>
-
-              <div className="space-y-2">
-                <a href="https://apple.com" target="_blank" rel="noreferrer" className="block text-[11px] font-bold rounded-xl bg-slate-900 text-white py-2 px-3 text-center hover:bg-slate-800">
-                  App Store
-                </a>
-                <a href="https://play.google.com" target="_blank" rel="noreferrer" className="block text-[11px] font-bold rounded-xl bg-slate-900 text-white py-2 px-3 text-center hover:bg-slate-800">
-                  Google Play
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Legal Disclaimer */}
-          <div className="pt-6 border-t border-slate-200/80 text-[11px] text-slate-400 font-medium leading-relaxed">
-            <p>
-              By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2026 © The Kada™ Ltd. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

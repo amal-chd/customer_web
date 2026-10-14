@@ -30,14 +30,6 @@ export function SiteLayout() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname === "/") {
-    return (
-      <div className="min-h-[100dvh] w-full font-sans antialiased selection:bg-primary/20 selection:text-primary">
-        <Outlet />
-      </div>
-    );
-  }
-
   return (
     <div className="flex min-h-[100dvh] flex-col font-sans bg-slate-50 selection:bg-primary/20 selection:text-primary-dark">
       {/* Sticky, non-overlapping header with clean backdrop blur */}
