@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Account, cart and checkout pages publish noindex metadata in their HTML.
+# They remain crawlable so search engines can read that directive.
+Sitemap: https://customer.thekada.in/sitemap.xml

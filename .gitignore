@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Production build outputs
+dist/
+dist-ssr/
+
+# Local env files
+.env
+.env*.local
+!.env.example
+
+# Temporary test scripts and artifacts
+screenshot*.png
+test_*.js
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# OS & Editor
+.DS_Store
+*.local
+.vscode/
+.idea/
+*.log

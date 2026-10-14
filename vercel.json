@@ -1,0 +1,29 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/how-it-works", "destination": "/how-it-works.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/faq", "destination": "/faq.html" },
+    { "source": "/restaurant/:id", "destination": "/restaurant.html" },
+    { "source": "/order", "destination": "/order.html" },
+    { "source": "/search", "destination": "/search.html" },
+    { "source": "/cart", "destination": "/cart.html" },
+    { "source": "/checkout", "destination": "/checkout.html" },
+    { "source": "/orders/:id", "destination": "/orders.html" },
+    { "source": "/orders", "destination": "/orders.html" },
+    { "source": "/account", "destination": "/account.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/delete-account", "destination": "/delete-account.html" },
+    { "source": "/legal/privacy", "destination": "/legal/privacy.html" },
+    { "source": "/legal/terms", "destination": "/legal/terms.html" },
+    { "source": "/legal/refund", "destination": "/legal/refund.html" },
+    { "source": "/legal/cookies", "destination": "/legal/cookies.html" },
+    { "source": "/legal/shipping", "destination": "/legal/shipping.html" },
+    { "source": "/legal/delete-account", "destination": "/legal/delete-account.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

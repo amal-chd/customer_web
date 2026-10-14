@@ -1,0 +1,161 @@
+{
+  "siteUrl": "https://customer.thekada.in",
+  "routes": [
+    {
+      "path": "/",
+      "title": "Order Food Online from Nearby Restaurants",
+      "description": "Discover nearby restaurants, browse menus and order food online with live order updates from The Kada.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 1.0,
+      "jsonLd": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "name": "The Kada",
+            "url": "https://customer.thekada.in/",
+            "logo": "https://customer.thekada.in/logo.png",
+            "email": "support@thekada.in",
+            "telephone": "+91 9496491654",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Kannur",
+              "addressRegion": "Kerala",
+              "addressCountry": "IN"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "name": "The Kada",
+            "url": "https://customer.thekada.in/"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/how-it-works",
+      "title": "How Online Ordering Works",
+      "description": "Find a nearby restaurant, choose dishes from its menu, place your order and follow live updates with The Kada.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 0.8
+    },
+    {
+      "path": "/about",
+      "title": "About The Kada Food Ordering Platform",
+      "description": "Learn how The Kada connects diners with local restaurants through online ordering, digital menus and order updates.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 0.6
+    },
+    {
+      "path": "/contact",
+      "title": "Contact The Kada Customer Support",
+      "description": "Contact The Kada about food orders, delivery, refunds or account support. Reach our customer support team in Kannur, Kerala.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 0.6
+    },
+    {
+      "path": "/faq",
+      "title": "Food Ordering FAQs",
+      "description": "Answers to common questions about ordering food, payments, delivery updates and using The Kada.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 0.6
+    },
+    {
+      "path": "/restaurant",
+      "title": "Restaurant Menus and Online Food Ordering",
+      "description": "Browse a restaurant's menu and order online through The Kada.",
+      "indexable": true,
+      "sitemap": false,
+      "canonical": false
+    },
+    {
+      "path": "/order",
+      "title": "Find Nearby Restaurants",
+      "description": "Discover restaurants and menus near your location.",
+      "indexable": false
+    },
+    {
+      "path": "/search",
+      "title": "Search Restaurants and Dishes",
+      "description": "Search restaurant menus and dishes on The Kada.",
+      "indexable": false
+    },
+    {
+      "path": "/cart",
+      "title": "Your Cart",
+      "description": "Review items in your food order.",
+      "indexable": false
+    },
+    {
+      "path": "/checkout",
+      "title": "Checkout",
+      "description": "Complete your food order on The Kada.",
+      "indexable": false
+    },
+    {
+      "path": "/orders",
+      "title": "Your Orders",
+      "description": "View your order history.",
+      "indexable": false
+    },
+    {
+      "path": "/account",
+      "title": "Your Account",
+      "description": "Manage your The Kada account.",
+      "indexable": false
+    },
+    {
+      "path": "/login",
+      "title": "Sign In",
+      "description": "Sign in to your The Kada account.",
+      "indexable": false
+    },
+    {
+      "path": "/delete-account",
+      "title": "Delete Your Account",
+      "description": "Request deletion of your The Kada account.",
+      "indexable": false
+    },
+    {
+      "path": "/legal/privacy",
+      "title": "Privacy Policy",
+      "description": "Read The Kada privacy policy and learn how customer information is used.",
+      "indexable": false
+    },
+    {
+      "path": "/legal/terms",
+      "title": "Terms of Service",
+      "description": "Read the terms for using The Kada online food ordering service.",
+      "indexable": false
+    },
+    {
+      "path": "/legal/refund",
+      "title": "Refund and Cancellation Policy",
+      "description": "Read The Kada refund and cancellation policy for food orders.",
+      "indexable": false
+    },
+    {
+      "path": "/legal/cookies",
+      "title": "Cookie Policy",
+      "description": "Read how The Kada uses cookies and similar technologies.",
+      "indexable": false
+    },
+    {
+      "path": "/legal/shipping",
+      "title": "Delivery Policy",
+      "description": "Read information about food delivery through The Kada.",
+      "indexable": false
+    },
+    {
+      "path": "/legal/delete-account",
+      "title": "Delete Your Account",
+      "description": "Request deletion of your The Kada account.",
+      "indexable": false
+    }
+  ]
+}
