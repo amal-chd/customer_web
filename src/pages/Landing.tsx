@@ -267,7 +267,7 @@ export default function Landing() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section className="relative min-h-[580px] sm:min-h-[640px] md:min-h-[700px] w-full overflow-hidden flex flex-col justify-between">
         {/* Background Video */}
