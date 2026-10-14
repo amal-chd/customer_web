@@ -99,6 +99,8 @@ export async function placeQuotedOrder(opts: {
       area: opts.address.area,
       landmark: opts.address.landmark,
       pincode: opts.address.pincode,
+      lat: opts.address.lat,
+      lng: opts.address.lng,
       text: [opts.address.line1, opts.address.area, opts.address.landmark, opts.address.pincode]
         .filter((s) => s && s.trim())
         .join(", "),

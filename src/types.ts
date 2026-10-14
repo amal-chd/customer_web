@@ -108,7 +108,7 @@ export interface DeliveryAddress {
   label: string;
   line1: string;
   area: string;
-  landmark: string;
+  landmark?: string;
   pincode: string;
   lat?: number;
   lng?: number;
@@ -133,12 +133,30 @@ export interface CustomerOrder {
   fulfillmentType?: "now" | "scheduled";
   /** The bill as the customer saw it at checkout (functions/src/pricing/bill.ts), or the plain rows of older orders. */
   bill?: { rows: BillRow[]; totalPaise: number; savingsPaise: number };
+  deliveryAddress?: string;
+  deliveryLat?: number;
+  deliveryLng?: number;
+  riderLat?: number;
+  riderLng?: number;
+  riderName?: string;
+  riderPhone?: string;
+  riderVehicle?: string;
+  deliveryStatus?: string;
+  estimatedDeliveryAt?: Date;
+  otp?: string;
 }
 
 export function orderFromDoc(doc: DocumentSnapshot): CustomerOrder {
   const d = (doc.data() ?? {}) as any;
   const ts = d.timestamp;
   const sched = d.scheduledFor;
+  const eta = d.estimatedDeliveryAt;
+
+  const dropLat = d.deliveryAddress?.lat ?? d.deliveryAddress?.gps?.lat ?? d.drop?.lat;
+  const dropLng = d.deliveryAddress?.lng ?? d.deliveryAddress?.gps?.lng ?? d.drop?.lng;
+  const rLat = d.riderLocation?.lat ?? d.driverLocation?.lat ?? d.riderLat;
+  const rLng = d.riderLocation?.lng ?? d.driverLocation?.lng ?? d.riderLng;
+
   return {
     id: doc.id,
     // The real number only; displayOrderNumber falls back to a short code.
@@ -158,6 +176,17 @@ export function orderFromDoc(doc: DocumentSnapshot): CustomerOrder {
     scheduledFor: sched?.toDate ? sched.toDate() : undefined,
     fulfillmentType: d.fulfillmentType as any,
     bill: billOf(d),
+    deliveryAddress: d.deliveryAddress?.text ?? (typeof d.deliveryAddress === "string" ? d.deliveryAddress : ""),
+    deliveryLat: typeof dropLat === "number" ? dropLat : undefined,
+    deliveryLng: typeof dropLng === "number" ? dropLng : undefined,
+    riderLat: typeof rLat === "number" ? rLat : undefined,
+    riderLng: typeof rLng === "number" ? rLng : undefined,
+    riderName: d.riderName || d.driverName,
+    riderPhone: d.riderPhone || d.driverPhone,
+    riderVehicle: d.riderVehicle || d.driverVehicle,
+    deliveryStatus: d.deliveryStatus,
+    estimatedDeliveryAt: eta?.toDate ? eta.toDate() : undefined,
+    otp: d.otp ? String(d.otp) : undefined,
   };
 }
 

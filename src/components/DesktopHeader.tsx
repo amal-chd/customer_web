@@ -1,0 +1,182 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  MapPin,
+  ChevronDown,
+  Search,
+  ShoppingBag,
+  ReceiptText,
+  User,
+  Compass,
+} from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import { formatMoney } from "@/lib/currency";
+import {
+  getDiscoveryLocation,
+  onLocationChange,
+  type DeliveryLocation,
+} from "@/services/location";
+import { LocationPickerSheet } from "@/components/LocationPickerSheet";
+
+export function DesktopHeader() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const cart = useCart();
+  const totals = cart.totals();
+
+  const [loc, setLoc] = useState<DeliveryLocation>(getDiscoveryLocation());
+  const [showPicker, setShowPicker] = useState(false);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    return onLocationChange((newLoc) => {
+      setLoc(newLoc);
+    });
+  }, []);
+
+  function handleSearchSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+    } else {
+      navigate("/search");
+    }
+  }
+
+  const isHome = pathname === "/order" || pathname === "/";
+  const isSearch = pathname === "/search";
+  const isOrders = pathname === "/orders";
+  const isAccount = pathname === "/account";
+
+  return (
+    <>
+      <header className="hidden md:block sticky top-0 z-40 w-full border-b border-slate-100 bg-white/95 backdrop-blur-md shadow-xs">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6 lg:px-8">
+          {/* Logo & Location */}
+          <div className="flex items-center gap-8">
+            <Link to="/order" className="flex items-center gap-2.5 group">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-indigo-600 text-white shadow-md shadow-primary/25 group-hover:scale-105 transition-transform">
+                <span className="text-xl font-black">K</span>
+              </div>
+              <div>
+                <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-primary transition-colors">
+                  The Kada
+                </span>
+                <span className="block text-[10px] font-extrabold uppercase tracking-widest text-primary -mt-1">
+                  Food & Living
+                </span>
+              </div>
+            </Link>
+
+            {/* Location Selector Pill */}
+            <button
+              onClick={() => setShowPicker(true)}
+              className="flex items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-slate-50/70 hover:bg-slate-100/80 px-4 py-2.5 text-left transition-all hover:border-primary/40 group max-w-xs"
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                <MapPin className="h-4 w-4" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-1">
+                  <span className="truncate text-sm font-black text-slate-800">
+                    {loc.label}
+                  </span>
+                  <ChevronDown className="h-4 w-4 text-slate-400 group-hover:text-primary transition-colors shrink-0" />
+                </div>
+                <p className="truncate text-[11px] font-semibold text-slate-500">
+                  {loc.isGps ? "Current GPS location" : "Click to change area"}
+                </p>
+              </div>
+            </button>
+          </div>
+
+          {/* Quick Search Bar */}
+          <form onSubmit={handleSearchSubmit} className="flex-1 max-w-md">
+            <div className="relative flex items-center">
+              <Search className="absolute left-4 h-4 w-4 text-slate-400 pointer-events-none" />
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search for restaurants or dishes..."
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 pl-11 pr-4 py-2.5 text-sm font-semibold text-slate-800 placeholder-slate-400 outline-none transition-all focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
+              />
+            </div>
+          </form>
+
+          {/* Nav Actions */}
+          <div className="flex items-center gap-5">
+            <Link
+              to="/order"
+              className={`flex items-center gap-2 text-sm font-bold transition-colors ${
+                isHome ? "text-primary font-black" : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Compass className="h-4 w-4" /> Explore
+            </Link>
+
+            <Link
+              to="/orders"
+              className={`flex items-center gap-2 text-sm font-bold transition-colors ${
+                isOrders ? "text-primary font-black" : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <ReceiptText className="h-4 w-4" /> Orders
+            </Link>
+
+            {/* Cart Button */}
+            <Link
+              to="/cart"
+              className="relative flex items-center gap-2 rounded-2xl bg-slate-100 hover:bg-slate-200/80 px-4 py-2.5 transition-all text-slate-800 font-bold"
+            >
+              <ShoppingBag className="h-4 w-4 text-primary" />
+              <span className="text-sm">
+                Cart {cart.count > 0 && `(${cart.count})`}
+              </span>
+              {cart.count > 0 && (
+                <span className="ml-1 rounded-lg bg-primary px-2 py-0.5 text-xs font-black text-white">
+                  {formatMoney(totals.total, cart.restaurant?.currency)}
+                </span>
+              )}
+            </Link>
+
+            {/* User Profile / Login */}
+            {user ? (
+              <Link
+                to="/account"
+                className={`flex items-center gap-2.5 rounded-2xl border p-1.5 pr-3.5 transition-all ${
+                  isAccount
+                    ? "border-primary bg-primary/5 text-primary"
+                    : "border-slate-200 hover:border-slate-300 text-slate-700"
+                }`}
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-600 text-xs font-black text-white shadow-xs">
+                  {(user.displayName?.[0] ?? user.email?.[0] ?? "U").toUpperCase()}
+                </div>
+                <span className="max-w-[100px] truncate text-xs font-black">
+                  {user.displayName || "Account"}
+                </span>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="rounded-2xl bg-primary px-5 py-2.5 text-sm font-black text-white shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Location Picker Sheet Modal */}
+      <LocationPickerSheet
+        isOpen={showPicker}
+        onClose={() => setShowPicker(false)}
+        onLocationSelected={(selected) => setLoc(selected)}
+      />
+    </>
+  );
+}
