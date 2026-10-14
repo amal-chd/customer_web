@@ -83,9 +83,9 @@ export function DesktopHeader() {
           <div className="flex items-center gap-8">
             <Link to="/order" className="flex items-center gap-2.5 group hover:opacity-95 transition-opacity">
               <img
-                src="/the-kada-logo.png"
-                alt="The Kada - Food Delivery & Dining"
-                className="h-10 sm:h-11 w-auto object-contain"
+                src="/logo.png"
+                alt="The Kada"
+                className="h-10 w-10 sm:h-11 sm:w-11 object-contain"
               />
             </Link>
 

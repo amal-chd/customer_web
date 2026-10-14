@@ -219,9 +219,9 @@ export default function Login() {
         <div className="text-center space-y-3">
           <Link to="/" className="inline-block group transition-transform hover:scale-105 active:scale-95">
             <img
-              src="/the-kada-logo.png"
-              alt="The Kada - Food Delivery & Dining"
-              className="h-14 sm:h-16 w-auto object-contain mx-auto"
+              src="/logo.png"
+              alt="The Kada"
+              className="h-14 w-14 sm:h-16 sm:w-16 object-contain mx-auto"
             />
           </Link>
           <div>
