@@ -11,8 +11,6 @@ import {
   Clock,
   Sparkles,
   UtensilsCrossed,
-  ShoppingBasket,
-  HeartPulse,
   Store,
   Bike,
   Plus,
@@ -39,14 +37,7 @@ import { menuItemImage } from "@/lib/foodImages";
 import { formatMoney } from "@/lib/currency";
 import { toast } from "@/components/Toast";
 
-// Multi-Vendor Hyperlocal Verticals
-const VERTICALS = [
-  { id: "all", label: "All Stores", icon: Sparkles, desc: "Explore everything nearby" },
-  { id: "food", label: "Food Delivery", icon: UtensilsCrossed, desc: "Hot meals & dining" },
-  { id: "grocery", label: "InstaMart & Groceries", icon: ShoppingBasket, desc: "Fresh produce & daily essentials" },
-  { id: "pharmacy", label: "Pharmacy & Care", icon: HeartPulse, desc: "OTC medicine & wellness" },
-  { id: "stores", label: "Local Supermarkets", icon: Store, desc: "Meat, bakery & shops" },
-];
+
 
 // Rich Category Rail (19 Categories)
 const CATEGORIES = [
@@ -330,27 +321,6 @@ export default function Discover() {
           </div>
         )}
 
-        {/* ── 2. MULTI-VENDOR VERTICAL SELECTOR ── */}
-        <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1">
-          {VERTICALS.map((v) => {
-            const Icon = v.icon;
-            const active = activeVertical === v.id;
-            return (
-              <button
-                key={v.id}
-                onClick={() => setActiveVertical(v.id)}
-                className={`flex shrink-0 items-center gap-2.5 rounded-2xl px-5 py-3 text-xs sm:text-sm font-black transition-all ${
-                  active
-                    ? "bg-slate-900 text-white shadow-md shadow-slate-900/20 scale-[1.02]"
-                    : "border border-slate-200/80 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-                }`}
-              >
-                <Icon className={`h-4 w-4 ${active ? "text-primary-light" : "text-slate-400"}`} />
-                <span>{v.label}</span>
-              </button>
-            );
-          })}
-        </div>
 
         {/* ── 3. HERO WELCOME & PROMO BANNER ── */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-indigo-600 to-purple-700 p-6 sm:p-8 text-white shadow-xl shadow-primary/20">
