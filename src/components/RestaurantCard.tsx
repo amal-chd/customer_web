@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Clock } from "lucide-react";
 import type { Restaurant } from "@/types";
@@ -5,14 +6,37 @@ import { displayRating } from "@/types";
 import { etaMinutes } from "@/lib/geo";
 import { restaurantImage } from "@/lib/foodImages";
 import { RatingPill } from "./bits";
+import { recordAdClick, recordAdImpression, type PlatformAd } from "@/services/ads";
 
-export function RestaurantCard({ r }: { r: Restaurant }) {
+export function RestaurantCard({
+  r,
+  sponsorAd,
+}: {
+  r: Restaurant;
+  sponsorAd?: PlatformAd;
+}) {
   const rating = displayRating(r);
   const eta = etaMinutes(r.distanceKm);
   const isClosed = !r.acceptingOrders;
 
+  useEffect(() => {
+    if (sponsorAd?.id) {
+      recordAdImpression(sponsorAd.id);
+    }
+  }, [sponsorAd?.id]);
+
+  function handleClick() {
+    if (sponsorAd?.id) {
+      recordAdClick(sponsorAd.id);
+    }
+  }
+
   return (
-    <Link to={`/restaurant/${r.id}`} className="group block">
+    <Link
+      to={`/restaurant/${r.id}`}
+      onClick={handleClick}
+      className="group block"
+    >
       <div className="relative overflow-hidden rounded-2xl bg-slate-100 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-1">
         <img
           src={restaurantImage(r)}
@@ -31,6 +55,12 @@ export function RestaurantCard({ r }: { r: Restaurant }) {
         ) : (
           <span className="absolute left-2.5 top-2.5 rounded-lg bg-emerald-600/90 backdrop-blur-xs px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-xs">
             Free delivery
+          </span>
+        )}
+
+        {sponsorAd && (
+          <span className="absolute right-2.5 top-2.5 rounded-md bg-slate-950/80 backdrop-blur-xs px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-300 shadow-xs border border-amber-400/30">
+            Ad
           </span>
         )}
 

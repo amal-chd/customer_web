@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   MapPin,
   Search as SearchIcon,
   Bell,
@@ -36,6 +38,49 @@ import { LocationPickerSheet } from "@/components/LocationPickerSheet";
 import { menuItemImage } from "@/lib/foodImages";
 import { formatMoney } from "@/lib/currency";
 import { toast } from "@/components/Toast";
+import {
+  fetchActiveAds,
+  recordAdImpression,
+  recordAdClick,
+  type PlatformAd,
+} from "@/services/ads";
+
+// Fallback promo slides if no admin ad campaigns are active
+const DEFAULT_BANNER_SLIDES: PlatformAd[] = [
+  {
+    id: "default-banner-1",
+    type: "banner",
+    title: "Feast More, Spend Less",
+    subtitle: "Flat 50% OFF up to ₹100 on your first food order. Use code KADA50.",
+    tag: "SPECIAL OFFER",
+    imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&auto=format&fit=crop&q=80",
+    searchQuery: "Biryani",
+    priority: 100,
+    active: true,
+  },
+  {
+    id: "default-banner-2",
+    type: "banner",
+    title: "Fresh Groceries & Essentials",
+    subtitle: "Daily essentials, dairy, produce & snacks delivered at hyper-speed.",
+    tag: "SUPERMARKET",
+    imageUrl: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&auto=format&fit=crop&q=80",
+    searchQuery: "Grocery",
+    priority: 90,
+    active: true,
+  },
+  {
+    id: "default-banner-3",
+    type: "banner",
+    title: "Zero Delivery Fee on ₹199+",
+    subtitle: "Enjoy free doorstep delivery from verified neighborhood kitchens & stores.",
+    tag: "KADA PERK",
+    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&auto=format&fit=crop&q=80",
+    searchQuery: "",
+    priority: 80,
+    active: true,
+  },
+];
 
 
 
@@ -88,6 +133,72 @@ export default function Discover() {
 
   // Active Order state
   const [activeOrder, setActiveOrder] = useState<CustomerOrder | null>(null);
+
+  // Admin-managed platform ads
+  const [ads, setAds] = useState<PlatformAd[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    fetchActiveAds()
+      .then((data) => setAds(data))
+      .catch(() => {});
+  }, []);
+
+  const bannerSlides = useMemo(() => {
+    const banners = ads.filter((a) => a.type === "banner");
+    return banners.length > 0 ? banners : DEFAULT_BANNER_SLIDES;
+  }, [ads]);
+
+  const sponsoredAdsMap = useMemo(() => {
+    const map = new Map<string, PlatformAd>();
+    for (const ad of ads) {
+      if (ad.type === "sponsored_restaurant" && ad.restaurantId) {
+        map.set(ad.restaurantId, ad);
+      }
+    }
+    return map;
+  }, [ads]);
+
+  // Auto-scroll hero ad banners every 5 seconds
+  useEffect(() => {
+    if (isPaused || bannerSlides.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isPaused, bannerSlides.length]);
+
+  // Track impressions on slide change
+  useEffect(() => {
+    const slide = bannerSlides[currentSlide];
+    if (slide?.id && !slide.id.startsWith("default-banner-")) {
+      recordAdImpression(slide.id);
+    }
+  }, [currentSlide, bannerSlides]);
+
+  function handleBannerClick(ad: PlatformAd) {
+    if (ad.id && !ad.id.startsWith("default-banner-")) {
+      recordAdClick(ad.id);
+    }
+    if (ad.restaurantId) {
+      navigate(`/restaurant/${ad.restaurantId}`);
+    } else if (ad.searchQuery) {
+      navigate(`/search?q=${encodeURIComponent(ad.searchQuery)}`);
+    } else {
+      document.getElementById("restaurants-feed")?.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  function handlePrevSlide(e: React.MouseEvent) {
+    e.stopPropagation();
+    setCurrentSlide((prev) => (prev - 1 + bannerSlides.length) % bannerSlides.length);
+  }
+
+  function handleNextSlide(e: React.MouseEvent) {
+    e.stopPropagation();
+    setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
+  }
 
   // Filters & Verticals
   const [activeVertical, setActiveVertical] = useState<string>(params.get("vertical") || "all");
@@ -178,12 +289,17 @@ export default function Discover() {
       if (fastDeliveryOnly && r.distanceKm > 4) return false;
       return true;
     }).sort((a, b) => {
+      const aIsSponsor = sponsoredAdsMap.has(a.id) ? 1 : 0;
+      const bIsSponsor = sponsoredAdsMap.has(b.id) ? 1 : 0;
+      if (aIsSponsor !== bIsSponsor) {
+        return bIsSponsor - aIsSponsor;
+      }
       if (sortBy === "rating") {
         return (b.ratingAvg ?? 0) - (a.ratingAvg ?? 0);
       }
       return a.distanceKm - b.distanceKm;
     });
-  }, [list, activeVertical, selectedCategory, minRating, fastDeliveryOnly, sortBy]);
+  }, [list, activeVertical, selectedCategory, minRating, fastDeliveryOnly, sortBy, sponsoredAdsMap]);
 
   // Curated lists
   const recommendedRestaurants = useMemo(() => {
@@ -322,23 +438,110 @@ export default function Discover() {
         )}
 
 
-        {/* ── 3. HERO WELCOME & PROMO BANNER ── */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-indigo-600 to-purple-700 p-6 sm:p-8 text-white shadow-xl shadow-primary/20">
-          <div className="relative z-10 max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-indigo-100 backdrop-blur-xs mb-3">
-              <Sparkles className="h-3.5 w-3.5 text-yellow-300" />
-              Delivering to {loc.label.split(",")[0]}
+        {/* ── 3. HERO AD BANNER CAROUSEL (Integrated with adminpanel platform_ads) ── */}
+        <div
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className="relative overflow-hidden rounded-3xl shadow-xl shadow-slate-900/10 min-h-[230px] sm:min-h-[280px] md:min-h-[320px] bg-slate-950 group select-none transition-all"
+        >
+          {bannerSlides.map((slide, idx) => {
+            const isActive = idx === currentSlide;
+            return (
+              <div
+                key={slide.id || idx}
+                onClick={() => handleBannerClick(slide)}
+                className={`absolute inset-0 cursor-pointer transition-opacity duration-700 ease-in-out ${
+                  isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                {/* Background Image */}
+                <img
+                  src={slide.imageUrl || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&auto=format&fit=crop&q=80"}
+                  alt={slide.title}
+                  className="h-full w-full object-cover object-center transform transition-transform duration-1000 group-hover:scale-105"
+                />
+
+                {/* Gradient Overlays for High Contrast Readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent sm:w-3/4" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent sm:hidden" />
+
+                {/* Banner Content */}
+                <div className="absolute inset-0 flex flex-col justify-center p-6 sm:p-10 max-w-xl z-20">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-300 w-fit mb-3">
+                    <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+                    <span>{slide.tag || "FEATURED"}</span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
+                    {slide.title}
+                  </h2>
+
+                  {slide.subtitle && (
+                    <p className="mt-2 text-xs sm:text-sm md:text-base font-medium text-slate-200 line-clamp-2 leading-relaxed drop-shadow-xs max-w-md">
+                      {slide.subtitle}
+                    </p>
+                  )}
+
+                  <div className="mt-4 sm:mt-5 flex items-center gap-3">
+                    <button
+                      type="button"
+                      className="rounded-2xl bg-primary px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-black text-white shadow-lg shadow-primary/30 hover:bg-blue-600 transition-all flex items-center gap-2 active:scale-95"
+                    >
+                      <span>{slide.restaurantId ? "Order Now" : slide.searchQuery ? "Explore Deals" : "Explore Menu"}</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </button>
+                    <span className="text-[11px] font-semibold text-slate-300 hidden sm:inline">
+                      Delivering to {loc.label.split(",")[0]}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Previous / Next Arrow Controls */}
+          {bannerSlides.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={handlePrevSlide}
+                aria-label="Previous Slide"
+                className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-30 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-black/40 hover:bg-black/75 text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 shadow-lg"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={handleNextSlide}
+                aria-label="Next Slide"
+                className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-30 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-black/40 hover:bg-black/75 text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 shadow-lg"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </>
+          )}
+
+          {/* Slide Indicator Dots */}
+          {bannerSlides.length > 1 && (
+            <div className="absolute bottom-4 right-4 sm:right-8 z-30 flex items-center gap-2">
+              {bannerSlides.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentSlide(idx);
+                  }}
+                  aria-label={`Slide ${idx + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    idx === currentSlide
+                      ? "w-7 bg-white shadow-md shadow-white/30"
+                      : "w-2 bg-white/40 hover:bg-white/70"
+                  }`}
+                />
+              ))}
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
-              Food, groceries & local essentials at your doorstep.
-            </h1>
-            <p className="mt-2 text-xs sm:text-sm font-medium text-indigo-100/90 leading-relaxed">
-              Explore the finest restaurants, supermarket staples, and medicine with real-time GPS tracking.
-            </p>
-          </div>
-          <div className="relative z-10 hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 h-36 w-36 overflow-hidden rounded-2xl bg-white/10 p-2 backdrop-blur-xs shadow-inner">
-            <img src="/character-2.jpg" alt="The Kada Mascot" className="h-full w-full object-cover rounded-xl" />
-          </div>
+          )}
         </div>
 
         {/* ── 4. VERIFIED PROMO OFFERS CAROUSEL ── */}
@@ -663,7 +866,7 @@ export default function Discover() {
         </div>
 
         {/* ── 10. MAIN RESTAURANTS FEED ── */}
-        <div>
+        <div id="restaurants-feed">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-xl font-black text-slate-900 tracking-tight">
@@ -706,7 +909,13 @@ export default function Discover() {
                 </button>
               </div>
             ) : (
-              filtered.map((r) => <RestaurantCard key={r.id} r={r} />)
+              filtered.map((r) => (
+                <RestaurantCard
+                  key={r.id}
+                  r={r}
+                  sponsorAd={sponsoredAdsMap.get(r.id)}
+                />
+              ))
             )}
           </div>
         </div>
