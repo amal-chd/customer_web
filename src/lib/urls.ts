@@ -13,7 +13,7 @@ export function getVendorOnboardingUrl(path: string = "/signup"): string {
       return `http://localhost:5177${cleanPath}`;
     }
   }
-  return `https://vendor.thekada.in${cleanPath}`;
+  return `https://kadadine.thekada.in${cleanPath}`;
 }
 
 export function getVendorMarketingUrl(path: string = ""): string {
@@ -27,5 +27,5 @@ export function getVendorMarketingUrl(path: string = ""): string {
       return `http://localhost:5176${cleanPath}`;
     }
   }
-  return `https://vendor.thekada.in${cleanPath}`;
+  return `https://kadadine.thekada.in${cleanPath}`;
 }
