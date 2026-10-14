@@ -10,8 +10,6 @@ import {
   Bike,
   Sparkles,
   UtensilsCrossed,
-  ShoppingBasket,
-  HeartPulse,
   Store,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -98,7 +96,7 @@ export function DesktopHeader() {
                   The Kada
                 </span>
                 <span className="block text-[10px] font-extrabold uppercase tracking-widest text-primary -mt-1">
-                  Food & Living
+                  Food Delivery & Dining
                 </span>
               </div>
             </Link>

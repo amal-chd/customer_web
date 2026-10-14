@@ -224,7 +224,7 @@ export default function Search() {
                 type="text"
                 value={query}
                 onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search for restaurants, groceries, biryani, pizza..."
+                placeholder="Search for restaurants, biryani, burgers, desserts..."
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 py-3.5 pl-12 pr-10 text-sm font-bold text-slate-900 outline-none transition-all focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
                 autoFocus
               />
@@ -382,7 +382,7 @@ export default function Search() {
                 What are you craving today?
               </h2>
               <p className="text-xs font-semibold text-slate-500 mt-1 max-w-md mx-auto">
-                Search across top restaurants, supermarket staples, fresh bakes, and local favourites in your area.
+                Search across top restaurants, chef specials, fresh bakes, and local favourites in your area.
               </p>
 
               <div className="mt-6">

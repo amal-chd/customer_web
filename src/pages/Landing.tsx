@@ -27,6 +27,8 @@ import {
 import { toast } from "@/components/Toast";
 import { Spinner } from "@/components/bits";
 import { getVendorOnboardingUrl } from "@/lib/urls";
+import { EcosystemSection } from "@/components/EcosystemSection";
+import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
 
 const POPULAR_LOCALITIES = [
   { name: "Kakkanad", places: "148 places", lat: 10.0159, lng: 76.3419 },
@@ -262,7 +264,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
-      <section className="relative min-h-[500px] sm:min-h-[560px] md:min-h-[620px] w-full overflow-hidden flex flex-col justify-center py-12 sm:py-16">
+      <section className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full overflow-hidden flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16">
         {/* Background Video */}
         <video
           autoPlay
@@ -400,76 +402,8 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── 2. ZOMATO 3 SERVICE OFFERINGS CARDS ───────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Order Online */}
-          <Link
-            to="/order"
-            className="group rounded-3xl border border-slate-200/80 bg-white overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="h-48 w-full overflow-hidden relative">
-              <img
-                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"
-                alt="Order Online"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-xl font-black text-slate-900 group-hover:text-primary transition-colors">
-                Order Online
-              </h3>
-              <p className="mt-1 text-sm font-semibold text-slate-500">
-                Stay home and order food directly to your doorstep.
-              </p>
-            </div>
-          </Link>
-
-          {/* Card 2: Dining */}
-          <Link
-            to="/order"
-            className="group rounded-3xl border border-slate-200/80 bg-white overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="h-48 w-full overflow-hidden relative">
-              <img
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80"
-                alt="Dining Out"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-xl font-black text-slate-900 group-hover:text-primary transition-colors">
-                Dining Out
-              </h3>
-              <p className="mt-1 text-sm font-semibold text-slate-500">
-                View the city&apos;s favourite dining venues & reserve tables.
-              </p>
-            </div>
-          </Link>
-
-          {/* Card 3: Nightlife & Stays */}
-          <Link
-            to="/order"
-            className="group rounded-3xl border border-slate-200/80 bg-white overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="h-48 w-full overflow-hidden relative">
-              <img
-                src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80"
-                alt="Nightlife & Stays"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="text-xl font-black text-slate-900 group-hover:text-primary transition-colors">
-                Nightlife & Stays
-              </h3>
-              <p className="mt-1 text-sm font-semibold text-slate-500">
-                Explore top nightlife, events, resort getaways & Kada Stays.
-              </p>
-            </div>
-          </Link>
-        </div>
-      </section>
+      {/* ─── 2. THE KADA ECOSYSTEM SECTION (MATCHING REFERENCE) ─────────── */}
+      <EcosystemSection />
 
       {/* ─── 3. COLLECTIONS SECTION (ZOMATO SIGNATURE) ─────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -515,39 +449,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── 4. POPULAR LOCALITIES SECTION (ZOMATO GRID) ──────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-8">
-          Popular localities in and around{" "}
-          <span className="text-slate-900">{currentLoc.label.split(",")[0]}</span>
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {POPULAR_LOCALITIES.map((loc) => (
-            <div
-              key={loc.name}
-              onClick={() => handleSelectLocality(loc)}
-              className="group flex items-center justify-between p-4 rounded-2xl border border-slate-200/80 bg-white hover:border-slate-300 hover:shadow-md transition-all cursor-pointer"
-            >
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate text-base font-extrabold text-slate-800 group-hover:text-primary transition-colors">
-                  {loc.name}
-                </h3>
-                <p className="text-xs font-semibold text-slate-400 mt-0.5">{loc.places}</p>
-              </div>
-              <ChevronRight className="h-5 w-5 text-slate-400 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 ml-2" />
-            </div>
-          ))}
-
-          {/* Explore all locality card */}
-          <Link
-            to="/order"
-            className="flex items-center justify-center p-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100/80 transition-colors text-center"
-          >
-            <span className="text-sm font-black text-primary">see more localities &rarr;</span>
-          </Link>
-        </div>
-      </section>
+      {/* ─── 4. WHAT'S WAITING FOR YOU ON THE APP? (FEATURE SHOWCASE) ───── */}
+      <AppFeaturesShowcase />
 
       {/* ─── 5. GET THE KADA APP SECTION (ZOMATO PHONE MOCKUP) ─────────────── */}
       <section id="get-app-section" className="bg-[#fffbf7] border-y border-orange-100/80 py-16">

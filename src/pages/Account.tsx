@@ -75,7 +75,7 @@ const FAQS = [
 type AccountTab = "profile" | "addresses" | "orders" | "help";
 
 export default function Account() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateCustomerName } = useAuth();
   const cart = useCart();
   const navigate = useNavigate();
 
@@ -139,9 +139,7 @@ export default function Account() {
     }
     setSavingName(true);
     try {
-      if (auth.currentUser) {
-        await updateProfile(auth.currentUser, { displayName: editName.trim() });
-      }
+      await updateCustomerName(editName.trim());
       setIsEditingName(false);
       toast("Profile updated successfully!");
     } catch {
@@ -973,7 +971,7 @@ export default function Account() {
                     </span>
                   </div>
                   <p className="text-xs font-medium text-slate-600 mt-0.5">
-                    Own a restaurant, grocery or cafe? List your outlet on The Kada and start getting live customer orders.
+                    Own a restaurant, cafe, or cloud kitchen? List your outlet on The Kada and start getting live customer orders.
                   </p>
                 </div>
               </div>

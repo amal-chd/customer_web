@@ -17,8 +17,6 @@ import {
   Bike,
   Plus,
   Minus,
-  Tag,
-  CheckCircle2,
   ArrowRight,
   X,
 } from "lucide-react";
@@ -33,7 +31,7 @@ import { subscribeMyOrders } from "@/services/orders";
 import { RestaurantCard } from "@/components/RestaurantCard";
 import { ShimmerCard, VegDot } from "@/components/bits";
 import { useAuth } from "@/context/AuthContext";
-import { useCart, PROMOS } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
 import { menuItemImage } from "@/lib/foodImages";
 import { formatMoney } from "@/lib/currency";
@@ -61,11 +59,11 @@ const DEFAULT_BANNER_SLIDES: PlatformAd[] = [
   {
     id: "default-banner-2",
     type: "banner",
-    title: "Fresh Groceries & Essentials",
-    subtitle: "Daily essentials, dairy, produce & snacks delivered at hyper-speed.",
-    tag: "SUPERMARKET",
-    imageUrl: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&auto=format&fit=crop&q=80",
-    searchQuery: "Grocery",
+    title: "Gourmet Dining & Cloud Kitchens",
+    subtitle: "Authentic flavors, chef specials, and late-night feasts delivered hot.",
+    tag: "GOURMET SELECTION",
+    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&auto=format&fit=crop&q=80",
+    searchQuery: "Gourmet",
     priority: 90,
     active: true,
   },
@@ -73,37 +71,35 @@ const DEFAULT_BANNER_SLIDES: PlatformAd[] = [
     id: "default-banner-3",
     type: "banner",
     title: "Zero Delivery Fee on ₹199+",
-    subtitle: "Enjoy free doorstep delivery from verified neighborhood kitchens & stores.",
+    subtitle: "Enjoy free doorstep delivery from verified neighborhood kitchens & restaurants.",
     tag: "KADA PERK",
-    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&auto=format&fit=crop&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&auto=format&fit=crop&q=80",
     searchQuery: "",
     priority: 80,
     active: true,
   },
 ];
 
-
-
-// Rich Category Rail (19 Categories)
+// Rich Category Rail with Real Food Photos (matching customer mobile app)
 const CATEGORIES = [
-  { name: "Biryani", emoji: "🍛", bg: "from-amber-100 to-orange-100 text-amber-900 border-amber-200" },
-  { name: "Pizza", emoji: "🍕", bg: "from-yellow-100 to-red-100 text-red-900 border-red-200" },
-  { name: "Burger", emoji: "🍔", bg: "from-orange-100 to-amber-200 text-orange-900 border-orange-200" },
-  { name: "South Indian", emoji: "🥞", bg: "from-orange-50 to-amber-100 text-amber-900 border-amber-200" },
-  { name: "Dosa", emoji: "🥘", bg: "from-sky-100 to-indigo-100 text-indigo-900 border-indigo-200" },
-  { name: "Thali", emoji: "🍱", bg: "from-purple-100 to-indigo-100 text-purple-900 border-purple-200" },
-  { name: "Chicken", emoji: "🍗", bg: "from-rose-100 to-red-100 text-red-900 border-red-200" },
-  { name: "Shawarma", emoji: "🌯", bg: "from-amber-50 to-orange-100 text-amber-900 border-amber-200" },
-  { name: "Chinese", emoji: "🍜", bg: "from-red-100 to-rose-100 text-rose-900 border-rose-200" },
-  { name: "Momos", emoji: "🥟", bg: "from-pink-100 to-rose-100 text-pink-900 border-pink-200" },
-  { name: "Rolls", emoji: "🫔", bg: "from-green-100 to-teal-100 text-teal-900 border-teal-200" },
-  { name: "Paratha", emoji: "🫓", bg: "from-yellow-100 to-amber-100 text-amber-900 border-amber-200" },
-  { name: "Paneer", emoji: "🍲", bg: "from-emerald-100 to-teal-100 text-teal-900 border-teal-200" },
-  { name: "Salad", emoji: "🥗", bg: "from-emerald-50 to-green-100 text-green-900 border-green-200" },
-  { name: "Cake", emoji: "🎂", bg: "from-pink-100 to-purple-100 text-purple-900 border-purple-200" },
-  { name: "Dessert", emoji: "🍰", bg: "from-purple-100 to-pink-100 text-purple-900 border-purple-200" },
-  { name: "Coffee", emoji: "☕", bg: "from-amber-100 to-orange-100 text-amber-900 border-amber-200" },
-  { name: "Chai", emoji: "🍵", bg: "from-emerald-100 to-lime-100 text-emerald-900 border-emerald-200" },
+  { name: "Biryani", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=300&q=80" },
+  { name: "Pizza", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80" },
+  { name: "Burger", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80" },
+  { name: "South Indian", image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=300&q=80" },
+  { name: "Dosa", image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=300&q=80" },
+  { name: "Thali", image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=300&q=80" },
+  { name: "Chicken", image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=300&q=80" },
+  { name: "Shawarma", image: "https://images.unsplash.com/photo-1662116765994-1e4200c43589?auto=format&fit=crop&w=300&q=80" },
+  { name: "Chinese", image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=300&q=80" },
+  { name: "Momos", image: "https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?auto=format&fit=crop&w=300&q=80" },
+  { name: "Rolls", image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=80" },
+  { name: "Paratha", image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=300&q=80" },
+  { name: "Paneer", image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=300&q=80" },
+  { name: "Salad", image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=300&q=80" },
+  { name: "Cake", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=300&q=80" },
+  { name: "Dessert", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=300&q=80" },
+  { name: "Coffee", image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=80" },
+  { name: "Chai", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=300&q=80" },
 ];
 
 const ACTIVE_ORDER_STATUSES = [
@@ -260,21 +256,6 @@ export default function Discover() {
   // Filtered restaurants
   const filtered = useMemo(() => {
     return list.filter((r) => {
-      // Vertical filter
-      if (activeVertical === "grocery") {
-        const isGrocery = (r.cuisine || "").toLowerCase().includes("grocery") ||
-          r.name.toLowerCase().includes("mart") ||
-          r.name.toLowerCase().includes("supermarket") ||
-          r.name.toLowerCase().includes("store");
-        if (!isGrocery) return false;
-      } else if (activeVertical === "pharmacy") {
-        const isPharm = (r.cuisine || "").toLowerCase().includes("pharmacy") ||
-          r.name.toLowerCase().includes("med") ||
-          r.name.toLowerCase().includes("health") ||
-          r.name.toLowerCase().includes("wellness");
-        if (!isPharm) return false;
-      }
-
       // Category filter
       if (selectedCategory) {
         const q = selectedCategory.toLowerCase();
@@ -341,11 +322,6 @@ export default function Discover() {
     toast(`${dish.name} added to cart`);
   }
 
-  function handleCopyPromo(code: string) {
-    navigator.clipboard?.writeText(code);
-    toast(`Coupon code ${code} copied!`);
-  }
-
   return (
     <div className="min-h-screen bg-slate-50 antialiased selection:bg-primary/20 selection:text-primary pb-20">
       {/* ── Mobile Top Header ── */}
@@ -394,7 +370,7 @@ export default function Discover() {
           className="relative mt-4 flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left transition-all hover:bg-white hover:border-primary"
         >
           <SearchIcon className="h-4 w-4 text-primary shrink-0" />
-          <span className="text-sm font-semibold text-slate-400">Search restaurants, groceries, or dishes...</span>
+          <span className="text-sm font-semibold text-slate-400">Search restaurants, dishes, or cuisines...</span>
         </button>
       </div>
 
@@ -544,42 +520,7 @@ export default function Discover() {
           )}
         </div>
 
-        {/* ── 4. VERIFIED PROMO OFFERS CAROUSEL ── */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-              <Tag className="h-4 w-4 text-primary" />
-              <span>Exclusive Offers & Deals</span>
-            </h2>
-            <span className="text-xs font-bold text-slate-400">Tap to copy code</span>
-          </div>
-          <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-            {PROMOS.map((p) => (
-              <div
-                key={p.code}
-                onClick={() => handleCopyPromo(p.code)}
-                className="group shrink-0 w-72 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs hover:border-primary/40 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-black text-primary uppercase tracking-wider">
-                    {p.code}
-                  </span>
-                  <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                    <CheckCircle2 className="h-3.5 w-3.5" /> Verified
-                  </span>
-                </div>
-                <p className="mt-3 text-xs font-bold text-slate-800 leading-snug">
-                  {p.tagline}
-                </p>
-                <p className="mt-2 text-[10px] font-semibold text-slate-400">
-                  Valid on orders above ₹{p.minSubtotal}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── 5. CATEGORY RAIL: "WHAT'S ON YOUR MIND?" ── */}
+        {/* ── 4. CATEGORY RAIL: "WHAT'S ON YOUR MIND?" ── */}
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
@@ -595,7 +536,7 @@ export default function Discover() {
             )}
           </div>
 
-          <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="no-scrollbar flex gap-4 sm:gap-6 overflow-x-auto pb-3 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0">
             {CATEGORIES.map((c) => {
               const active = selectedCategory === c.name;
               return (
@@ -604,18 +545,25 @@ export default function Discover() {
                   onClick={() =>
                     setSelectedCategory((prev) => (prev === c.name ? "" : c.name))
                   }
-                  className="flex shrink-0 flex-col items-center gap-2 transition-transform hover:-translate-y-1 group"
+                  className="flex shrink-0 flex-col items-center gap-2.5 transition-transform hover:-translate-y-1 group cursor-pointer"
                 >
                   <div
-                    className={`flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-br ${c.bg} text-3xl sm:text-4xl transition-all ${
-                      active ? "ring-4 ring-primary shadow-md scale-105" : "border shadow-xs group-hover:shadow-md"
+                    className={`relative flex h-18 w-18 sm:h-22 sm:w-22 items-center justify-center rounded-full overflow-hidden bg-slate-100 transition-all ${
+                      active
+                        ? "ring-4 ring-primary ring-offset-2 shadow-lg scale-105"
+                        : "border-2 border-white shadow-xs group-hover:shadow-md group-hover:scale-105"
                     }`}
                   >
-                    {c.emoji}
+                    <img
+                      src={c.image}
+                      alt={c.name}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
                   </div>
                   <span
-                    className={`text-xs font-extrabold transition-colors ${
-                      active ? "text-primary" : "text-slate-700 group-hover:text-primary"
+                    className={`text-xs font-black tracking-tight text-center transition-colors ${
+                      active ? "text-primary font-black" : "text-slate-700 group-hover:text-primary"
                     }`}
                   >
                     {c.name}
@@ -872,7 +820,7 @@ export default function Discover() {
               <h2 className="text-xl font-black text-slate-900 tracking-tight">
                 {selectedCategory
                   ? `${selectedCategory} places near ${loc.label.split(",")[0]}`
-                  : `All Stores & Kitchens near ${loc.label.split(",")[0]}`}
+                  : `All Restaurants & Kitchens near ${loc.label.split(",")[0]}`}
               </h2>
               <p className="text-xs font-semibold text-slate-500 mt-0.5">
                 {filtered.length} place{filtered.length === 1 ? "" : "s"} ready to deliver
@@ -929,7 +877,7 @@ export default function Discover() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-black text-white">Own a food or grocery business?</h3>
+                <h3 className="text-lg font-black text-white">Own a restaurant or food business?</h3>
                 <span className="rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black px-2.5 py-0.5 border border-emerald-500/30">
                   PARTNER WITH US
                 </span>

@@ -69,8 +69,8 @@ export default function InvestorRelations() {
               },
               {
                 icon: Store,
-                title: "Local Groceries & Retail",
-                desc: "Hyperlocal fulfillment of daily essentials, groceries, and pharmacy needs maximizing rider fleet density and order basket value."
+                title: "Cloud Kitchens & Gourmet Dining",
+                desc: "Hyperlocal delivery network powering cloud kitchens, multi-brand restaurant collectives, and gourmet culinary experiences."
               },
               {
                 icon: ShieldCheck,

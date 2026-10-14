@@ -16,7 +16,10 @@ const NAV = [
 export function SiteLayout() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hasHeroVideo, setHasHeroVideo] = useState(false);
   const { pathname } = useLocation();
+
+  const isLanding = pathname === "/";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,15 +33,40 @@ export function SiteLayout() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (isLanding) {
+      const checkVideo = () => {
+        const vid = document.querySelector("video");
+        setHasHeroVideo(!!vid);
+      };
+      checkVideo();
+      const observer = new MutationObserver(checkVideo);
+      observer.observe(document.body, { childList: true, subtree: true });
+      return () => observer.disconnect();
+    } else {
+      setHasHeroVideo(false);
+    }
+  }, [isLanding]);
+
+  const isTransparent = isLanding && hasHeroVideo;
+  const isHeaderSolid = !isTransparent || scrolled || open;
+
   return (
     <div className="flex min-h-[100dvh] flex-col font-sans bg-slate-50 selection:bg-primary/20 selection:text-primary-dark">
-      {/* Sticky, non-overlapping header with clean backdrop blur */}
+      {/* Dynamic Header: Transparent over video on landing page, solid white on scroll / other pages */}
       <header
         className={cn(
-          "sticky top-0 z-50 w-full transition-all duration-200 border-b",
-          scrolled
-            ? "bg-white/95 backdrop-blur-md border-slate-200/80 shadow-xs py-2.5 sm:py-3"
-            : "bg-white border-slate-100 py-3 sm:py-3.5"
+          "transition-all duration-300 w-full",
+          isTransparent
+            ? "fixed top-0 left-0 right-0 z-50"
+            : "sticky top-0 z-50 border-b",
+          isTransparent
+            ? (isHeaderSolid
+                ? "bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs py-2.5 sm:py-3 text-slate-900"
+                : "bg-transparent border-b border-transparent py-3 sm:py-4 text-white")
+            : (scrolled
+                ? "bg-white/95 backdrop-blur-md border-slate-200/80 shadow-xs py-2.5 sm:py-3 text-slate-900"
+                : "bg-white border-slate-100 py-3 sm:py-3.5 text-slate-900")
         )}
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -46,7 +74,7 @@ export function SiteLayout() {
             to="/"
             className="flex items-center gap-2 transform transition-transform hover:scale-105 active:scale-95"
           >
-            <Brand light={false} />
+            <Brand light={isTransparent && !isHeaderSolid} />
           </Link>
 
           <nav className="hidden items-center gap-7 lg:gap-8 md:flex">
@@ -55,8 +83,10 @@ export function SiteLayout() {
                 key={n.to}
                 to={n.to}
                 className={cn(
-                  "text-sm font-bold transition-colors hover:text-primary",
-                  pathname === n.to ? "text-primary font-black" : "text-slate-600"
+                  "text-sm font-bold transition-colors",
+                  isTransparent && !isHeaderSolid
+                    ? (pathname === n.to ? "text-white font-black" : "text-white/85 hover:text-white")
+                    : (pathname === n.to ? "text-primary font-black" : "text-slate-600 hover:text-primary")
                 )}
               >
                 {n.label}
@@ -67,29 +97,49 @@ export function SiteLayout() {
           <div className="hidden items-center gap-3 sm:gap-4 md:flex">
             <Link
               to="/add-restaurant"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-slate-50 hover:bg-slate-100 px-3.5 py-2 text-xs font-black text-slate-700 hover:text-primary transition-all"
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-xs font-black transition-all",
+                isTransparent && !isHeaderSolid
+                  ? "border-white/25 bg-white/10 hover:bg-white/20 text-white backdrop-blur-xs"
+                  : "border-slate-200/80 bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-primary"
+              )}
             >
-              <Store className="h-3.5 w-3.5 text-primary" />
+              <Store className={cn("h-3.5 w-3.5", isTransparent && !isHeaderSolid ? "text-primary-light" : "text-primary")} />
               <span>Add restaurant</span>
             </Link>
 
             <Link
               to="/login"
-              className="text-sm font-bold text-slate-700 transition-colors hover:text-slate-900 px-2 py-1"
+              className={cn(
+                "text-sm font-bold px-2 py-1 transition-colors",
+                isTransparent && !isHeaderSolid
+                  ? "text-white/90 hover:text-white"
+                  : "text-slate-700 hover:text-slate-900"
+              )}
             >
               Sign in
             </Link>
 
             <Link
               to="/order"
-              className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2 text-sm font-bold text-white shadow-md shadow-slate-900/15 transition-all hover:bg-slate-800 hover:scale-105 active:scale-95"
+              className={cn(
+                "inline-flex items-center justify-center rounded-xl px-5 py-2 text-sm font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95",
+                isTransparent && !isHeaderSolid
+                  ? "bg-primary hover:bg-primary-dark shadow-primary/25"
+                  : "bg-slate-900 hover:bg-slate-800 shadow-slate-900/15"
+              )}
             >
               Order now
             </Link>
           </div>
 
           <button
-            className="text-slate-900 md:hidden p-1.5 rounded-xl hover:bg-slate-100 transition-colors"
+            className={cn(
+              "md:hidden p-1.5 rounded-xl transition-colors",
+              isTransparent && !isHeaderSolid
+                ? "text-white hover:bg-white/10"
+                : "text-slate-900 hover:bg-slate-100"
+            )}
             onClick={() => setOpen((o) => !o)}
             aria-label="Toggle Navigation Menu"
           >
