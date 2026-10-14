@@ -482,8 +482,8 @@ export default function Landing() {
                     <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
                   </div>
                   <div className="my-auto text-center space-y-2">
-                    <div className="h-20 w-20 mx-auto rounded-2xl overflow-hidden shadow-md">
-                      <img src="/character-2.jpg" alt="Mascot" className="h-full w-full object-cover" />
+                    <div className="h-16 w-16 mx-auto rounded-2xl overflow-hidden p-2 bg-white shadow-md flex items-center justify-center">
+                      <img src="/logo.png" alt="The Kada" className="h-full w-full object-contain" />
                     </div>
                     <p className="text-xs font-black text-slate-800">Food at your doorstep</p>
                     <p className="text-[10px] font-bold text-slate-400">Live GPS tracking active</p>

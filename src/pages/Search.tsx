@@ -370,12 +370,12 @@ export default function Search() {
 
             {/* Trending Suggestions */}
             <div className="text-center pt-4">
-              <div className="relative mx-auto w-24 h-24 mb-4">
+              <div className="relative mx-auto w-20 h-20 sm:w-24 sm:h-24 mb-4">
                 <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl"></div>
                 <img
-                  src="/character-1.jpg"
-                  alt="Search Mascot"
-                  className="relative w-full h-full object-cover rounded-full mix-blend-multiply"
+                  src="/logo.png"
+                  alt="The Kada"
+                  className="relative w-full h-full object-contain"
                 />
               </div>
               <h2 className="text-xl font-black text-slate-900 tracking-tight">

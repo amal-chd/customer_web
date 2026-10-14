@@ -51,12 +51,12 @@ export default function Cart() {
   if (cart.isEmpty) {
     return (
       <div className="flex min-h-[75vh] flex-col items-center justify-center px-6 text-center animate-in fade-in duration-200">
-        <div className="relative mb-6 w-32 h-32">
+        <div className="relative mb-6 w-24 h-24 sm:w-28 sm:h-28 mx-auto">
           <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"></div>
           <img
-            src="/character-1.jpg"
-            alt="Empty Cart"
-            className="relative w-full h-full object-cover rounded-full mix-blend-multiply"
+            src="/logo.png"
+            alt="The Kada"
+            className="relative w-full h-full object-contain"
           />
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Your cart is empty</h2>

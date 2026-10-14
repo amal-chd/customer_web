@@ -169,11 +169,11 @@ export default function OrderTracking() {
         {/* Placed Celebration Banner */}
         {params.get("placed") === "1" && !cancelled && (
           <div className="mb-6 flex items-center gap-4 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 shadow-xs">
-            <div className="h-16 w-16 overflow-hidden rounded-2xl bg-emerald-100 p-1 shrink-0">
+            <div className="h-14 w-14 overflow-hidden rounded-2xl bg-white p-2 border border-emerald-200 shrink-0 flex items-center justify-center shadow-xs">
               <img
-                src="/character-2.jpg"
-                alt="Order Placed"
-                className="h-full w-full object-cover rounded-xl"
+                src="/logo.png"
+                alt="The Kada"
+                className="h-full w-full object-contain"
               />
             </div>
             <div>

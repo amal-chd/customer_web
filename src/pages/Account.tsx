@@ -248,12 +248,12 @@ export default function Account() {
   if (!user) {
     return (
       <div className="mx-auto min-h-[80vh] max-w-2xl px-4 py-20 text-center">
-        <div className="mx-auto flex items-center justify-center relative w-32 h-32">
+        <div className="mx-auto flex items-center justify-center relative w-24 h-24 sm:w-28 sm:h-28">
           <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"></div>
           <img
-            src="/character-1.jpg"
-            alt="Mascot"
-            className="relative w-full h-full object-cover rounded-full mix-blend-multiply"
+            src="/logo.png"
+            alt="The Kada"
+            className="relative w-full h-full object-contain"
           />
         </div>
         <h2 className="mt-6 text-2xl font-black text-slate-900 tracking-tight">

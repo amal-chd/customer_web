@@ -151,12 +151,12 @@ export default function Orders() {
   if (orders.length === 0) {
     return (
       <Centered>
-        <div className="relative mb-6 w-24 h-24">
+        <div className="relative mb-6 w-20 h-20 sm:w-24 sm:h-24 mx-auto">
           <div className="absolute inset-0 bg-primary/10 rounded-full blur-xl"></div>
           <img
-            src="/character-1.jpg"
-            alt="No Orders"
-            className="relative w-full h-full object-cover rounded-full mix-blend-multiply"
+            src="/logo.png"
+            alt="The Kada"
+            className="relative w-full h-full object-contain"
           />
         </div>
         <p className="mt-4 text-2xl font-black text-slate-900 tracking-tight">No orders yet</p>
