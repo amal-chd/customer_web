@@ -299,7 +299,7 @@ export function AppFeaturesShowcase() {
           </div>
 
           {/* 8 Feature Pills Grid */}
-          <div className="grid grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
             {[
               { name: "Healthy", q: "Healthy", icon: "🥗" },
               { name: "Veg Mode", q: "Pure Veg", icon: "🌿" },
@@ -313,10 +313,10 @@ export function AppFeaturesShowcase() {
               <Link
                 key={f.name}
                 to={`/search?q=${encodeURIComponent(f.q)}`}
-                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-white border border-slate-100 shadow-xs hover:border-rose-200 text-center"
+                className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl bg-white border border-slate-100 shadow-xs hover:border-rose-200 text-center transition-all active:scale-95"
               >
-                <span className="text-2xl mb-1">{f.icon}</span>
-                <span className="text-[11px] font-black text-slate-800 line-clamp-1">{f.name}</span>
+                <span className="text-xl sm:text-2xl mb-1">{f.icon}</span>
+                <span className="text-[10px] sm:text-[11px] font-black text-slate-800 line-clamp-1 leading-tight">{f.name}</span>
               </Link>
             ))}
           </div>

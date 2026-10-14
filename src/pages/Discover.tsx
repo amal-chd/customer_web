@@ -19,6 +19,7 @@ import {
   Minus,
   ArrowRight,
   X,
+  User,
 } from "lucide-react";
 import type { Restaurant, MenuItem, CustomerOrder, MenuVariant } from "@/types";
 import { discoverNearby, getCachedResults, fetchMenuForRestaurants } from "@/services/discovery";
@@ -239,6 +240,12 @@ export default function Discover() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sync active vertical from URL params
+  useEffect(() => {
+    const v = params.get("vertical") || "all";
+    setActiveVertical(v);
+  }, [params]);
+
   // Subscribe to customer active orders for live status banner
   useEffect(() => {
     if (!user) {
@@ -256,6 +263,11 @@ export default function Discover() {
   // Filtered restaurants
   const filtered = useMemo(() => {
     return list.filter((r) => {
+      // Vertical filter (Dining)
+      if (activeVertical === "dining" && list.some((x) => x.enableReservations) && !r.enableReservations) {
+        return false;
+      }
+
       // Category filter
       if (selectedCategory) {
         const q = selectedCategory.toLowerCase();
@@ -359,7 +371,7 @@ export default function Discover() {
               to="/account"
               className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-primary to-indigo-600 text-white font-black text-sm shadow-md shadow-primary/20"
             >
-              {(user?.displayName?.[0] ?? user?.email?.[0] ?? "K").toUpperCase()}
+              {user ? (user.displayName?.[0] ?? user.email?.[0] ?? "U").toUpperCase() : <User className="h-4 w-4" />}
             </Link>
           </div>
         </div>
@@ -593,7 +605,7 @@ export default function Discover() {
               </Link>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
               {recommendedRestaurants.map((r) => (
                 <div key={r.id} className="w-64 sm:w-72 shrink-0">
                   <RestaurantCard r={r} />
@@ -620,7 +632,7 @@ export default function Discover() {
               </Link>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
               {popularDishes.map((dish) => {
                 const rest = list.find((r) => r.id === dish.restaurantId);
                 const inCartQty = cart.qtyOf(dish.id);
@@ -689,7 +701,7 @@ export default function Discover() {
               </div>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
               {budgetDishes.map((dish) => {
                 const rest = list.find((r) => r.id === dish.restaurantId);
                 const inCartQty = cart.qtyOf(dish.id);
@@ -740,15 +752,15 @@ export default function Discover() {
         )}
 
         {/* ── 9. FILTER & SORTING TOOLBAR ── */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200/80">
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1 text-xs font-black uppercase tracking-wider text-slate-400 mr-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-200/80">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 sm:pb-0">
+            <div className="flex items-center gap-1 text-xs font-black uppercase tracking-wider text-slate-400 mr-1 shrink-0">
               <SlidersHorizontal className="h-3.5 w-3.5" /> Filters:
             </div>
 
             <button
               onClick={() => setVegOnly((v) => !v)}
-              className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all shrink-0 ${
                 vegOnly
                   ? "border-emerald-600 bg-emerald-50 text-emerald-700 shadow-xs"
                   : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
@@ -759,7 +771,7 @@ export default function Discover() {
 
             <button
               onClick={() => setMinRating((r) => (r === 4.0 ? null : 4.0))}
-              className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all shrink-0 ${
                 minRating === 4.0
                   ? "border-amber-500 bg-amber-50 text-amber-800 shadow-xs"
                   : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
@@ -770,7 +782,7 @@ export default function Discover() {
 
             <button
               onClick={() => setFastDeliveryOnly((f) => !f)}
-              className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-1 rounded-xl border px-3 py-1.5 text-xs font-bold transition-all shrink-0 ${
                 fastDeliveryOnly
                   ? "border-primary bg-primary/10 text-primary shadow-xs"
                   : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
@@ -787,14 +799,14 @@ export default function Discover() {
                   setFastDeliveryOnly(false);
                   setSelectedCategory("");
                 }}
-                className="text-xs font-bold text-slate-500 hover:text-red-500 underline ml-2"
+                className="text-xs font-bold text-slate-500 hover:text-red-500 underline ml-2 shrink-0"
               >
                 Reset All
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
+          <div className="flex items-center gap-2 text-xs font-bold text-slate-600 shrink-0">
             <span className="text-slate-400">Sort by:</span>
             <button
               onClick={() => setSortBy("distance")}
@@ -830,7 +842,7 @@ export default function Discover() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => <ShimmerCard key={i} />)
             ) : error ? (

@@ -179,39 +179,39 @@ export default function Restaurant() {
               )}
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-center min-w-[90px]">
+            <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:gap-3">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-2.5 sm:px-4 py-3 text-center min-w-0 sm:min-w-[90px]">
                 <div className="flex items-center justify-center gap-1">
-                  <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
-                  <span className="text-sm font-black text-slate-900">
+                  <Star className="h-4 w-4 fill-amber-500 text-amber-500 shrink-0" />
+                  <span className="text-sm font-black text-slate-900 truncate">
                     {rating != null ? rating.toFixed(1) : "New"}
                   </span>
                 </div>
-                <p className="text-[11px] font-bold text-slate-400 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-bold text-slate-400 mt-0.5 truncate">
                   {rating != null ? `${restaurant.ratingCount} reviews` : "No ratings"}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-center min-w-[90px]">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-2.5 sm:px-4 py-3 text-center min-w-0 sm:min-w-[90px]">
                 <div className="flex items-center justify-center gap-1">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-black text-slate-900">
-                    {etaMinutes(restaurant.distanceKm)} min
+                  <Clock className="h-4 w-4 text-primary shrink-0" />
+                  <span className="text-sm font-black text-slate-900 truncate">
+                    {etaMinutes(restaurant.distanceKm)}m
                   </span>
                 </div>
-                <p className="text-[11px] font-bold text-slate-400 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-bold text-slate-400 mt-0.5 truncate">
                   {restaurant.distanceKm.toFixed(1)} km
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-center min-w-[90px]">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 px-2.5 sm:px-4 py-3 text-center min-w-0 sm:min-w-[90px]">
                 <div className="flex items-center justify-center gap-1">
-                  <Wallet className="h-4 w-4 text-emerald-600" />
-                  <span className="text-sm font-black text-slate-900">
+                  <Wallet className="h-4 w-4 text-emerald-600 shrink-0" />
+                  <span className="text-sm font-black text-slate-900 truncate">
                     {priceForTwo(menu, restaurant.currency)}
                   </span>
                 </div>
-                <p className="text-[11px] font-bold text-slate-400 mt-0.5">For two</p>
+                <p className="text-[10px] sm:text-[11px] font-bold text-slate-400 mt-0.5 truncate">For two</p>
               </div>
             </div>
           </div>
@@ -246,7 +246,7 @@ export default function Restaurant() {
             </div>
 
             {/* Category Filter Pills */}
-            <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2">
+            <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
               {categories.map((cat) => (
                 <button
                   key={cat}

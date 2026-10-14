@@ -1,85 +1,157 @@
+import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Home, Search, ReceiptText, User, ShoppingBag, ArrowRight } from "lucide-react";
+import { Bike, UtensilsCrossed, Search, ReceiptText, User, ShoppingBag, ArrowRight } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { formatMoney } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import { SupportChat } from "@/components/SupportChat";
 import { DesktopHeader } from "@/components/DesktopHeader";
+import { subscribeMyOrders } from "@/services/orders";
+import type { CustomerOrder } from "@/types";
+
+const ACTIVE_ORDER_STATUSES = [
+  "new",
+  "pending",
+  "preparing",
+  "cooking",
+  "accepted",
+  "in_progress",
+  "ready",
+  "out_for_delivery",
+  "dispatched",
+];
 
 const TABS = [
-  { to: "/order", label: "Home", icon: Home },
-  { to: "/search", label: "Search", icon: Search },
-  { to: "/orders", label: "Orders", icon: ReceiptText },
-  { to: "/account", label: "Account", icon: User },
+  {
+    to: "/order",
+    label: "Delivery",
+    icon: Bike,
+    match: (path: string) =>
+      (path === "/order" || path === "/" || (path.startsWith("/order") && !path.includes("dining"))),
+  },
+  {
+    to: "/order?vertical=dining",
+    label: "Dining",
+    icon: UtensilsCrossed,
+    match: (path: string) => path.includes("dining"),
+  },
+  {
+    to: "/search",
+    label: "Search",
+    icon: Search,
+    match: (path: string) => path.startsWith("/search"),
+  },
+  {
+    to: "/orders",
+    label: "Orders",
+    icon: ReceiptText,
+    match: (path: string) => path.startsWith("/orders"),
+    badge: true,
+  },
+  {
+    to: "/account",
+    label: "Account",
+    icon: User,
+    match: (path: string) => path.startsWith("/account") || path.startsWith("/login"),
+  },
 ];
 
 export function AppLayout() {
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const currentPath = location.pathname + location.search;
+  const { user } = useAuth();
   const cart = useCart();
   const navigate = useNavigate();
   const totals = cart.totals();
+  const [activeOrder, setActiveOrder] = useState<CustomerOrder | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setActiveOrder(null);
+      return;
+    }
+    const unsub = subscribeMyOrders((orders) => {
+      const active = orders.find((o) =>
+        ACTIVE_ORDER_STATUSES.includes(o.status.toLowerCase())
+      );
+      setActiveOrder(active || null);
+    });
+    return unsub;
+  }, [user]);
 
   return (
     <div className="flex min-h-[100dvh] w-full flex-col bg-slate-50 antialiased">
       {/* Responsive Desktop Header */}
       <DesktopHeader />
 
-      {/* Main Content Area: Responsive container */}
-      <main className="flex-1 pb-24 md:pb-12">
+      {/* Main Content Area: Responsive container with generous bottom clearance for floating dock */}
+      <main className="flex-1 pb-28 sm:pb-32 md:pb-12">
         <Outlet />
       </main>
 
-      {/* Mobile Floating Cart Bar */}
-      {!cart.isEmpty && pathname !== "/cart" && (
-        <div className="md:hidden fixed inset-x-0 bottom-[68px] z-40 mx-auto max-w-lg px-4">
+      {/* Mobile Floating Cart Bar (Floats right above the nav capsule like in mobile app) */}
+      {!cart.isEmpty && location.pathname !== "/cart" && (
+        <div className="md:hidden fixed inset-x-3 bottom-[82px] z-40 mx-auto max-w-md animate-in slide-in-from-bottom-3 duration-200">
           <button
             onClick={() => navigate("/cart")}
-            className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-r from-primary to-indigo-600 px-5 py-3.5 text-white shadow-xl shadow-primary/30 transition-transform active:scale-[0.99]"
+            className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-r from-primary to-indigo-600 px-4 py-3 text-white shadow-xl shadow-primary/30 active:scale-[0.98] transition-transform"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/20">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 shrink-0">
               <ShoppingBag className="h-4 w-4" />
             </div>
             <div className="flex-1 min-w-0 text-left">
-              <p className="truncate text-sm font-black">
+              <p className="truncate text-xs font-black">
                 {cart.count} item{cart.count === 1 ? "" : "s"}
                 {cart.restaurant ? ` · ${cart.restaurant.name}` : ""}
               </p>
-              <p className="text-xs font-bold text-white/80">
+              <p className="text-xs font-extrabold text-white/90">
                 {formatMoney(totals.total, cart.restaurant?.currency)}
               </p>
             </div>
-            <div className="flex items-center gap-1 text-sm font-black bg-white/20 px-3 py-1.5 rounded-xl">
+            <div className="flex items-center gap-1 text-xs font-black bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-xl transition-colors shrink-0">
               <span>View Cart</span>
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </div>
           </button>
         </div>
       )}
 
-      {/* Mobile Bottom Navigation Bar (Hidden on Desktop) */}
-      <nav className="md:hidden fixed inset-x-0 bottom-0 z-40 mx-auto border-t border-slate-100 bg-white/95 backdrop-blur-md">
-        <div className="flex h-[68px] items-center">
+      {/* Mobile Floating Liquid Glass Capsule Nav (Centered & Elevated like Mobile App) */}
+      <nav
+        aria-label="Mobile navigation"
+        className="md:hidden fixed bottom-3 inset-x-3 z-40 max-w-md mx-auto select-none"
+      >
+        <div className="relative flex items-center justify-around h-[66px] px-2 rounded-[28px] bg-slate-950/92 text-white backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] before:absolute before:inset-x-8 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent pb-[env(safe-area-inset-bottom)]">
           {TABS.map((t) => {
-            const active = pathname === t.to || (t.to === "/order" && pathname === "/");
+            const active = t.match(currentPath);
             const Icon = t.icon;
+            const showActiveOrderBadge = t.badge && Boolean(activeOrder);
+
             return (
               <Link
-                key={t.to}
+                key={t.label}
                 to={t.to}
                 className={cn(
-                  "flex flex-1 flex-col items-center justify-center gap-1 transition-colors",
-                  active ? "text-primary" : "text-slate-400 hover:text-slate-600"
+                  "relative flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all duration-300 active:scale-90",
+                  active
+                    ? "text-white"
+                    : "text-slate-400 hover:text-slate-200"
                 )}
               >
-                <div
-                  className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-xl transition-all",
-                    active && "bg-primary/10 text-primary"
+                {active && (
+                  <span className="absolute inset-x-1.5 inset-y-1 rounded-xl bg-primary shadow-md shadow-primary/40 -z-10 animate-in fade-in zoom-in-95 duration-200" />
+                )}
+                <div className="relative flex items-center justify-center">
+                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} strokeWidth={active ? 2.5 : 2} />
+                  {showActiveOrderBadge && (
+                    <span className="absolute -top-1 -right-1.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 ring-2 ring-slate-950" />
+                    </span>
                   )}
-                >
-                  <Icon className="h-5 w-5" strokeWidth={active ? 2.5 : 2} />
                 </div>
-                <span className={cn("text-[11px]", active ? "font-black" : "font-semibold")}>
+                <span className={cn("text-[10px] mt-1 tracking-tight leading-none", active ? "font-black" : "font-semibold")}>
                   {t.label}
                 </span>
               </Link>
