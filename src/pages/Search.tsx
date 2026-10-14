@@ -126,8 +126,25 @@ export default function Search() {
   // Filter & Search Logic
   const filteredRestaurants = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const isTrending = q === "trending" || q === "popular";
+    const isCafe = q === "cafe" || q === "cafes" || q === "coffee";
+    const isHealthy = q === "healthy" || q === "salad";
+
     let res = restaurants.filter((r) => {
       if (!q) return true;
+      if (isTrending) {
+        return (displayRating(r) ?? 0) >= 3.8 || (r.ratingCount ?? 0) >= 5 || Boolean(r.isFeatured);
+      }
+      if (isCafe) {
+        const c = (r.cuisine ?? "").toLowerCase();
+        const n = r.name.toLowerCase();
+        return c.includes("cafe") || c.includes("coffee") || c.includes("bakery") || c.includes("dessert") || n.includes("cafe") || n.includes("coffee");
+      }
+      if (isHealthy) {
+        const c = (r.cuisine ?? "").toLowerCase();
+        const n = r.name.toLowerCase();
+        return c.includes("healthy") || c.includes("salad") || c.includes("juice") || n.includes("healthy") || n.includes("salad");
+      }
       return (
         r.name.toLowerCase().includes(q) ||
         (r.cuisine ?? "").toLowerCase().includes(q) ||
@@ -145,7 +162,7 @@ export default function Search() {
 
     if (sortBy === "distance") {
       res.sort((a, b) => (a.distanceKm ?? 0) - (b.distanceKm ?? 0));
-    } else if (sortBy === "rating") {
+    } else if (sortBy === "rating" || isTrending) {
       res.sort((a, b) => (displayRating(b) ?? -1) - (displayRating(a) ?? -1));
     }
 
@@ -155,8 +172,24 @@ export default function Search() {
   const filteredDishes = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
+    const isTrending = q === "trending" || q === "popular";
+    const isCafe = q === "cafe" || q === "cafes" || q === "coffee";
+    const isHealthy = q === "healthy" || q === "salad";
 
     let res = menuItems.filter((m) => {
+      if (isTrending) {
+        return m.isRecommended || m.isAvailable;
+      }
+      if (isCafe) {
+        const cat = m.category.toLowerCase();
+        const nm = m.name.toLowerCase();
+        return cat.includes("coffee") || cat.includes("beverage") || cat.includes("dessert") || cat.includes("cafe") || nm.includes("coffee") || nm.includes("tea") || nm.includes("cake") || nm.includes("pastry");
+      }
+      if (isHealthy) {
+        const cat = m.category.toLowerCase();
+        const nm = m.name.toLowerCase();
+        return cat.includes("salad") || cat.includes("juice") || cat.includes("healthy") || nm.includes("salad") || nm.includes("juice") || nm.includes("bowl");
+      }
       return (
         m.name.toLowerCase().includes(q) ||
         m.category.toLowerCase().includes(q) ||

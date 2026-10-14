@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   MapPin,
@@ -16,6 +16,7 @@ import {
   ChevronUp,
   Mail,
   Loader2,
+  Flame,
 } from "lucide-react";
 import {
   getDiscoveryLocation,
@@ -32,6 +33,7 @@ import { getVendorOnboardingUrl } from "@/lib/urls";
 import { EcosystemSection } from "@/components/EcosystemSection";
 import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
 import { sendAppDownloadEmail } from "@/services/appLink";
+import { handleFoodImageError } from "@/lib/foodImages";
 
 const POPULAR_LOCALITIES = [
   { name: "Kakkanad", places: "148 places", lat: 10.0159, lng: 76.3419 },
@@ -45,35 +47,116 @@ const POPULAR_LOCALITIES = [
   { name: "Indiranagar, Bengaluru", places: "175 places", lat: 12.9784, lng: 77.6408 },
 ];
 
-const COLLECTIONS = [
+export interface CollectionItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  places: string;
+  image: string;
+  badge: string;
+  badgeColor: string;
+  category: "all" | "trending" | "biryani" | "cafes" | "dining" | "veg";
+  to: string;
+}
+
+const COLLECTIONS: CollectionItem[] = [
   {
+    id: "trending",
     title: "Top Trending Spots",
+    subtitle: "The most popular dining destinations this week",
     places: "28 Places",
-    image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
-    query: "Trending",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+    badge: "🔥 TRENDING",
+    badgeColor: "bg-rose-500/95 text-white",
+    category: "trending",
+    to: "/search?q=Trending",
   },
   {
+    id: "biryani",
     title: "Best Biryani in Town",
+    subtitle: "Aromatic dum, Malabar, & Thalassery biryanis",
     places: "24 Places",
-    image:
-      "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
-    query: "Biryani",
+    image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+    badge: "👑 ICONIC MUST-TRY",
+    badgeColor: "bg-amber-500/95 text-white",
+    category: "biryani",
+    to: "/search?q=Biryani",
   },
   {
+    id: "cafes",
     title: "Cafes & Sweet Spots",
-    places: "18 Places",
-    image:
-      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
-    query: "Cafe",
+    subtitle: "Artisanal brews, cheesecakes, and cozy corners",
+    places: "19 Places",
+    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
+    badge: "☕ AESTHETIC VIBES",
+    badgeColor: "bg-blue-600/95 text-white",
+    category: "cafes",
+    to: "/search?q=Cafe",
   },
   {
-    title: "Newly Opened Kitchens",
-    places: "14 Places",
-    image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
-    query: "Popular",
+    id: "dining",
+    title: "Table Booking & Fine Dine",
+    subtitle: "Reserve premium tables with zero booking fee",
+    places: "16 Places",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+    badge: "🥂 TABLE BOOKING",
+    badgeColor: "bg-indigo-600/95 text-white",
+    category: "dining",
+    to: "/order?vertical=dining",
   },
+  {
+    id: "veg",
+    title: "Pure Veg Delights",
+    subtitle: "Crispy dosas, paneer delicacies, and thalis",
+    places: "22 Places",
+    image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=800&q=80",
+    badge: "🌿 100% PURE VEG",
+    badgeColor: "bg-emerald-600/95 text-white",
+    category: "veg",
+    to: "/order?veg=true",
+  },
+  {
+    id: "budget",
+    title: "Pocket-Friendly Bites",
+    subtitle: "Satisfying snacks & meals under ₹149",
+    places: "31 Places",
+    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+    badge: "⚡ UNDER ₹149",
+    badgeColor: "bg-cyan-600/95 text-white",
+    category: "all",
+    to: "/order",
+  },
+  {
+    id: "seafood",
+    title: "Coastal Seafood Specials",
+    subtitle: "Fresh catch karimeen, prawns, and fish curries",
+    places: "15 Places",
+    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
+    badge: "🦐 COASTAL FLAVORS",
+    badgeColor: "bg-sky-600/95 text-white",
+    category: "all",
+    to: "/search?q=Seafood",
+  },
+  {
+    id: "new",
+    title: "Newly Opened Kitchens",
+    subtitle: "Discover fresh cuisines that just landed in town",
+    places: "12 Places",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
+    badge: "✨ NEW DISCOVERY",
+    badgeColor: "bg-purple-600/95 text-white",
+    category: "trending",
+    to: "/search?q=Popular",
+  },
+];
+
+const COLLECTION_TABS = [
+  { id: "all", label: "All Guides" },
+  { id: "trending", label: "🔥 Trending" },
+  { id: "biryani", label: "🍚 Biryani Trails" },
+  { id: "cafes", label: "☕ Cafes & Bakes" },
+  { id: "dining", label: "🥂 Table Booking" },
+  { id: "veg", label: "🌿 Pure Veg" },
 ];
 
 const CUISINES = [
@@ -161,6 +244,16 @@ export default function Landing() {
 
   // Accordion open states
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Collection Category Filter State
+  const [selectedCollectionCategory, setSelectedCollectionCategory] = useState<string>("all");
+
+  const filteredCollections = useMemo(() => {
+    if (selectedCollectionCategory === "all") return COLLECTIONS;
+    return COLLECTIONS.filter(
+      (c) => c.category === selectedCollectionCategory || c.id === selectedCollectionCategory
+    );
+  }, [selectedCollectionCategory]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -419,44 +512,93 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── 2. COLLECTIONS SECTION (ZOMATO SIGNATURE) ─────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+      {/* ─── 2. COLLECTIONS SECTION ─────────────────────── */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Collections</h2>
-            <p className="text-sm font-semibold text-slate-500 mt-1">
-              Explore curated lists of top restaurants, cafes, pubs, and bars in {currentLoc.label.split(",")[0]}, based on trends
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
+              <Sparkles className="h-3.5 w-3.5" />
+              Curated City Guides
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              Collections in{" "}
+              <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                {currentLoc.label.split(",")[0]}
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base font-semibold text-slate-500 mt-2 max-w-2xl leading-relaxed">
+              Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
             </p>
           </div>
           <Link
             to="/search"
-            className="flex items-center gap-1 text-sm font-black text-primary hover:underline shrink-0"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-primary hover:text-blue-700 transition-colors group shrink-0"
           >
             <span>All collections in {currentLoc.label.split(",")[0]}</span>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
 
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {COLLECTIONS.map((c) => (
+        {/* Category Filter Tabs */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6">
+          {COLLECTION_TABS.map((tab) => {
+            const isActive = selectedCollectionCategory === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setSelectedCollectionCategory(tab.id)}
+                className={`shrink-0 rounded-2xl px-4 py-2 text-xs sm:text-sm font-bold transition-all active:scale-95 ${
+                  isActive
+                    ? "bg-primary text-white shadow-md shadow-primary/25 border border-primary"
+                    : "bg-white text-slate-600 border border-slate-200/80 hover:border-slate-300 hover:text-slate-900"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Collections Cards Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+          {filteredCollections.map((c) => (
             <Link
-              key={c.title}
-              to={`/search?q=${encodeURIComponent(c.query)}`}
-              className="group relative h-72 sm:h-80 rounded-2xl overflow-hidden shadow-md"
+              key={c.id}
+              to={c.to}
+              className="group relative h-60 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
             >
               <img
                 src={c.image}
                 alt={c.title}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                onError={(e) => handleFoodImageError(e, c.title)}
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <h3 className="text-base sm:text-lg font-black tracking-tight">{c.title}</h3>
-                <p className="text-xs font-bold text-white/80 flex items-center gap-1 mt-0.5">
-                  <span>{c.places}</span>
-                  <ChevronRight className="h-3.5 w-3.5" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+
+              {/* Floating Badge Tag at top */}
+              <div className="absolute top-3 left-3 z-10">
+                <span
+                  className={`inline-flex items-center rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-xs ${c.badgeColor}`}
+                >
+                  {c.badge}
+                </span>
+              </div>
+
+              {/* Card Content at bottom */}
+              <div className="relative z-10 p-3 sm:p-5 text-white">
+                <h3 className="text-sm sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm group-hover:text-blue-200 transition-colors">
+                  {c.title}
+                </h3>
+                <p className="hidden sm:block text-xs text-slate-300 font-medium line-clamp-1 mt-1">
+                  {c.subtitle}
                 </p>
+                <div className="mt-2 sm:mt-3 flex items-center justify-between text-xs font-bold text-white/90 pt-1.5 sm:pt-2 border-t border-white/10">
+                  <span className="text-[11px] sm:text-xs text-blue-300 font-black">{c.places}</span>
+                  <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs text-white/90 font-bold group-hover:text-blue-300 group-hover:translate-x-1 transition-all">
+                    <span>Explore</span>
+                    <ChevronRight className="h-3 w-3" />
+                  </span>
+                </div>
               </div>
             </Link>
           ))}

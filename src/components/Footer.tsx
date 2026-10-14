@@ -102,29 +102,29 @@ export const Footer: React.FC = () => {
             </p>
             <ul className="space-y-2.5 text-xs font-semibold text-slate-400">
               <li>
-                <Link to="/" className="text-blue-400 font-bold">The Kada (Customer)</Link>
+                <Link to="/" className="text-blue-400 font-bold">The Kada</Link>
               </li>
               <li>
                 <a href="https://kadadine.thekada.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>Kada Dine (Cloud POS)</span>
+                  <span>Kada Dine</span>
                   <ExternalLink className="h-2.5 w-2.5 opacity-50" />
                 </a>
               </li>
               <li>
                 <a href="https://rider.thekada.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>Kada Rider (Fleet)</span>
+                  <span>Kada Rider</span>
                   <ExternalLink className="h-2.5 w-2.5 opacity-50" />
                 </a>
               </li>
               <li>
                 <a href="https://host.thekada.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>Kada Host (Hospitality)</span>
+                  <span>Kada Host</span>
                   <ExternalLink className="h-2.5 w-2.5 opacity-50" />
                 </a>
               </li>
               <li>
                 <a href="https://thekada.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>The Kada Corp (HQ)</span>
+                  <span>The Kada Corp</span>
                   <ExternalLink className="h-2.5 w-2.5 opacity-50" />
                 </a>
               </li>
@@ -157,7 +157,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="https://rider.thekada.in/join" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>Apply to Deliver (Rider)</span>
+                  <span>Apply to Deliver</span>
                   <ExternalLink className="h-2.5 w-2.5 opacity-50" />
                 </a>
               </li>
@@ -220,7 +220,7 @@ export const Footer: React.FC = () => {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="X (formerly Twitter)"
+                aria-label="X"
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white hover:bg-black hover:ring-1 hover:ring-slate-700 transition-all hover:scale-110 active:scale-95 shadow-xs border border-slate-800"
               >
                 <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">

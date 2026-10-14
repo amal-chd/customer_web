@@ -3,7 +3,7 @@ import { Sparkles, Calendar, Clock, Utensils, Tag, HeartHandshake, ShieldCheck, 
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white pt-16 sm:pt-20 pb-12 select-none border-t border-blue-100/60">
+    <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white pt-16 sm:pt-20 pb-16 sm:pb-20 select-none border-t border-blue-100/60">
       {/* ── Ambient Glow Elements ── */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
       <div className="absolute top-12 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[130px] pointer-events-none" />
@@ -340,33 +340,6 @@ export function AppFeaturesShowcase() {
                 <span className="text-[10px] sm:text-[11px] font-black text-slate-800 line-clamp-1 leading-tight">{f.name}</span>
               </Link>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Bottom Decorative Arc with Kada Gold Coins ── */}
-      <div className="relative mt-12 sm:mt-16 w-full">
-        {/* Curving dark slope footer */}
-        <div className="relative h-16 sm:h-24 w-full bg-slate-950 overflow-hidden rounded-t-[50%_100%]">
-          {/* Subtle blue & gold glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/15 via-indigo-600/10 to-amber-500/15" />
-        </div>
-
-        {/* Left Golden Coin Accent */}
-        <div className="absolute -bottom-6 left-4 sm:left-12 h-20 w-20 sm:h-32 sm:w-32 z-20 pointer-events-none transform -rotate-12 transition-transform hover:scale-105">
-          <div className="h-full w-full rounded-full bg-gradient-to-br from-amber-300 via-amber-400 to-yellow-600 p-1.5 shadow-2xl ring-4 ring-amber-200/50 flex items-center justify-center">
-            <div className="h-full w-full rounded-full border-2 border-dashed border-amber-600/40 bg-gradient-to-tr from-amber-400 to-yellow-200 flex items-center justify-center shadow-inner">
-              <span className="text-2xl sm:text-4xl font-black text-amber-900 drop-shadow-sm">K</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Golden Coin Accent */}
-        <div className="absolute -bottom-6 right-4 sm:right-12 h-24 w-24 sm:h-36 sm:w-36 z-20 pointer-events-none transform rotate-12 transition-transform hover:scale-105">
-          <div className="h-full w-full rounded-full bg-gradient-to-br from-yellow-200 via-amber-400 to-amber-600 p-2 shadow-2xl ring-4 ring-amber-300/60 flex items-center justify-center">
-            <div className="h-full w-full rounded-full border-2 border-dashed border-amber-700/40 bg-gradient-to-tr from-yellow-300 to-amber-500 flex items-center justify-center shadow-inner">
-              <span className="text-3xl sm:text-5xl font-black text-amber-950 drop-shadow-sm">₹</span>
-            </div>
           </div>
         </div>
       </div>

@@ -22,6 +22,7 @@ export interface Restaurant {
   distanceKm: number;
   acceptingOrders: boolean;
   pausedUntil?: Date;
+  isFeatured?: boolean;
 }
 
 export function restaurantFromDoc(doc: DocumentSnapshot): Restaurant {
