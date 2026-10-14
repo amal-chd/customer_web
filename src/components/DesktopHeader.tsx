@@ -5,11 +5,8 @@ import {
   ChevronDown,
   Search,
   ShoppingBag,
-  ReceiptText,
   User,
   Bike,
-  Sparkles,
-  UtensilsCrossed,
   Store,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -77,8 +74,6 @@ export function DesktopHeader() {
     }
   }
 
-  const isSearch = pathname === "/search";
-  const isOrders = pathname === "/orders";
   const isAccount = pathname === "/account";
 
   return (
@@ -145,15 +140,6 @@ export function DesktopHeader() {
                 </span>
               </Link>
             )}
-
-            <Link
-              to="/orders"
-              className={`flex items-center gap-1.5 text-sm font-bold transition-colors ${
-                isOrders ? "text-primary font-black" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <ReceiptText className="h-4 w-4" /> Orders
-            </Link>
 
             <Link
               to="/add-restaurant"
