@@ -7,13 +7,17 @@ import {
 } from "react";
 import {
   GoogleAuthProvider,
+  OAuthProvider,
+  RecaptchaVerifier,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPhoneNumber,
   signInWithPopup,
   signOut,
   updateProfile as updateAuthProfile,
+  type ConfirmationResult,
   type User,
 } from "firebase/auth";
 import {
@@ -43,6 +47,9 @@ interface AuthValue {
   signInEmail: (email: string, password: string) => Promise<void>;
   signUpEmail: (name: string, email: string, password: string) => Promise<void>;
   signInGoogle: () => Promise<void>;
+  signInApple: () => Promise<void>;
+  sendPhoneOtp: (phoneNumber: string, containerId: string) => Promise<ConfirmationResult>;
+  verifyPhoneOtp: (confirmationResult: ConfirmationResult, otp: string, name?: string) => Promise<void>;
   sendPasswordReset: (email: string) => Promise<void>;
   updateCustomerName: (name: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -55,6 +62,9 @@ const Ctx = createContext<AuthValue>({
   signInEmail: async () => {},
   signUpEmail: async () => {},
   signInGoogle: async () => {},
+  signInApple: async () => {},
+  sendPhoneOtp: async () => { throw new Error("Not implemented"); },
+  verifyPhoneOtp: async () => {},
   sendPasswordReset: async () => {},
   updateCustomerName: async () => {},
   logout: async () => {},
@@ -176,6 +186,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       provider.setCustomParameters({ prompt: "select_account" });
       const cred = await signInWithPopup(auth, provider);
       await ensureUserProfile(cred.user);
+    },
+    signInApple: async () => {
+      const provider = new OAuthProvider("apple.com");
+      provider.addScope("email");
+      provider.addScope("name");
+      const cred = await signInWithPopup(auth, provider);
+      await ensureUserProfile(cred.user);
+    },
+    sendPhoneOtp: async (phoneNumber: string, containerId: string) => {
+      let cleanPhone = phoneNumber.trim().replace(/\s+/g, "");
+      if (!cleanPhone.startsWith("+")) {
+        // Default to India (+91) if 10 digits
+        cleanPhone = cleanPhone.length === 10 ? `+91${cleanPhone}` : `+${cleanPhone}`;
+      }
+
+      if ((window as any).recaptchaVerifier) {
+        try {
+          (window as any).recaptchaVerifier.clear();
+        } catch (_) {}
+      }
+
+      const verifier = new RecaptchaVerifier(auth, containerId, {
+        size: "invisible",
+      });
+      (window as any).recaptchaVerifier = verifier;
+
+      return await signInWithPhoneNumber(auth, cleanPhone, verifier);
+    },
+    verifyPhoneOtp: async (confirmationResult: ConfirmationResult, otp: string, name?: string) => {
+      const cred = await confirmationResult.confirm(otp.trim());
+      const cleanName = name?.trim();
+      if (cleanName && !cred.user.displayName) {
+        try {
+          await updateAuthProfile(cred.user, { displayName: cleanName });
+        } catch (_) {}
+      }
+      await ensureUserProfile(cred.user, cleanName);
     },
     sendPasswordReset: async (email: string) => {
       await sendPasswordResetEmail(auth, email.trim());
