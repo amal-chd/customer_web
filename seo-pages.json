@@ -34,14 +34,6 @@
       }
     },
     {
-      "path": "/how-it-works",
-      "title": "How Online Ordering Works",
-      "description": "Find a nearby restaurant, choose dishes from its menu, place your order and follow live updates with The Kada.",
-      "indexable": true,
-      "sitemap": true,
-      "priority": 0.8
-    },
-    {
       "path": "/about",
       "title": "About The Kada Food Ordering Platform",
       "description": "Learn how The Kada connects diners with local restaurants through online ordering, digital menus and order updates.",

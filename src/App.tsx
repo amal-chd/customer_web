@@ -14,7 +14,7 @@ import OrderTracking from "./pages/OrderTracking";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import { About, HowItWorks, Contact, Faq } from "./pages/Info";
+import { About, Contact, Faq } from "./pages/Info";
 import { Privacy, Terms, Refund, Cookies, Shipping } from "./pages/Legal";
 import DeleteAccount from "./pages/DeleteAccount";
 import PartnerWithUs from "./pages/PartnerWithUs";
@@ -53,7 +53,6 @@ function AnimatedRoutes() {
         {/* Marketing / info / legal */}
         <Route element={<SiteLayout />}>
           <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
-          <Route path="/how-it-works" element={<PageTransition><HowItWorks /></PageTransition>} />
           <Route path="/about" element={<PageTransition><About /></PageTransition>} />
           <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
           <Route path="/faq" element={<PageTransition><Faq /></PageTransition>} />

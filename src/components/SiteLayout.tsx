@@ -8,7 +8,6 @@ import { toast } from "@/components/Toast";
 
 const NAV = [
   { label: "Home", to: "/" },
-  { label: "How it works", to: "/how-it-works" },
   { label: "About", to: "/about" },
   { label: "Investor Relations", to: "/investor-relations" },
   { label: "Contact", to: "/contact" },
@@ -228,7 +227,6 @@ function Footer() {
               links={[
                 ["About Us", "/about"],
                 ["Investor Relations", "/investor-relations"],
-                ["How It Works", "/how-it-works"],
                 ["Contact Us", "/contact"],
                 ["Help & FAQs", "/faq"],
               ]}
