@@ -185,31 +185,22 @@ export function DesktopHeader() {
               )}
             </Link>
 
-            {/* User Profile / Login */}
-            {user ? (
-              <Link
-                to="/account"
-                className={`flex items-center gap-2.5 rounded-2xl border p-1.5 pr-3.5 transition-all ${
-                  isAccount
-                    ? "border-primary bg-primary/5 text-primary"
-                    : "border-slate-200 hover:border-slate-300 text-slate-700"
-                }`}
-              >
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-600 text-xs font-black text-white shadow-xs">
-                  {(user.displayName?.[0] ?? user.email?.[0] ?? "U").toUpperCase()}
-                </div>
-                <span className="max-w-[100px] truncate text-xs font-black">
-                  {user.displayName || "Account"}
-                </span>
-              </Link>
-            ) : (
-              <Link
-                to="/login"
-                className="rounded-2xl bg-primary px-5 py-2.5 text-sm font-black text-white shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
-              >
-                Sign In
-              </Link>
-            )}
+            {/* User Profile / Account */}
+            <Link
+              to="/account"
+              className={`flex items-center gap-2.5 rounded-2xl border p-1.5 pr-3.5 transition-all ${
+                isAccount
+                  ? "border-primary bg-primary/5 text-primary"
+                  : "border-slate-200 hover:border-slate-300 text-slate-700"
+              }`}
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-600 text-xs font-black text-white shadow-xs">
+                {user ? (user.displayName?.[0] ?? user.email?.[0] ?? "U").toUpperCase() : <User className="h-4 w-4" />}
+              </div>
+              <span className="max-w-[100px] truncate text-xs font-black">
+                {user?.displayName || "Account"}
+              </span>
+            </Link>
           </div>
         </div>
       </header>

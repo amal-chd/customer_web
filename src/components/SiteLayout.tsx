@@ -109,18 +109,6 @@ export function SiteLayout() {
             </Link>
 
             <Link
-              to="/login"
-              className={cn(
-                "text-sm font-bold px-2 py-1 transition-colors",
-                isTransparent && !isHeaderSolid
-                  ? "text-white/90 hover:text-white"
-                  : "text-slate-700 hover:text-slate-900"
-              )}
-            >
-              Sign in
-            </Link>
-
-            <Link
               to="/order"
               className={cn(
                 "inline-flex items-center justify-center rounded-xl px-5 py-2 text-sm font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95",
@@ -178,18 +166,11 @@ export function SiteLayout() {
 
               <hr className="my-2 border-slate-100" />
 
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                <Link
-                  to="/login"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-100"
-                >
-                  Sign in
-                </Link>
+              <div className="pt-1">
                 <Link
                   to="/order"
                   onClick={() => setOpen(false)}
-                  className="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-primary/20"
+                  className="w-full inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-primary/20"
                 >
                   Order now
                 </Link>
