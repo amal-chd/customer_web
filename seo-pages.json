@@ -66,6 +66,21 @@
       "priority": 0.6
     },
     {
+      "path": "/add-restaurant",
+      "title": "Partner with The Kada Dine - List Your Restaurant",
+      "description": "Register your restaurant on The Kada Dine. 0% commission introductory plans, built-in POS, predictive KDS, and direct hyperlocal rider fleet.",
+      "indexable": true,
+      "sitemap": true,
+      "priority": 0.8
+    },
+    {
+      "path": "/partner",
+      "title": "Partner with The Kada Dine - List Your Restaurant",
+      "description": "Register your restaurant on The Kada Dine. 0% commission introductory plans, built-in POS, predictive KDS, and direct hyperlocal rider fleet.",
+      "indexable": true,
+      "sitemap": false
+    },
+    {
       "path": "/restaurant",
       "title": "Restaurant Menus and Online Food Ordering",
       "description": "Browse a restaurant's menu and order online through The Kada.",

@@ -28,6 +28,7 @@ import {
 } from "@/services/location";
 import { toast } from "@/components/Toast";
 import { Spinner } from "@/components/bits";
+import { getVendorOnboardingUrl } from "@/lib/urls";
 
 const POPULAR_LOCALITIES = [
   { name: "Kakkanad", places: "148 places", lat: 10.0159, lng: 76.3419 },
@@ -305,8 +306,8 @@ export default function Landing() {
                 Investor Relations
               </Link>
               <Link
-                to="/contact"
-                className="hidden sm:inline-block hover:text-white/80 transition-colors"
+                to="/add-restaurant"
+                className="hidden sm:inline-block hover:text-white/80 transition-colors font-bold"
               >
                 Add restaurant
               </Link>
@@ -887,8 +888,9 @@ export default function Landing() {
                 For Restaurants
               </p>
               <ul className="space-y-2.5 text-xs font-semibold text-slate-500">
-                <li><Link to="/contact" className="hover:text-slate-900">Partner With Us</Link></li>
-                <li><Link to="/contact" className="hover:text-slate-900">Apps For You</Link></li>
+                <li><Link to="/add-restaurant" className="hover:text-slate-900 font-bold text-primary">Partner With Us</Link></li>
+                <li><a href={getVendorOnboardingUrl("/signup")} target="_blank" rel="noopener noreferrer" className="hover:text-slate-900">Register Restaurant</a></li>
+                <li><a href={getVendorOnboardingUrl("/login")} target="_blank" rel="noopener noreferrer" className="hover:text-slate-900">Vendor Dashboard</a></li>
               </ul>
             </div>
 

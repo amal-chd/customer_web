@@ -740,6 +740,36 @@ export default function Discover() {
             )}
           </div>
         </div>
+
+        {/* ── 11. PARTNER WITH THE KADA - ADD RESTAURANT CALLOUT ── */}
+        <div className="rounded-3xl border border-slate-200/80 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white shrink-0 shadow-sm border border-white/10">
+              <Store className="h-7 w-7 text-indigo-300" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-black text-white">Own a food or grocery business?</h3>
+                <span className="rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-black px-2.5 py-0.5 border border-emerald-500/30">
+                  PARTNER WITH US
+                </span>
+              </div>
+              <p className="text-xs font-medium text-indigo-200 mt-1 max-w-xl">
+                List your kitchen on The Kada Dine with 0% introductory commission. Get full cloud POS, predictive kitchen displays, and a dedicated hyperlocal delivery fleet.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            to="/add-restaurant"
+            className="rounded-2xl bg-primary px-6 py-3.5 text-xs font-black text-white shadow-lg shadow-primary/30 hover:bg-blue-600 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0 relative z-10"
+          >
+            <Store className="h-4 w-4" />
+            <span>Add Your Restaurant</span>
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
 
       {/* ── Item Customization Modal (when adding dishes with variants) ── */}

@@ -35,6 +35,7 @@ import {
   Check,
   X,
   Wallet,
+  Store,
 } from "lucide-react";
 import { toast } from "@/components/Toast";
 import {
@@ -956,6 +957,34 @@ export default function Account() {
                   </span>
                 </a>
               </div>
+            </div>
+
+            {/* Restaurant Partner Onboarding Banner */}
+            <div className="rounded-3xl border border-primary/20 bg-gradient-to-r from-primary/5 via-indigo-50 to-primary/10 p-6 sm:p-7 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-md shadow-primary/20 shrink-0">
+                  <Store className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-black text-slate-900">Partner with The Kada</h3>
+                    <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-black text-emerald-700 border border-emerald-200">
+                      0% COMMISSION OFFER
+                    </span>
+                  </div>
+                  <p className="text-xs font-medium text-slate-600 mt-0.5">
+                    Own a restaurant, grocery or cafe? List your outlet on The Kada and start getting live customer orders.
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                to="/add-restaurant"
+                className="rounded-2xl bg-primary px-5 py-3 text-xs font-black text-white shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+              >
+                <span>Add Your Restaurant</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             {/* Frequently Asked Questions */}
