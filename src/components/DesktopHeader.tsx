@@ -7,7 +7,6 @@ import {
   ShoppingBag,
   ReceiptText,
   User,
-  Compass,
   Bike,
   Sparkles,
   UtensilsCrossed,
@@ -80,7 +79,6 @@ export function DesktopHeader() {
     }
   }
 
-  const isHome = pathname === "/order" || pathname === "/";
   const isSearch = pathname === "/search";
   const isOrders = pathname === "/orders";
   const isAccount = pathname === "/account";
@@ -155,15 +153,6 @@ export function DesktopHeader() {
                 </span>
               </Link>
             )}
-
-            <Link
-              to="/order"
-              className={`flex items-center gap-1.5 text-sm font-bold transition-colors ${
-                isHome ? "text-primary font-black" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Compass className="h-4 w-4" /> Explore
-            </Link>
 
             <Link
               to="/orders"
