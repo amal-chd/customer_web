@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ChevronDown,
@@ -28,13 +28,13 @@ import {
   onLocationChange,
   type DeliveryLocation,
 } from "@/services/location";
-import { subscribeMyOrders } from "@/services/orders";
+import { subscribeMyOrders, getRestaurant } from "@/services/orders";
 import { RestaurantCard } from "@/components/RestaurantCard";
 import { ShimmerCard, VegDot } from "@/components/bits";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
-import { menuItemImage } from "@/lib/foodImages";
+import { menuItemImage, handleFoodImageError } from "@/lib/foodImages";
 import { formatMoney } from "@/lib/currency";
 import { toast } from "@/components/Toast";
 import {
@@ -86,21 +86,21 @@ const CATEGORIES = [
   { name: "Biryani", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=300&q=80" },
   { name: "Pizza", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=300&q=80" },
   { name: "Burger", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=300&q=80" },
-  { name: "South Indian", image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=300&q=80" },
+  { name: "South Indian", image: "https://images.unsplash.com/photo-1787024231387-edccb8c44700?auto=format&fit=crop&w=300&q=80" },
   { name: "Dosa", image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=300&q=80" },
-  { name: "Thali", image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=300&q=80" },
+  { name: "Thali", image: "https://images.unsplash.com/photo-1680993032090-1ef7ea9b51e5?auto=format&fit=crop&w=300&q=80" },
   { name: "Chicken", image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=300&q=80" },
   { name: "Shawarma", image: "https://images.unsplash.com/photo-1662116765994-1e4200c43589?auto=format&fit=crop&w=300&q=80" },
   { name: "Chinese", image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=300&q=80" },
   { name: "Momos", image: "https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?auto=format&fit=crop&w=300&q=80" },
   { name: "Rolls", image: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=300&q=80" },
-  { name: "Paratha", image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=300&q=80" },
+  { name: "Paratha", image: "https://images.unsplash.com/photo-1668357530437-72a12c660f94?auto=format&fit=crop&w=300&q=80" },
   { name: "Paneer", image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=300&q=80" },
   { name: "Salad", image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=300&q=80" },
   { name: "Cake", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=300&q=80" },
   { name: "Dessert", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=300&q=80" },
   { name: "Coffee", image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=80" },
-  { name: "Chai", image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=300&q=80" },
+  { name: "Chai", image: "https://images.unsplash.com/photo-1619581073186-5b4ae1b0caad?auto=format&fit=crop&w=300&q=80" },
 ];
 
 const ACTIVE_ORDER_STATUSES = [
@@ -307,8 +307,24 @@ export default function Discover() {
     return dishes.filter((d) => d.price > 0 && d.price <= 149).slice(0, 10);
   }, [dishes]);
 
-  function handleAddDish(dish: MenuItem) {
-    const parentRest = list.find((r) => r.id === dish.restaurantId);
+  const popularRailRef = useRef<HTMLDivElement>(null);
+  const budgetRailRef = useRef<HTMLDivElement>(null);
+
+  async function resolveRestaurant(restaurantId: string): Promise<Restaurant | null> {
+    const fromList =
+      list.find((r) => r.id === restaurantId) ||
+      getCachedResults()?.find((r) => r.id === restaurantId);
+    if (fromList) return fromList;
+    try {
+      const fetched = await getRestaurant(restaurantId);
+      return fetched;
+    } catch {
+      return null;
+    }
+  }
+
+  async function handleAddDish(dish: MenuItem) {
+    const parentRest = await resolveRestaurant(dish.restaurantId);
     if (!parentRest) {
       navigate(`/restaurant/${dish.restaurantId}`);
       return;
@@ -332,6 +348,15 @@ export default function Discover() {
 
     cart.add(parentRest, dish);
     toast(`${dish.name} added to cart`);
+  }
+
+  async function handleCardClick(dish: MenuItem, restaurant?: Restaurant) {
+    const parentRest = restaurant || (await resolveRestaurant(dish.restaurantId));
+    if (parentRest) {
+      setModalItem({ item: dish, restaurant: parentRest });
+    } else {
+      navigate(`/restaurant/${dish.restaurantId}`);
+    }
   }
 
   return (
@@ -627,44 +652,76 @@ export default function Discover() {
                   Add customer favourites straight to your cart
                 </p>
               </div>
-              <Link to="/search" className="text-xs font-bold text-primary hover:underline">
-                Explore dishes
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link to="/search" className="text-xs font-bold text-primary hover:underline">
+                  Explore dishes
+                </Link>
+                <div className="hidden sm:flex items-center gap-1 ml-2">
+                  <button
+                    onClick={() => popularRailRef.current?.scrollBy({ left: -260, behavior: "smooth" })}
+                    aria-label="Scroll left"
+                    className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 hover:text-primary hover:border-primary/40 shadow-xs transition-all active:scale-95"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => popularRailRef.current?.scrollBy({ left: 260, behavior: "smooth" })}
+                    aria-label="Scroll right"
+                    className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 hover:text-primary hover:border-primary/40 shadow-xs transition-all active:scale-95"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div
+              ref={popularRailRef}
+              className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-2 -mx-4 px-4 sm:mx-0 sm:px-0"
+            >
               {popularDishes.map((dish) => {
                 const rest = list.find((r) => r.id === dish.restaurantId);
                 const inCartQty = cart.qtyOf(dish.id);
+                const line = cart.lines.find((l) => l.item.id === dish.id);
                 return (
                   <div
                     key={dish.id}
-                    className="w-56 sm:w-64 shrink-0 rounded-3xl border border-slate-200/80 bg-white p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                    className="group/card w-56 sm:w-64 shrink-0 rounded-3xl border border-slate-200/80 bg-white p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="relative h-32 w-full overflow-hidden rounded-2xl bg-slate-100">
+                      <div
+                        onClick={() => handleCardClick(dish, rest)}
+                        className="relative h-32 w-full overflow-hidden rounded-2xl bg-slate-100 cursor-pointer"
+                      >
                         <img
                           src={menuItemImage(dish)}
                           alt={dish.name}
-                          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                          onError={(e) => handleFoodImageError(e, `${dish.category} ${dish.name}`)}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover/card:scale-105"
                         />
-                        <div className="absolute top-2 left-2">
+                        <div className="absolute top-2 left-2 shadow-xs">
                           <VegDot veg={dish.isVeg} />
                         </div>
                         {dish.isRecommended && (
-                          <span className="absolute top-2 right-2 rounded-md bg-amber-500 text-white px-2 py-0.5 text-[10px] font-black uppercase">
+                          <span className="absolute top-2 right-2 rounded-md bg-amber-500 text-white px-2 py-0.5 text-[10px] font-black uppercase shadow-xs">
                             Bestseller
                           </span>
                         )}
                       </div>
                       <div className="mt-2.5">
-                        <h3 className="truncate text-sm font-black text-slate-900">
+                        <h3
+                          onClick={() => handleCardClick(dish, rest)}
+                          className="truncate text-sm font-black text-slate-900 cursor-pointer hover:text-primary transition-colors"
+                        >
                           {dish.name}
                         </h3>
                         {rest && (
-                          <p className="truncate text-xs font-medium text-slate-400 mt-0.5">
+                          <Link
+                            to={`/restaurant/${rest.id}`}
+                            className="truncate text-xs font-semibold text-slate-400 hover:text-primary transition-colors block mt-0.5"
+                          >
                             {rest.name}
-                          </p>
+                          </Link>
                         )}
                       </div>
                     </div>
@@ -673,12 +730,40 @@ export default function Discover() {
                       <span className="text-sm font-black text-slate-900">
                         {formatMoney(dish.price, rest?.currency)}
                       </span>
-                      <button
-                        onClick={() => handleAddDish(dish)}
-                        className="rounded-xl border border-primary bg-white px-4 py-1.5 text-xs font-black text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-95"
-                      >
-                        {inCartQty > 0 ? `ADD (${inCartQty})` : "ADD +"}
-                      </button>
+                      {inCartQty > 0 && line && dish.variants.length === 0 && dish.addons.length === 0 ? (
+                        <div className="flex items-center gap-2 rounded-xl border border-primary bg-primary/5 px-2 py-1 shadow-xs">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cart.decrement(line.cartId);
+                            }}
+                            aria-label="Decrease quantity"
+                            className="flex h-5 w-5 items-center justify-center rounded-md bg-white text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-90"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="text-xs font-black text-primary min-w-[14px] text-center">
+                            {inCartQty}
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cart.increment(line.cartId);
+                            }}
+                            aria-label="Increase quantity"
+                            className="flex h-5 w-5 items-center justify-center rounded-md bg-white text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-90"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleAddDish(dish)}
+                          className="rounded-xl border border-primary bg-white px-3.5 py-1.5 text-xs font-black text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-95"
+                        >
+                          {inCartQty > 0 ? `ADD (${inCartQty}) +` : "ADD +"}
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -699,36 +784,66 @@ export default function Discover() {
                   Delicious meals and snacks that fit every budget
                 </p>
               </div>
+              <div className="hidden sm:flex items-center gap-1">
+                <button
+                  onClick={() => budgetRailRef.current?.scrollBy({ left: -240, behavior: "smooth" })}
+                  aria-label="Scroll left"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 hover:text-primary hover:border-primary/40 shadow-xs transition-all active:scale-95"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => budgetRailRef.current?.scrollBy({ left: 240, behavior: "smooth" })}
+                  aria-label="Scroll right"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 hover:text-primary hover:border-primary/40 shadow-xs transition-all active:scale-95"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div
+              ref={budgetRailRef}
+              className="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-2 -mx-4 px-4 sm:mx-0 sm:px-0"
+            >
               {budgetDishes.map((dish) => {
                 const rest = list.find((r) => r.id === dish.restaurantId);
                 const inCartQty = cart.qtyOf(dish.id);
+                const line = cart.lines.find((l) => l.item.id === dish.id);
                 return (
                   <div
                     key={dish.id}
-                    className="w-52 sm:w-60 shrink-0 rounded-3xl border border-slate-200/80 bg-white p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                    className="group/card w-52 sm:w-60 shrink-0 rounded-3xl border border-slate-200/80 bg-white p-3 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="relative h-28 w-full overflow-hidden rounded-2xl bg-slate-100">
+                      <div
+                        onClick={() => handleCardClick(dish, rest)}
+                        className="relative h-28 w-full overflow-hidden rounded-2xl bg-slate-100 cursor-pointer"
+                      >
                         <img
                           src={menuItemImage(dish)}
                           alt={dish.name}
-                          className="h-full w-full object-cover"
+                          onError={(e) => handleFoodImageError(e, `${dish.category} ${dish.name}`)}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover/card:scale-105"
                         />
-                        <div className="absolute top-2 left-2">
+                        <div className="absolute top-2 left-2 shadow-xs">
                           <VegDot veg={dish.isVeg} />
                         </div>
                       </div>
                       <div className="mt-2">
-                        <h3 className="truncate text-xs font-black text-slate-900">
+                        <h3
+                          onClick={() => handleCardClick(dish, rest)}
+                          className="truncate text-xs font-black text-slate-900 cursor-pointer hover:text-primary transition-colors"
+                        >
                           {dish.name}
                         </h3>
                         {rest && (
-                          <p className="truncate text-[11px] font-medium text-slate-400 mt-0.5">
+                          <Link
+                            to={`/restaurant/${rest.id}`}
+                            className="truncate text-[11px] font-semibold text-slate-400 hover:text-primary transition-colors block mt-0.5"
+                          >
                             {rest.name}
-                          </p>
+                          </Link>
                         )}
                       </div>
                     </div>
@@ -737,12 +852,40 @@ export default function Discover() {
                       <span className="text-xs font-black text-emerald-600">
                         {formatMoney(dish.price, rest?.currency)}
                       </span>
-                      <button
-                        onClick={() => handleAddDish(dish)}
-                        className="rounded-xl border border-primary bg-white px-3 py-1 text-[11px] font-black text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-95"
-                      >
-                        {inCartQty > 0 ? `ADD (${inCartQty})` : "ADD"}
-                      </button>
+                      {inCartQty > 0 && line && dish.variants.length === 0 && dish.addons.length === 0 ? (
+                        <div className="flex items-center gap-2 rounded-xl border border-primary bg-primary/5 px-2 py-1 shadow-xs">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cart.decrement(line.cartId);
+                            }}
+                            aria-label="Decrease quantity"
+                            className="flex h-5 w-5 items-center justify-center rounded-md bg-white text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-90"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="text-xs font-black text-primary min-w-[14px] text-center">
+                            {inCartQty}
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              cart.increment(line.cartId);
+                            }}
+                            aria-label="Increase quantity"
+                            className="flex h-5 w-5 items-center justify-center rounded-md bg-white text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-90"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleAddDish(dish)}
+                          className="rounded-xl border border-primary bg-white px-3 py-1 text-[11px] font-black text-primary shadow-xs hover:bg-primary hover:text-white transition-all active:scale-95"
+                        >
+                          {inCartQty > 0 ? `ADD (${inCartQty}) +` : "ADD"}
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -985,11 +1128,26 @@ function DiscoverItemModal({
           <X className="h-4 w-4" />
         </button>
 
-        <div className="flex items-start gap-3">
-          <VegDot veg={item.isVeg} />
-          <div>
-            <h3 className="text-lg font-black text-slate-900">{item.name}</h3>
+        <div className="flex items-start gap-3.5 pr-8">
+          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-slate-100 border border-slate-100">
+            <img
+              src={menuItemImage(item)}
+              alt={item.name}
+              onError={(e) => handleFoodImageError(e, `${item.category} ${item.name}`)}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute top-1 left-1 shadow-xs">
+              <VegDot veg={item.isVeg} />
+            </div>
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug">{item.name}</h3>
             <p className="text-xs font-semibold text-slate-400 mt-0.5">{restaurant.name}</p>
+            {item.description && (
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                {item.description}
+              </p>
+            )}
           </div>
         </div>
 

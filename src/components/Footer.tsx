@@ -1,22 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, Globe, Heart, ArrowUp, CheckCircle2, ExternalLink } from "lucide-react";
+import { ChevronDown, Globe, Heart, ArrowUp, ExternalLink } from "lucide-react";
 import { getVendorOnboardingUrl } from "@/lib/urls";
 
 export const Footer: React.FC = () => {
   const [country, setCountry] = useState("India");
   const [lang, setLang] = useState("EN");
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email && email.includes("@")) {
-      setSubscribed(true);
-      setEmail("");
-      setTimeout(() => setSubscribed(false), 5000);
-    }
-  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -54,15 +43,6 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Live Status Beacon */}
-            <div className="inline-flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-300 shadow-2xs">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span>All Systems Operational</span>
-            </div>
-
             {/* Region Switcher */}
             <button
               type="button"
@@ -86,59 +66,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* ─── 2. DYNAMIC KADAVERSE ECOSYSTEM SWITCHER ───────────────────────── */}
-        <div className="py-6 border-b border-slate-800/80">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-              Kadaverse Ecosystem Platforms
-            </span>
-            <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-              Single sign-on across customer, vendor, rider, and stays
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-            {[
-              { id: "customer", name: "The Kada", desc: "Customer Ordering", href: "/", active: true },
-              { id: "dine", name: "Kada Dine", desc: "Restaurant POS", href: "https://kadadine.thekada.in", active: false },
-              { id: "rider", name: "Kada Rider", desc: "Fleet Network", href: "https://rider.thekada.in", active: false },
-              { id: "host", name: "Kada Host", desc: "Hospitality & Stays", href: "https://host.thekada.in", active: false },
-              { id: "corp", name: "The Kada Corp", desc: "Digital Ventures", href: "https://thekada.in", active: false },
-            ].map((p) => {
-              const body = (
-                <div
-                  className={`flex flex-col p-2.5 rounded-xl border text-left transition-all ${
-                    p.active
-                      ? "bg-blue-500/10 border-blue-500/40 shadow-xs shadow-blue-500/10 text-white"
-                      : "bg-slate-900/50 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800/70 hover:border-slate-700"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-black tracking-tight">{p.name}</span>
-                    {p.active ? (
-                      <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
-                    ) : (
-                      <ExternalLink className="h-2.5 w-2.5 opacity-40" />
-                    )}
-                  </div>
-                  <span className="text-[10px] text-slate-400 font-semibold mt-0.5">{p.desc}</span>
-                </div>
-              );
-
-              return p.active ? (
-                <Link key={p.id} to={p.href} className="block">
-                  {body}
-                </Link>
-              ) : (
-                <a key={p.id} href={p.href} target="_blank" rel="noopener noreferrer" className="block">
-                  {body}
-                </a>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ─── 3. 5-COLUMN LINK GRID DIRECTLY STANDARDIZED ───────────────────── */}
+        {/* ─── 2. 5-COLUMN LINK GRID DIRECTLY STANDARDIZED ───────────────────── */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-12">
           {/* Col 1: About Platform */}
           <div>
@@ -324,7 +252,7 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* Official Store Download Badges */}
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2">
               <a
                 href="https://apple.com/app-store"
                 target="_blank"
@@ -359,36 +287,6 @@ export const Footer: React.FC = () => {
                   <span className="block text-xs font-black text-white">Google Play</span>
                 </div>
               </a>
-            </div>
-
-            {/* Newsletter Updates Box */}
-            <div className="rounded-xl bg-slate-900/60 border border-slate-800/80 p-3">
-              <span className="block text-[10px] font-black uppercase tracking-wider text-slate-300 mb-1.5">
-                Stay in the loop
-              </span>
-              {subscribed ? (
-                <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-bold py-1">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                  <span>Subscribed to The Kada updates!</span>
-                </div>
-              ) : (
-                <form onSubmit={handleSubscribe} className="flex gap-1.5">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter email"
-                    className="w-full min-w-0 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-[11px] text-white placeholder-slate-500 outline-none focus:border-blue-500 transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-500 text-white px-2.5 py-1.5 rounded-lg text-xs font-black shrink-0 transition-colors cursor-pointer"
-                  >
-                    Join
-                  </button>
-                </form>
-              )}
             </div>
           </div>
         </div>

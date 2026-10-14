@@ -17,8 +17,13 @@ import type { MenuItem, MenuVariant, Restaurant as R } from "@/types";
 import { displayRating } from "@/types";
 import { fetchMenu, getCachedResults } from "@/services/discovery";
 import { getRestaurant } from "@/services/orders";
+import {
+  restaurantImage,
+  menuItemImage,
+  handleRestaurantImageError,
+  handleFoodImageError,
+} from "@/lib/foodImages";
 import { etaMinutes } from "@/lib/geo";
-import { restaurantImage, menuItemImage } from "@/lib/foodImages";
 import { formatMoney } from "@/lib/currency";
 import { useCart } from "@/context/CartContext";
 import { VegDot, Spinner, RatingPill } from "@/components/bits";
@@ -145,6 +150,7 @@ export default function Restaurant() {
         <img
           src={restaurantImage(restaurant)}
           alt={restaurant.name}
+          onError={(e) => handleRestaurantImageError(e, restaurant.cuisine ?? restaurant.name)}
           className="h-full w-full object-cover opacity-85"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/30 to-black/50" />
@@ -467,6 +473,7 @@ function ItemRow({
         <img
           src={menuItemImage(item)}
           alt={item.name}
+          onError={(e) => handleFoodImageError(e, `${item.category} ${item.name}`)}
           className="h-24 sm:h-28 w-full rounded-2xl object-cover shadow-xs border border-slate-100"
         />
         <div className="absolute -bottom-3 left-1/2 -translate-x-1/2">

@@ -22,7 +22,7 @@ import { RestaurantCard } from "@/components/RestaurantCard";
 import { ShimmerCard, VegDot } from "@/components/bits";
 import { displayRating } from "@/types";
 import { useCart } from "@/context/CartContext";
-import { menuItemImage } from "@/lib/foodImages";
+import { menuItemImage, handleFoodImageError } from "@/lib/foodImages";
 import { formatMoney } from "@/lib/currency";
 import { toast } from "@/components/Toast";
 
@@ -449,6 +449,7 @@ export default function Search() {
                             <img
                               src={menuItemImage(dish)}
                               alt={dish.name}
+                              onError={(e) => handleFoodImageError(e, `${dish.category} ${dish.name}`)}
                               className="h-full w-full object-cover"
                             />
                             <div className="absolute top-2 left-2">

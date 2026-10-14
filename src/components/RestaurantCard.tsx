@@ -4,7 +4,7 @@ import { Clock } from "lucide-react";
 import type { Restaurant } from "@/types";
 import { displayRating } from "@/types";
 import { etaMinutes } from "@/lib/geo";
-import { restaurantImage } from "@/lib/foodImages";
+import { restaurantImage, handleRestaurantImageError } from "@/lib/foodImages";
 import { RatingPill } from "./bits";
 import { recordAdClick, recordAdImpression, type PlatformAd } from "@/services/ads";
 
@@ -42,6 +42,7 @@ export function RestaurantCard({
           src={restaurantImage(r)}
           alt={r.name}
           loading="lazy"
+          onError={(e) => handleRestaurantImageError(e, r.cuisine ?? r.name)}
           className={`aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
             isClosed ? "grayscale-[40%] opacity-90" : ""
           }`}
