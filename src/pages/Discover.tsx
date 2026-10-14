@@ -418,7 +418,7 @@ export default function Discover() {
         <div
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="relative overflow-hidden rounded-3xl shadow-xl shadow-slate-900/10 min-h-[230px] sm:min-h-[280px] md:min-h-[320px] bg-slate-950 group select-none transition-all"
+          className="relative overflow-hidden rounded-3xl shadow-xl shadow-slate-900/10 min-h-[280px] sm:min-h-[340px] md:min-h-[370px] lg:min-h-[390px] bg-slate-950 group select-none transition-all"
         >
           {bannerSlides.map((slide, idx) => {
             const isActive = idx === currentSlide;
@@ -426,8 +426,10 @@ export default function Discover() {
               <div
                 key={slide.id || idx}
                 onClick={() => handleBannerClick(slide)}
-                className={`absolute inset-0 cursor-pointer transition-opacity duration-700 ease-in-out ${
-                  isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+                className={`absolute inset-0 cursor-pointer transition-all duration-400 ease-in-out ${
+                  isActive
+                    ? "opacity-100 z-10 pointer-events-auto visible"
+                    : "opacity-0 z-0 pointer-events-none invisible"
                 }`}
               >
                 {/* Background Image */}
@@ -442,23 +444,23 @@ export default function Discover() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent sm:hidden" />
 
                 {/* Banner Content */}
-                <div className="absolute inset-0 flex flex-col justify-center p-6 sm:p-10 max-w-xl z-20">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-300 w-fit mb-3">
+                <div className="absolute inset-0 flex flex-col justify-center p-6 sm:p-8 md:p-10 max-w-2xl z-20">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-blue-300 w-fit mb-2.5 sm:mb-3">
                     <Sparkles className="h-3.5 w-3.5 text-amber-300" />
                     <span>{slide.tag || "FEATURED"}</span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.15] drop-shadow-sm">
                     {slide.title}
                   </h2>
 
                   {slide.subtitle && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-base font-medium text-slate-200 line-clamp-2 leading-relaxed drop-shadow-xs max-w-md">
+                    <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm md:text-base font-semibold text-slate-100/95 leading-normal sm:leading-relaxed drop-shadow-xs max-w-xl">
                       {slide.subtitle}
                     </p>
                   )}
 
-                  <div className="mt-4 sm:mt-5 flex items-center gap-3">
+                  <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-3">
                     <button
                       type="button"
                       className="rounded-2xl bg-primary px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-black text-white shadow-lg shadow-primary/30 hover:bg-blue-600 transition-all flex items-center gap-2 active:scale-95"
@@ -466,7 +468,7 @@ export default function Discover() {
                       <span>{slide.restaurantId ? "Order Now" : slide.searchQuery ? "Explore Deals" : "Explore Menu"}</span>
                       <ArrowRight className="h-4 w-4" />
                     </button>
-                    <span className="text-[11px] font-semibold text-slate-300 hidden sm:inline">
+                    <span className="text-[11px] sm:text-xs font-semibold text-slate-300 hidden sm:inline">
                       Delivering to {loc.label.split(",")[0]}
                     </span>
                   </div>
