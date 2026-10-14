@@ -30,7 +30,7 @@ import { VegDot, Spinner, RatingPill } from "@/components/bits";
 import { toast } from "@/components/Toast";
 import { usePageSeo } from "@/components/RouteSeo";
 
-const SITE_URL = "https://customer.thekada.in";
+const SITE_URL = "https://order.thekada.in";
 
 function currencyCode(currency?: string) {
   const code = currency?.match(/\(([A-Z]{3})\)/)?.[1] ?? currency;

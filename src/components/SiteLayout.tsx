@@ -10,6 +10,7 @@ import { JoinUsDropdown, JOIN_PARTNERS } from "./JoinUsDropdown";
 
 const NAV = [
   { label: "Home", to: "/" },
+  { label: "Get the App", to: "/#get-app-section", isAnchor: true },
   { label: "About", to: "/about" },
   { label: "Investor Relations", to: "/investor-relations" },
   { label: "Contact", to: "/contact" },
@@ -80,20 +81,41 @@ export function SiteLayout() {
           </Link>
 
           <nav className="hidden items-center gap-7 lg:gap-8 md:flex">
-            {NAV.map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                className={cn(
-                  "text-sm font-bold transition-colors",
-                  isTransparent && !isHeaderSolid
-                    ? (pathname === n.to ? "text-white font-black" : "text-white/85 hover:text-white")
-                    : (pathname === n.to ? "text-primary font-black" : "text-slate-600 hover:text-primary")
-                )}
-              >
-                {n.label}
-              </Link>
-            ))}
+            {NAV.map((n) =>
+              n.isAnchor ? (
+                <a
+                  key={n.to}
+                  href={n.to}
+                  onClick={(e) => {
+                    if (pathname === "/") {
+                      e.preventDefault();
+                      document.getElementById("get-app-section")?.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                  className={cn(
+                    "text-sm font-bold transition-colors cursor-pointer",
+                    isTransparent && !isHeaderSolid
+                      ? "text-white/85 hover:text-white"
+                      : "text-slate-600 hover:text-primary"
+                  )}
+                >
+                  {n.label}
+                </a>
+              ) : (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  className={cn(
+                    "text-sm font-bold transition-colors",
+                    isTransparent && !isHeaderSolid
+                      ? (pathname === n.to ? "text-white font-black" : "text-white/85 hover:text-white")
+                      : (pathname === n.to ? "text-primary font-black" : "text-slate-600 hover:text-primary")
+                  )}
+                >
+                  {n.label}
+                </Link>
+              )
+            )}
           </nav>
 
           <div className="hidden items-center gap-3 sm:gap-4 md:flex">
@@ -130,21 +152,38 @@ export function SiteLayout() {
         {open && (
           <div className="absolute inset-x-0 top-full border-b border-slate-200 bg-white px-4 py-4 md:hidden shadow-xl animate-in slide-in-from-top-2 duration-200 max-h-[85vh] overflow-y-auto">
             <div className="flex flex-col gap-1.5">
-              {NAV.map((n) => (
-                <Link
-                  key={n.to}
-                  to={n.to}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "rounded-xl px-4 py-2.5 text-sm font-bold transition-colors",
-                    pathname === n.to
-                      ? "bg-primary/10 text-primary font-black"
-                      : "text-slate-700 hover:bg-slate-50"
-                  )}
-                >
-                  {n.label}
-                </Link>
-              ))}
+              {NAV.map((n) =>
+                n.isAnchor ? (
+                  <a
+                    key={n.to}
+                    href={n.to}
+                    onClick={(e) => {
+                      setOpen(false);
+                      if (pathname === "/") {
+                        e.preventDefault();
+                        document.getElementById("get-app-section")?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="rounded-xl px-4 py-2.5 text-sm font-bold transition-colors text-slate-700 hover:bg-slate-50 cursor-pointer"
+                  >
+                    {n.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={n.to}
+                    to={n.to}
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      "rounded-xl px-4 py-2.5 text-sm font-bold transition-colors",
+                      pathname === n.to
+                        ? "bg-primary/10 text-primary font-black"
+                        : "text-slate-700 hover:bg-slate-50"
+                    )}
+                  >
+                    {n.label}
+                  </Link>
+                )
+              )}
 
               <div className="pt-2 pb-1">
                 <div className="px-3 py-1 text-[10px] font-black uppercase tracking-wider text-slate-400">

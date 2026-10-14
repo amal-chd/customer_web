@@ -6,6 +6,8 @@ let push: (msg: string) => void = () => {};
 export function toast(message: string) {
   push(message);
 }
+toast.success = (message: string) => push(message);
+toast.error = (message: string) => push(message);
 
 export function Toaster() {
   const [toasts, setToasts] = useState<Toast[]>([]);

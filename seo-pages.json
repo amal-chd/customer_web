@@ -1,5 +1,5 @@
 {
-  "siteUrl": "https://customer.thekada.in",
+  "siteUrl": "https://order.thekada.in",
   "routes": [
     {
       "path": "/",
@@ -14,8 +14,8 @@
           {
             "@type": "Organization",
             "name": "The Kada",
-            "url": "https://customer.thekada.in/",
-            "logo": "https://customer.thekada.in/logo.png",
+            "url": "https://order.thekada.in/",
+            "logo": "https://order.thekada.in/logo.png",
             "email": "support@thekada.in",
             "telephone": "+91 9496491654",
             "address": {
@@ -28,7 +28,7 @@
           {
             "@type": "WebSite",
             "name": "The Kada",
-            "url": "https://customer.thekada.in/"
+            "url": "https://order.thekada.in/"
           }
         ]
       }
