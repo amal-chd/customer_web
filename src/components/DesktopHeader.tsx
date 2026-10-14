@@ -7,7 +7,6 @@ import {
   ShoppingBag,
   User,
   Bike,
-  Store,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -140,14 +139,6 @@ export function DesktopHeader() {
                 </span>
               </Link>
             )}
-
-            <Link
-              to="/add-restaurant"
-              className="flex items-center gap-1.5 text-xs font-black text-slate-700 hover:text-primary transition-colors border border-slate-200/80 hover:border-primary/40 rounded-xl px-3 py-1.5 bg-slate-50 hover:bg-primary/5"
-            >
-              <Store className="h-3.5 w-3.5 text-primary" />
-              <span>Add restaurant</span>
-            </Link>
 
             {/* Cart Button */}
             <Link
