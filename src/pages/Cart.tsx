@@ -17,7 +17,7 @@ export default function Cart() {
 
   if (cart.isEmpty) {
     return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+      <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center animate-in fade-in duration-200">
         <div className="relative mb-6 w-32 h-32">
           <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"></div>
           <img
@@ -38,7 +38,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24">
+    <div className="min-h-screen bg-slate-50 pb-24 animate-in fade-in duration-200">
       {/* Top Header */}
       <div className="border-b border-slate-100 bg-white">
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 sm:px-6 py-5">

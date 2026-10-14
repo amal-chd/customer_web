@@ -200,6 +200,20 @@ export function MapLocationPickerModal({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => handleSearchInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (suggestions.length > 0) {
+                        handleSelectSuggestion(suggestions[0]);
+                      } else if (searchQuery.trim().length >= 2) {
+                        searchPlaces(searchQuery.trim()).then((results) => {
+                          if (results.length > 0) {
+                            handleSelectSuggestion(results[0]);
+                          }
+                        });
+                      }
+                    }
+                  }}
                   placeholder="Search for area, street name, apartment..."
                   className="ml-3 flex-1 bg-transparent text-sm font-bold text-slate-800 placeholder-slate-400 outline-none"
                 />

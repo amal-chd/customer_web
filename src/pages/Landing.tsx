@@ -213,6 +213,34 @@ export default function Landing() {
     setSearching(false);
   }
 
+  function handleSelectCity(cityName: string) {
+    const coords: Record<string, { lat: number; lng: number }> = {
+      Kochi: { lat: 10.0159, lng: 76.3419 },
+      Kozhikode: { lat: 11.2588, lng: 75.7804 },
+      Thiruvananthapuram: { lat: 8.5241, lng: 76.9366 },
+      Thrissur: { lat: 10.5276, lng: 76.2144 },
+      Kannur: { lat: 11.8745, lng: 75.3704 },
+      Kollam: { lat: 8.8932, lng: 76.6141 },
+      Kottayam: { lat: 9.5916, lng: 76.5222 },
+      Alappuzha: { lat: 9.4981, lng: 76.3388 },
+      Palakkad: { lat: 10.7867, lng: 76.6548 },
+      Malappuram: { lat: 11.0732, lng: 76.0740 },
+      Bengaluru: { lat: 12.9716, lng: 77.5946 },
+    };
+    const target = coords[cityName] || { lat: 10.0159, lng: 76.3419 };
+    const deliveryLoc: DeliveryLocation = {
+      lat: target.lat,
+      lng: target.lng,
+      label: `${cityName}, India`,
+      area: cityName,
+      isGps: false,
+    };
+    saveLocation(deliveryLoc);
+    setCurrentLoc(deliveryLoc);
+    toast(`Location set to ${cityName}`);
+    navigate("/order");
+  }
+
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -302,9 +330,12 @@ export default function Landing() {
         <div className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12">
           {/* Brand Wordmark (Zomato iconic bold centered logo) */}
           <div className="flex items-center justify-center gap-3">
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black italic tracking-tighter text-white drop-shadow-md">
+            <Link
+              to="/order"
+              className="text-5xl sm:text-7xl lg:text-8xl font-black italic tracking-tighter text-white drop-shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
               The Kada
-            </h1>
+            </Link>
           </div>
 
           <p className="mt-4 text-xl sm:text-3xl lg:text-4xl font-extrabold text-white/95 tracking-tight drop-shadow-sm">
@@ -711,9 +742,14 @@ export default function Landing() {
           {openFaq === 1 && (
             <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
               {CUISINES.map((c, i) => (
-                <span key={c} className="hover:text-primary cursor-pointer">
-                  {c} {i < CUISINES.length - 1 ? " · " : ""}
-                </span>
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
+                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                >
+                  {c}{i < CUISINES.length - 1 ? " ·" : ""}
+                </button>
               ))}
             </div>
           )}
@@ -731,9 +767,14 @@ export default function Landing() {
           {openFaq === 2 && (
             <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
               {RESTAURANT_TYPES.map((t, i) => (
-                <span key={t} className="hover:text-primary cursor-pointer">
-                  {t} {i < RESTAURANT_TYPES.length - 1 ? " · " : ""}
-                </span>
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => navigate(`/search?q=${encodeURIComponent(t)}`)}
+                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                >
+                  {t}{i < RESTAURANT_TYPES.length - 1 ? " ·" : ""}
+                </button>
               ))}
             </div>
           )}
@@ -751,9 +792,14 @@ export default function Landing() {
           {openFaq === 3 && (
             <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
               {CHAINS.map((c, i) => (
-                <span key={c} className="hover:text-primary cursor-pointer">
-                  {c} {i < CHAINS.length - 1 ? " · " : ""}
-                </span>
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
+                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                >
+                  {c}{i < CHAINS.length - 1 ? " ·" : ""}
+                </button>
               ))}
             </div>
           )}
@@ -771,9 +817,14 @@ export default function Landing() {
           {openFaq === 4 && (
             <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
               {CITIES.map((c, i) => (
-                <span key={c} className="hover:text-primary cursor-pointer">
-                  {c} {i < CITIES.length - 1 ? " · " : ""}
-                </span>
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => handleSelectCity(c)}
+                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                >
+                  {c}{i < CITIES.length - 1 ? " ·" : ""}
+                </button>
               ))}
             </div>
           )}

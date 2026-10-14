@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Store, Bike, MapPin } from "lucide-react";
 
 interface DeliveryTrackingMapProps {
   restaurantLat?: number;
@@ -31,8 +32,14 @@ export function DeliveryTrackingMap({
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
 
+  const hasCoordinates = Boolean(
+    (restaurantLat && restaurantLng) ||
+    (dropLat && dropLng) ||
+    (riderLat && riderLng)
+  );
+
   useEffect(() => {
-    if (!mapContainerRef.current) return;
+    if (!hasCoordinates || !mapContainerRef.current) return;
 
     // Default center (Kochi or provided drop)
     const initialCenter: [number, number] = [
@@ -203,7 +210,70 @@ export function DeliveryTrackingMap({
         maxZoom: 16,
       });
     }
-  }, [restaurantLat, restaurantLng, dropLat, dropLng, riderLat, riderLng, restaurantName, riderName, dropAddress]);
+  }, [hasCoordinates, restaurantLat, restaurantLng, dropLat, dropLng, riderLat, riderLng, restaurantName, riderName, dropAddress]);
+
+  if (!hasCoordinates) {
+    return (
+      <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 flex flex-col justify-between text-white shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 rounded-xl bg-white/10 backdrop-blur-md px-3 py-1.5 border border-white/10">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span className="text-xs font-black uppercase tracking-wider text-white">
+              {status.replace(/_/g, " ")}
+            </span>
+          </div>
+          <span className="text-xs font-bold text-slate-400">Order Dispatch Hub</span>
+        </div>
+
+        <div className="my-auto py-4">
+          <div className="flex items-center justify-between relative max-w-md mx-auto">
+            {/* Connecting Line */}
+            <div className="absolute top-1/2 left-8 right-8 -translate-y-1/2 border-t-2 border-dashed border-primary/60 z-0"></div>
+
+            {/* Restaurant Node */}
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/30 border-2 border-white">
+                <Store className="h-6 w-6" />
+              </div>
+              <span className="text-xs font-black text-white mt-2 max-w-[110px] truncate text-center">
+                {restaurantName}
+              </span>
+            </div>
+
+            {/* Rider Midpoint */}
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/40 border-2 border-white animate-bounce">
+                <Bike className="h-5 w-5" />
+              </div>
+              <span className="text-[10px] font-black text-indigo-300 mt-1">
+                {riderName || "On The Way"}
+              </span>
+            </div>
+
+            {/* Destination Node */}
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 border-2 border-white">
+                <MapPin className="h-6 w-6" />
+              </div>
+              <span className="text-xs font-black text-white mt-2 max-w-[110px] truncate text-center">
+                Your Doorstep
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl bg-white/10 backdrop-blur-md p-3 border border-white/10 flex items-center justify-between text-xs font-medium">
+          <span className="text-slate-300 truncate max-w-[80%]">
+            Delivering to: <strong className="text-white">{dropAddress}</strong>
+          </span>
+          <span className="text-[11px] font-black text-emerald-400">Live GPS Sync</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-3xl border border-slate-200/80 shadow-md">
