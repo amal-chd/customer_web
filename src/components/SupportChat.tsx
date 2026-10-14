@@ -11,9 +11,12 @@ import {
   setDoc,
   limit,
 } from "firebase/firestore";
+import { useLocation } from "react-router-dom";
 import { MessageCircle, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 import { db } from "@/lib/firebase";
+import { cn } from "@/lib/utils";
 
 interface ChatMessage {
   id: string;
@@ -31,6 +34,9 @@ interface ChatMessage {
  */
 export function SupportChat() {
   const { user } = useAuth();
+  const cart = useCart();
+  const { pathname } = useLocation();
+  const hasCartBar = !cart.isEmpty && pathname !== "/cart";
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -127,7 +133,13 @@ export function SupportChat() {
   return (
     <>
       {open && (
-        <div className="fixed bottom-24 right-4 z-50 flex h-[440px] w-[min(100vw-2rem,360px)] flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-lift">
+        <div
+          className={cn(
+            "fixed z-50 flex h-[440px] w-[min(100vw-2rem,360px)] flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-200",
+            hasCartBar ? "bottom-[152px]" : "bottom-[84px]",
+            "right-3 sm:right-4 md:bottom-6 md:right-6"
+          )}
+        >
           <div className="flex items-center justify-between bg-primary px-4 py-3 text-white">
             <div>
               <p className="text-sm font-black">Kada Assist</p>
@@ -179,14 +191,18 @@ export function SupportChat() {
         </div>
       )}
       {!open && (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-40 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lift"
-        aria-label="Open Kada Assist"
-      >
-        <MessageCircle className="h-6 w-6" />
-      </button>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className={cn(
+            "fixed z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-xl shadow-primary/30 transition-all duration-300 hover:scale-105 active:scale-95",
+            hasCartBar ? "bottom-[148px]" : "bottom-[84px]",
+            "right-3 sm:right-4 md:bottom-6 md:right-6"
+          )}
+          aria-label="Open Kada Assist"
+        >
+          <MessageCircle className="h-6 w-6" />
+        </button>
       )}
     </>
   );
