@@ -402,10 +402,7 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── 2. THE KADA ECOSYSTEM SECTION (MATCHING REFERENCE) ─────────── */}
-      <EcosystemSection />
-
-      {/* ─── 3. COLLECTIONS SECTION (ZOMATO SIGNATURE) ─────────────────────── */}
+      {/* ─── 2. COLLECTIONS SECTION (ZOMATO SIGNATURE) ─────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
           <div>
@@ -449,8 +446,11 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ─── 4. WHAT'S WAITING FOR YOU ON THE APP? (FEATURE SHOWCASE) ───── */}
+      {/* ─── 3. WHAT'S WAITING FOR YOU ON THE APP? (FEATURE SHOWCASE) ───── */}
       <AppFeaturesShowcase />
+
+      {/* ─── 4. THE KADA ECOSYSTEM SECTION (MATCHING REFERENCE) ─────────── */}
+      <EcosystemSection />
 
       {/* ─── 5. GET THE KADA APP SECTION (ZOMATO PHONE MOCKUP) ─────────────── */}
       <section id="get-app-section" className="bg-[#fffbf7] border-y border-orange-100/80 py-16">

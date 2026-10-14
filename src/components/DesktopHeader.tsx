@@ -87,18 +87,12 @@ export function DesktopHeader() {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-6 lg:px-8">
           {/* Logo & Location */}
           <div className="flex items-center gap-8">
-            <Link to="/order" className="flex items-center gap-2.5 group">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-indigo-600 text-white shadow-md shadow-primary/25 group-hover:scale-105 transition-transform">
-                <span className="text-xl font-black">K</span>
-              </div>
-              <div>
-                <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-primary transition-colors">
-                  The Kada
-                </span>
-                <span className="block text-[10px] font-extrabold uppercase tracking-widest text-primary -mt-1">
-                  Food Delivery & Dining
-                </span>
-              </div>
+            <Link to="/order" className="flex items-center gap-2.5 group hover:opacity-95 transition-opacity">
+              <img
+                src="/the-kada-logo.png"
+                alt="The Kada - Food Delivery & Dining"
+                className="h-10 sm:h-11 w-auto object-contain"
+              />
             </Link>
 
             {/* Location Selector Pill */}

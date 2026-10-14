@@ -21,13 +21,23 @@ export function Brand({
   wordmark?: boolean;
   light?: boolean;
 }) {
+  if (!light && wordmark) {
+    return (
+      <span className={cn("inline-flex items-center gap-2", className)}>
+        <img
+          src="/the-kada-logo.png"
+          alt="The Kada"
+          className="h-9 sm:h-10 w-auto object-contain"
+        />
+      </span>
+    );
+  }
+
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
-      <img
-        src="/logo.png"
-        alt="The Kada"
-        className="h-9 w-9 rounded-xl object-contain"
-      />
+      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-600 text-white font-black shadow-md">
+        K
+      </div>
       {wordmark && <Logo light={light} />}
     </span>
   );

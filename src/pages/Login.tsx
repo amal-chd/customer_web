@@ -218,23 +218,17 @@ export default function Login() {
         {/* Actual The Kada Official Logo */}
         <div className="text-center space-y-3">
           <Link to="/" className="inline-block group transition-transform hover:scale-105 active:scale-95">
-            <div className="relative mx-auto flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-3xl bg-slate-50 p-2.5 shadow-md border border-slate-100 group-hover:shadow-lg transition-all">
-              <img
-                src="/logo.png"
-                alt="The Kada Logo"
-                className="h-full w-full object-contain"
-              />
-            </div>
+            <img
+              src="/the-kada-logo.png"
+              alt="The Kada - Food Delivery & Dining"
+              className="h-14 sm:h-16 w-auto object-contain mx-auto"
+            />
           </Link>
           <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-primary">
-              <Sparkles className="h-3 w-3" />
-              <span>The Kada Dining</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1.5">
-              {isSignUp ? "Create your account" : "Welcome to The Kada"}
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
+              {isSignUp ? "Create your account" : "Welcome back"}
             </h1>
-            <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-0.5">
+            <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
               {isSignUp
                 ? "Join to order gourmet food, track deliveries & unlock perks"
                 : "Sign in to order your favorite meals in seconds"}
