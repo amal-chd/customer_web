@@ -545,10 +545,10 @@ export default function Discover() {
                   onClick={() =>
                     setSelectedCategory((prev) => (prev === c.name ? "" : c.name))
                   }
-                  className="flex shrink-0 flex-col items-center gap-2.5 transition-transform hover:-translate-y-1 group cursor-pointer"
+                  className="flex w-16 sm:w-20 shrink-0 flex-col items-center gap-2 transition-transform hover:-translate-y-1 group cursor-pointer"
                 >
                   <div
-                    className={`relative flex h-18 w-18 sm:h-22 sm:w-22 items-center justify-center rounded-full overflow-hidden bg-slate-100 transition-all ${
+                    className={`relative flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-full overflow-hidden bg-slate-100 transition-all ${
                       active
                         ? "ring-4 ring-primary ring-offset-2 shadow-lg scale-105"
                         : "border-2 border-white shadow-xs group-hover:shadow-md group-hover:scale-105"
@@ -562,7 +562,7 @@ export default function Discover() {
                     />
                   </div>
                   <span
-                    className={`text-xs font-black tracking-tight text-center transition-colors ${
+                    className={`text-xs font-black tracking-tight text-center truncate w-full transition-colors ${
                       active ? "text-primary font-black" : "text-slate-700 group-hover:text-primary"
                     }`}
                   >

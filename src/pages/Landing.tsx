@@ -14,6 +14,8 @@ import {
   Compass,
   CheckCircle2,
   ChevronUp,
+  Mail,
+  Loader2,
 } from "lucide-react";
 import {
   getDiscoveryLocation,
@@ -29,6 +31,7 @@ import { Spinner } from "@/components/bits";
 import { getVendorOnboardingUrl } from "@/lib/urls";
 import { EcosystemSection } from "@/components/EcosystemSection";
 import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
+import { sendAppDownloadEmail } from "@/services/appLink";
 
 const POPULAR_LOCALITIES = [
   { name: "Kakkanad", places: "148 places", lat: 10.0159, lng: 76.3419 },
@@ -151,9 +154,9 @@ export default function Landing() {
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
   const [searching, setSearching] = useState(false);
 
-  // App Link Form State
-  const [contactMode, setContactMode] = useState<"email" | "phone">("email");
-  const [contactVal, setContactVal] = useState("");
+  // App Link Form State (Email only)
+  const [emailVal, setEmailVal] = useState("");
+  const [sendingLink, setSendingLink] = useState(false);
   const [linkSent, setLinkSent] = useState(false);
 
   // Accordion open states
@@ -251,14 +254,28 @@ export default function Landing() {
     }
   }
 
-  function handleSendAppLink(e: React.FormEvent) {
+  async function handleSendAppLink(e: React.FormEvent) {
     e.preventDefault();
-    if (!contactVal.trim()) {
-      toast("Please enter your email or phone number.");
+    const email = emailVal.trim();
+    if (!email) {
+      toast("Please enter your email address.");
       return;
     }
-    setLinkSent(true);
-    toast("Download link sent to your device!");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      toast("Please enter a valid email address.");
+      return;
+    }
+    setSendingLink(true);
+    try {
+      await sendAppDownloadEmail(email);
+      setLinkSent(true);
+      toast("Download link sent to your email!");
+    } catch (err: any) {
+      console.error("Failed to send download link:", err);
+      toast(err?.message || "Could not send email. Please try again.");
+    } finally {
+      setSendingLink(false);
+    }
   }
 
   return (
@@ -482,57 +499,61 @@ export default function Landing() {
             <div className="md:col-span-7 space-y-5">
               <div>
                 <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                  Get the The Kada App
+                  Get The Kada App
                 </h2>
                 <p className="mt-2 text-sm font-medium text-slate-600 leading-relaxed">
-                  We will send you a link, open it on your phone to download the app directly.
+                  Enter your email address and we'll send you a link to download the app directly to your phone.
                 </p>
-              </div>
-
-              {/* Radio Selector */}
-              <div className="flex items-center gap-6">
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-bold text-slate-700">
-                  <input
-                    type="radio"
-                    name="mode"
-                    checked={contactMode === "email"}
-                    onChange={() => setContactMode("email")}
-                    className="h-4 w-4 text-primary focus:ring-primary"
-                  />
-                  <span>Email</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-bold text-slate-700">
-                  <input
-                    type="radio"
-                    name="mode"
-                    checked={contactMode === "phone"}
-                    onChange={() => setContactMode("phone")}
-                    className="h-4 w-4 text-primary focus:ring-primary"
-                  />
-                  <span>Phone</span>
-                </label>
               </div>
 
               {/* Form Input */}
               {linkSent ? (
-                <div className="flex items-center gap-2 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-800 text-sm font-bold">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
-                  <span>Link sent! Check your {contactMode} to download the app.</span>
+                <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-4 space-y-2">
+                  <div className="flex items-center gap-2 text-emerald-800 text-sm font-bold">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+                    <span>Download link sent! Check your inbox at <span className="font-black underline">{emailVal}</span>.</span>
+                  </div>
+                  <p className="text-xs text-emerald-700 pl-7">
+                    Open the email on your phone to install directly from Google Play or the App Store.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLinkSent(false);
+                      setEmailVal("");
+                    }}
+                    className="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline pl-7 pt-1"
+                  >
+                    Send to another email
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSendAppLink} className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type={contactMode === "email" ? "email" : "tel"}
-                    value={contactVal}
-                    onChange={(e) => setContactVal(e.target.value)}
-                    placeholder={contactMode === "email" ? "Enter your email address" : "Enter 10-digit mobile number"}
-                    className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 placeholder-slate-400 outline-none focus:border-primary"
-                  />
+                  <div className="relative flex-1">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
+                    <input
+                      type="email"
+                      value={emailVal}
+                      onChange={(e) => setEmailVal(e.target.value)}
+                      placeholder="Enter your email address"
+                      disabled={sendingLink}
+                      required
+                      className="w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm font-bold text-slate-800 placeholder-slate-400 outline-none focus:border-primary disabled:opacity-60 transition-colors"
+                    />
+                  </div>
                   <button
                     type="submit"
-                    className="rounded-2xl bg-gradient-to-r from-primary to-indigo-600 px-6 py-3 text-sm font-black text-white shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
+                    disabled={sendingLink}
+                    className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary to-indigo-600 px-6 py-3 text-sm font-black text-white shadow-md shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-75 disabled:pointer-events-none transition-all whitespace-nowrap"
                   >
-                    Share App Link
+                    {sendingLink ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Sending Link...</span>
+                      </>
+                    ) : (
+                      <span>Share App Link</span>
+                    )}
                   </button>
                 </form>
               )}

@@ -35,9 +35,11 @@ export function Brand({
 
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
-      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-indigo-600 text-white font-black shadow-md">
-        K
-      </div>
+      <img
+        src="/logo.png"
+        alt="The Kada"
+        className={cn("h-9 w-9 object-contain", light && "brightness-0 invert")}
+      />
       {wordmark && <Logo light={light} />}
     </span>
   );

@@ -9,6 +9,7 @@ interface EcosystemProduct {
   cardBg: string;
   borderCol: string;
   hoverBorder: string;
+  hoverShadow: string;
   href: string;
   isExternal: boolean;
 }
@@ -19,9 +20,10 @@ const PRODUCTS: EcosystemProduct[] = [
     name: "the kada",
     desc: "Get the app now to start ordering your favorite dishes!",
     logo: "/ecosystem/the-kada.png",
-    cardBg: "from-[#FFF0F2] via-[#FFF8F9] to-white",
-    borderCol: "border-[#FFE2E6]",
+    cardBg: "from-[#FFF0F3] via-[#FFF8F9] to-[#FFEBEF]",
+    borderCol: "border-[#FED7DC]",
     hoverBorder: "hover:border-rose-300",
+    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(244,63,94,0.22)]",
     href: "/order",
     isExternal: false,
   },
@@ -30,9 +32,10 @@ const PRODUCTS: EcosystemProduct[] = [
     name: "kada dine",
     desc: "Complete cloud POS, QR table ordering & operations for your restaurant",
     logo: "/ecosystem/kada-dine.png",
-    cardBg: "from-[#FFFBEA] via-[#FFFEF6] to-white",
-    borderCol: "border-[#FEF0C7]",
+    cardBg: "from-[#FFFBEA] via-[#FFFDF5] to-[#FEF3C7]",
+    borderCol: "border-[#FDE68A]",
     hoverBorder: "hover:border-amber-300",
+    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(245,158,11,0.22)]",
     href: "https://kadadine.thekada.in",
     isExternal: true,
   },
@@ -41,9 +44,10 @@ const PRODUCTS: EcosystemProduct[] = [
     name: "kada delivery",
     desc: "The best fleet network for lightning-fast deliveries & flexible earnings",
     logo: "/ecosystem/kada-delivery.png",
-    cardBg: "from-[#F3F0FF] via-[#FAF8FF] to-white",
-    borderCol: "border-[#E9D5FF]",
+    cardBg: "from-[#F5F1FF] via-[#FAF8FF] to-[#EDE5FF]",
+    borderCol: "border-[#DDD6FE]",
     hoverBorder: "hover:border-purple-300",
+    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(139,92,246,0.22)]",
     href: "https://rider.thekada.in",
     isExternal: true,
   },
@@ -52,9 +56,10 @@ const PRODUCTS: EcosystemProduct[] = [
     name: "kada host",
     desc: "Front desk, housekeeping, operations & booking engine for hosts",
     logo: "/ecosystem/kada-host.png",
-    cardBg: "from-[#EFF6FF] via-[#F8FAFC] to-white",
-    borderCol: "border-[#DBEAFE]",
+    cardBg: "from-[#EFF6FF] via-[#F8FBFF] to-[#DBEAFE]",
+    borderCol: "border-[#BFDBFE]",
     hoverBorder: "hover:border-blue-300",
+    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(59,130,246,0.22)]",
     href: "https://host.thekada.in",
     isExternal: true,
   },
@@ -62,54 +67,61 @@ const PRODUCTS: EcosystemProduct[] = [
 
 export function EcosystemSection() {
   return (
-    <section className="bg-white py-14 sm:py-20 border-b border-slate-100">
+    <section className="bg-white py-16 sm:py-24 border-b border-slate-100/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-        {/* Brand Title (matching reference image) */}
+        {/* Brand Wordmark (matching reference: bold, lowercase, tight tracking) */}
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
           the kada
         </h2>
 
-        {/* Subtitle with divider lines */}
-        <div className="flex items-center justify-center gap-3 sm:gap-6 mt-3 mb-10 sm:mb-14">
-          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
-          <p className="text-[11px] sm:text-xs md:text-sm font-black tracking-[0.25em] text-slate-400 uppercase">
-            POWERING INDIA&apos;S CHANGING LIFESTYLES
-          </p>
-          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
+        {/* Subtitle with refined divider rules (matching reference image) */}
+        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4 mb-12 sm:mb-16">
+          <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
+          <div className="text-center">
+            <p className="text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.25em] text-slate-400 uppercase leading-snug">
+              POWERING INDIA&apos;S<br className="sm:hidden" /> CHANGING LIFESTYLES
+            </p>
+          </div>
+          <div className="h-px bg-gradient-to-l from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
         </div>
 
         {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {PRODUCTS.map((prod) => {
             const cardContent = (
               <div
-                className={`group h-full rounded-[2rem] bg-gradient-to-b ${prod.cardBg} border ${prod.borderCol} ${prod.hoverBorder} p-7 sm:p-8 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer`}
+                className={`group h-full rounded-[32px] bg-gradient-to-b ${prod.cardBg} border ${prod.borderCol} ${prod.hoverBorder} ${prod.hoverShadow} p-8 sm:p-9 pt-10 pb-8 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden`}
               >
+                {/* Subtle top inner sheen */}
+                <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-white/60 to-transparent pointer-events-none rounded-t-[32px]" />
+
                 {/* App Squircle Logo */}
-                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-[1.75rem] overflow-hidden shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-105 bg-white">
+                <div className="relative w-[124px] h-[124px] sm:w-[136px] sm:h-[136px] rounded-[28px] overflow-hidden shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_4px_10px_-2px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] bg-white transition-transform duration-500 ease-out group-hover:scale-[1.04]">
                   <img
                     src={prod.logo}
                     alt={prod.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-[28px] scale-[1.03]"
                     loading="lazy"
                   />
                 </div>
 
-                {/* Info */}
-                <div className="mt-6 flex-1 flex flex-col justify-between">
+                {/* Content */}
+                <div className="mt-7 flex-1 flex flex-col justify-between w-full">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight lowercase">
+                    <h3 className="text-2xl sm:text-[26px] font-black text-slate-900 tracking-tight lowercase">
                       {prod.name}
                     </h3>
-                    <p className="mt-2.5 text-xs sm:text-sm font-medium text-slate-500 leading-relaxed max-w-[220px] mx-auto min-h-[44px]">
+                    <p className="mt-2.5 text-xs sm:text-[13px] font-medium text-slate-500 leading-relaxed max-w-[220px] mx-auto min-h-[44px]">
                       {prod.desc}
                     </p>
                   </div>
 
-                  {/* CTA matching reference image */}
-                  <div className="mt-7 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-slate-900 group-hover:gap-2.5 transition-all">
+                  {/* Refined "Check it out ▶" CTA */}
+                  <div className="mt-8 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 transition-all">
                     <span>Check it out</span>
-                    <span className="text-[#E23744] text-[10px] sm:text-xs">▶</span>
+                    <span className="text-[#E23744] text-[10px] sm:text-xs transition-transform duration-300 group-hover:translate-x-1">
+                      ▶
+                    </span>
                   </div>
                 </div>
               </div>
