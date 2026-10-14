@@ -47,19 +47,6 @@ export default function InvestorRelations() {
           </p>
         </div>
 
-        {/* Key Operational Metrics */}
-        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3">
-          {[
-            { label: "Partner Restaurants", val: "500+" },
-            { label: "On-Time Deliveries", val: "99.2%" },
-            { label: "Active Diners Served", val: "50,000+" }
-          ].map((stat) => (
-            <div key={stat.label} className="card p-6 text-center">
-              <p className="text-3xl sm:text-4xl font-black text-primary">{stat.val}</p>
-              <p className="text-xs font-black uppercase tracking-wider text-sub mt-2">{stat.label}</p>
-            </div>
-          ))}
-        </div>
 
         {/* The Kada Ecosystem */}
         <div className="space-y-4">
