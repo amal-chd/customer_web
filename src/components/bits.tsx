@@ -26,7 +26,7 @@ export function Brand({
       <img
         src="/logo.png"
         alt="The Kada"
-        className={cn("h-9 w-9 object-contain", light && "brightness-0 invert")}
+        className="h-9 w-9 object-contain drop-shadow-sm"
       />
       {wordmark && <Logo light={light} />}
     </span>
