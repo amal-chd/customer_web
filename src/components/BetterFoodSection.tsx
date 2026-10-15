@@ -25,12 +25,12 @@ export function BetterFoodSection() {
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-white pt-12 sm:pt-20 pb-16 sm:pb-24 z-20 select-none"
     >
-      {/* ── Scroll-Linked Parallax Food Stickers (Desktop / Tablet only: hidden on mobile to prevent blocking text) ── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
-        {/* 1. Fresh Basil Leaf (Top Left Gutters) */}
+      {/* ── Continuous & Scroll-Linked Floating Food Stickers (Visible on mobile & desktop) ── */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* 1. Fresh Basil Leaf (Top Left) */}
         <motion.div
           style={{ y: basilY }}
-          className="absolute top-6 left-8 lg:left-16 w-9 h-9 lg:w-11 lg:h-11 max-w-[44px] max-h-[44px] opacity-80 will-change-transform"
+          className="absolute top-4 sm:top-8 left-3 sm:left-12 lg:left-20 w-8 h-8 sm:w-11 sm:h-11 opacity-90 will-change-transform animate-float-slow"
         >
           <img
             src="/zomato_assets/basil.png"
@@ -40,10 +40,10 @@ export function BetterFoodSection() {
           />
         </motion.div>
 
-        {/* 2. Juicy Burger (Mid-Left Gutter - far from text) */}
+        {/* 2. Juicy Burger (Mid-Left) */}
         <motion.div
           style={{ y: burgerY }}
-          className="absolute top-20 left-4 lg:left-12 w-14 h-14 lg:w-16 lg:h-16 max-w-[64px] max-h-[64px] opacity-90 will-change-transform"
+          className="absolute top-20 sm:top-24 left-2 sm:left-8 lg:left-14 w-12 h-12 sm:w-18 sm:h-18 opacity-95 will-change-transform animate-float"
         >
           <img
             src="/zomato_assets/burger.png"
@@ -53,10 +53,10 @@ export function BetterFoodSection() {
           />
         </motion.div>
 
-        {/* 3. Steaming Dim Sum Basket (Top Right Gutter) */}
+        {/* 3. Steaming Dim Sum Basket (Top Right) */}
         <motion.div
           style={{ y: dimsumY }}
-          className="absolute top-8 right-6 lg:right-14 w-12 h-12 lg:w-14 lg:h-14 max-w-[56px] max-h-[56px] opacity-90 will-change-transform"
+          className="absolute top-4 sm:top-8 right-3 sm:right-10 lg:right-16 w-14 h-14 sm:w-18 sm:h-18 opacity-95 will-change-transform animate-float-reverse"
         >
           <img
             src="/zomato_assets/dimsum.png"
@@ -66,10 +66,10 @@ export function BetterFoodSection() {
           />
         </motion.div>
 
-        {/* 4. Tomato Slice (Mid Right Gutter) */}
+        {/* 4. Tomato Slice (Mid Right) */}
         <motion.div
           style={{ y: tomato1Y }}
-          className="absolute top-36 right-16 lg:right-28 w-7 h-7 lg:w-8 lg:h-8 max-w-[32px] max-h-[32px] opacity-85 will-change-transform"
+          className="absolute top-28 sm:top-36 right-3 sm:right-16 lg:right-28 w-6 h-6 sm:w-8 sm:h-8 opacity-85 will-change-transform animate-float-fast"
         >
           <img
             src="/zomato_assets/tomato.png"
@@ -79,10 +79,10 @@ export function BetterFoodSection() {
           />
         </motion.div>
 
-        {/* 5. Cherry Tomato (Bottom Left Gutter) */}
+        {/* 5. Cherry Tomato (Bottom Left) */}
         <motion.div
           style={{ y: tomato2Y }}
-          className="absolute bottom-16 left-12 lg:left-24 w-6 h-6 lg:w-7 lg:h-7 max-w-[28px] max-h-[28px] opacity-85 will-change-transform"
+          className="absolute bottom-16 sm:bottom-20 left-4 sm:left-14 lg:left-24 w-6 h-6 sm:w-7 sm:h-7 opacity-85 will-change-transform animate-float"
         >
           <img
             src="/zomato_assets/tomato.png"
@@ -92,10 +92,10 @@ export function BetterFoodSection() {
           />
         </motion.div>
 
-        {/* 6. Crispy Pizza Slice (Bottom Right Gutter) */}
+        {/* 6. Crispy Pizza Slice (Bottom Right) */}
         <motion.div
           style={{ y: pizzaY, rotate: pizzaRotate }}
-          className="absolute bottom-8 right-6 lg:right-12 w-14 h-14 lg:w-16 lg:h-16 max-w-[64px] max-h-[64px] opacity-90 will-change-transform"
+          className="absolute bottom-6 sm:bottom-10 right-3 sm:right-10 lg:right-16 w-14 h-14 sm:w-20 sm:h-20 opacity-95 will-change-transform animate-wobble-slow"
         >
           <img
             src="/zomato_assets/pizza.png"
@@ -111,7 +111,7 @@ export function BetterFoodSection() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-xl mx-auto"
         >
@@ -131,26 +131,26 @@ export function BetterFoodSection() {
           </p>
         </motion.div>
 
-        {/* ── Responsive 3-Card Stat Highlights Grid (No overlaps, clean on all screen sizes) ── */}
-        <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 max-w-3xl mx-auto text-left">
-          {/* Card 1: 500+ Top Restaurants */}
+        {/* ── Stacked & Tilted Playful Stat Badges (Zomato Signature) ── */}
+        <div className="relative mx-auto mt-10 sm:mt-12 w-full max-w-[310px] sm:max-w-md h-56 sm:h-64">
+          {/* Card 1: 500+ top restaurants (Top-Left, tilted -2.5deg) */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ y: -3, scale: 1.02 }}
-            className="flex items-center justify-between gap-3 rounded-2xl bg-white px-5 py-4 shadow-[0_4px_20px_rgba(15,23,42,0.06)] border border-slate-100 hover:border-primary/30 hover:shadow-md transition-all duration-300"
+            initial={{ opacity: 0, y: 24, rotate: -6 }}
+            whileInView={{ opacity: 1, y: 0, rotate: -2.5 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            whileHover={{ rotate: 0, scale: 1.05, zIndex: 40 }}
+            className="absolute top-0 left-0 z-10 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3.5 sm:py-4 shadow-[0_12px_32px_rgba(0,0,0,0.08)] border border-slate-100/90 transform transition-all w-[240px] sm:w-[270px] cursor-pointer"
           >
-            <div>
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
+            <div className="text-left">
+              <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 500+
               </p>
-              <p className="text-xs font-bold text-slate-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs font-bold text-slate-500 mt-0.5">
                 top restaurants
               </p>
             </div>
-            <div className="h-11 w-11 shrink-0 p-1 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+            <div className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 p-1 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
               <img
                 src="/zomato_assets/store_icon.png"
                 alt="Restaurants"
@@ -159,24 +159,24 @@ export function BetterFoodSection() {
             </div>
           </motion.div>
 
-          {/* Card 2: 14 Districts across Kerala */}
+          {/* Card 2: 14 Districts across Kerala (Tilted +4deg, overlapping right) */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            whileHover={{ y: -3, scale: 1.02 }}
-            className="flex items-center justify-between gap-3 rounded-2xl bg-white px-5 py-4 shadow-[0_4px_20px_rgba(37,99,235,0.08)] border border-blue-50 hover:border-primary/30 hover:shadow-md transition-all duration-300"
+            initial={{ opacity: 0, y: 24, rotate: 8 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 4 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            whileHover={{ rotate: 0, scale: 1.05, zIndex: 40 }}
+            className="absolute top-14 sm:top-16 right-0 z-20 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3.5 sm:py-4 shadow-[0_14px_36px_rgba(37,99,235,0.12)] border border-blue-100/80 transform transition-all w-[210px] sm:w-[240px] cursor-pointer"
           >
-            <div>
-              <p className="text-2xl font-black text-primary tracking-tight">
+            <div className="text-left">
+              <p className="text-xl sm:text-2xl font-black text-primary tracking-tight">
                 14 Districts
               </p>
-              <p className="text-xs font-bold text-slate-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs font-bold text-slate-500 mt-0.5">
                 across Kerala
               </p>
             </div>
-            <div className="h-11 w-11 shrink-0 p-1 rounded-xl bg-blue-50/60 border border-blue-100 flex items-center justify-center">
+            <div className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 p-1 rounded-xl bg-blue-50/70 border border-blue-100 flex items-center justify-center">
               <img
                 src="/zomato_assets/pin_icon.png"
                 alt="Districts"
@@ -185,24 +185,24 @@ export function BetterFoodSection() {
             </div>
           </motion.div>
 
-          {/* Card 3: 1 Million+ Orders Delivered */}
+          {/* Card 3: 1 Million+ orders delivered (Tilted -1.5deg, overlapping bottom) */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ y: -3, scale: 1.02 }}
-            className="flex items-center justify-between gap-3 rounded-2xl bg-white px-5 py-4 shadow-[0_4px_20px_rgba(15,23,42,0.06)] border border-slate-100 hover:border-primary/30 hover:shadow-md transition-all duration-300"
+            initial={{ opacity: 0, y: 24, rotate: -4 }}
+            whileInView={{ opacity: 1, y: 0, rotate: -1.5 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            whileHover={{ rotate: 0, scale: 1.05, zIndex: 40 }}
+            className="absolute top-28 sm:top-32 left-3 sm:left-6 z-30 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3.5 sm:py-4 shadow-[0_16px_40px_rgba(15,23,42,0.1)] border border-slate-100/90 transform transition-all w-[250px] sm:w-[280px] cursor-pointer"
           >
-            <div>
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
+            <div className="text-left">
+              <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 1 Million+
               </p>
-              <p className="text-xs font-bold text-slate-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs font-bold text-slate-500 mt-0.5">
                 orders delivered
               </p>
             </div>
-            <div className="h-11 w-11 shrink-0 p-1 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
+            <div className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 p-1 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center">
               <img
                 src="/zomato_assets/bag_icon.png"
                 alt="Orders delivered"

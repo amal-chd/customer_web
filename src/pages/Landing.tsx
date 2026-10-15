@@ -289,11 +289,11 @@ export default function Landing() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden">
+    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-clip">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30 select-none"
+        className="sticky top-0 z-10 min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 select-none"
       >
         {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -540,212 +540,203 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
-      <div className="sticky top-0 z-20 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+      {/* ─── SLIDE-UP CURVED WHITE SHEET (NATURAL CONTINUOUS FLOW ACROSS ALL SECTIONS) ─── */}
+      <div className="relative z-20 -mt-8 sm:-mt-14 rounded-t-[36px] sm:rounded-t-[48px] bg-white shadow-[0_-20px_60px_rgba(0,0,0,0.12)]">
+        {/* 1. Better food for everyone (Quality & Stats) */}
         <BetterFoodSection />
-      </div>
 
-      {/* ─── CARD 2: CURATED COLLECTIONS (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
-      <div className="sticky top-0 z-30 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
-              <Sparkles className="h-3.5 w-3.5" />
-              Curated City Guides
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-              Collections in{" "}
-              <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                {currentLoc.label.split(",")[0]}
+        {/* 2. Curated City Collections */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 border-t border-slate-100 overflow-hidden w-full">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
+            <div>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
+                <Sparkles className="h-3.5 w-3.5" />
+                Curated City Guides
               </span>
-            </h2>
-            <p className="text-sm sm:text-base font-semibold text-slate-500 mt-2 max-w-2xl leading-relaxed">
-              Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
-            </p>
-          </div>
-          <Link
-            to="/search"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-primary hover:text-blue-700 transition-colors group shrink-0"
-          >
-            <span>All collections in {currentLoc.label.split(",")[0]}</span>
-            <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
-
-        {/* Collections Cards: Smooth horizontal scroll snap rail on mobile (Zomato-style), clean 4-col grid on desktop */}
-        <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2 px-1">
-          <span>Swipe collections</span>
-          <span className="text-primary font-bold">Scroll →</span>
-        </div>
-        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-5 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 no-scrollbar touch-pan-x-scroll">
-          {COLLECTIONS.map((c) => (
-            <Link
-              key={c.id}
-              to={c.to}
-              className="group relative snap-start shrink-0 w-[78vw] max-w-[290px] sm:w-auto h-[320px] sm:h-[360px] lg:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
-            >
-              <img
-                src={c.image}
-                alt={c.title}
-                onError={(e) => handleFoodImageError(e, c.title)}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
-
-              {/* Floating Badge Tag at top */}
-              <div className="absolute top-3.5 left-3.5 z-20">
-                <span
-                  className={`inline-flex items-center rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-xs ${c.badgeColor}`}
-                >
-                  {c.badge}
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                Collections in{" "}
+                <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  {currentLoc.label.split(",")[0]}
                 </span>
-              </div>
+              </h2>
+              <p className="text-sm sm:text-base font-semibold text-slate-500 mt-2 max-w-2xl leading-relaxed">
+                Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
+              </p>
+            </div>
+            <Link
+              to="/search"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-primary hover:text-blue-700 transition-colors group shrink-0"
+            >
+              <span>All collections in {currentLoc.label.split(",")[0]}</span>
+              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
 
-              {/* Card Content at bottom */}
-              <div className="relative z-20 p-4 sm:p-5 text-white">
-                <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm group-hover:text-blue-200 transition-colors">
-                  {c.title}
-                </h3>
-                <p className="text-xs text-slate-300 font-medium line-clamp-1 mt-1">
-                  {c.subtitle}
-                </p>
-                <div className="mt-3 flex items-center justify-between text-xs font-bold text-white/90 pt-2 border-t border-white/10">
-                  <span className="text-xs text-blue-300 font-black">{c.places}</span>
-                  <span className="inline-flex items-center gap-1 text-xs text-white/90 font-bold group-hover:text-blue-300 group-hover:translate-x-1 transition-all">
-                    <span>Explore</span>
-                    <ChevronRight className="h-3 w-3" />
+          {/* Collections Cards: Smooth horizontal scroll snap rail on mobile (Zomato-style), clean 4-col grid on desktop */}
+          <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2 px-1">
+            <span>Swipe collections</span>
+            <span className="text-primary font-bold">Scroll →</span>
+          </div>
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-5 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 no-scrollbar touch-pan-x-scroll">
+            {COLLECTIONS.map((c) => (
+              <Link
+                key={c.id}
+                to={c.to}
+                className="group relative snap-start shrink-0 w-[78vw] max-w-[290px] sm:w-auto h-[320px] sm:h-[360px] lg:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
+              >
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  onError={(e) => handleFoodImageError(e, c.title)}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+
+                {/* Floating Badge Tag at top */}
+                <div className="absolute top-3.5 left-3.5 z-20">
+                  <span
+                    className={`inline-flex items-center rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-xs ${c.badgeColor}`}
+                  >
+                    {c.badge}
                   </span>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-      </div>
 
-      {/* ─── CARD 3: APP FEATURES SHOWCASE (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
-      <div className="sticky top-0 z-40 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+                {/* Card Content at bottom */}
+                <div className="relative z-20 p-4 sm:p-5 text-white">
+                  <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm group-hover:text-blue-200 transition-colors">
+                    {c.title}
+                  </h3>
+                  <p className="text-xs text-slate-300 font-medium line-clamp-1 mt-1">
+                    {c.subtitle}
+                  </p>
+                  <div className="mt-3 flex items-center justify-between text-xs font-bold text-white/90 pt-2 border-t border-white/10">
+                    <span className="text-xs text-blue-300 font-black">{c.places}</span>
+                    <span className="inline-flex items-center gap-1 text-xs text-white/90 font-bold group-hover:text-blue-300 group-hover:translate-x-1 transition-all">
+                      <span>Explore</span>
+                      <ChevronRight className="h-3 w-3" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* 3. App Features Showcase */}
         <AppFeaturesShowcase />
-      </div>
 
-      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
-      <div className="sticky top-0 z-50 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        {/* 4. Ecosystem Showcase */}
         <EcosystemSection />
-      </div>
 
-      {/* ─── CARD 5: STANDARDIZED GET THE KADA APP SECTION (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
-      <div className="sticky top-0 z-60 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-[#fafcff] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        {/* 5. Get The Kada App Section */}
         <GetAppSection />
-      </div>
 
-      {/* ─── CARD 6: EXPLORE OPTIONS NEAR YOU (ACCORDIONS) ─── */}
-      <div className="relative z-70 w-full bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.18)] -mt-8 sm:-mt-12 overflow-hidden">
+        {/* 6. Explore options near you (Accordions) */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 space-y-4">
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
-          Explore options near you
-        </h2>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
+            Explore options near you
+          </h2>
 
-        {/* Accordion 1: Cuisines */}
-        <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-          <button
-            onClick={() => setOpenFaq(openFaq === 1 ? null : 1)}
-            className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
-          >
-            <span>Popular cuisines near me</span>
-            {openFaq === 1 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
-          </button>
-          {openFaq === 1 && (
-            <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-              {CUISINES.map((c, i) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
-                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                >
-                  {c}{i < CUISINES.length - 1 ? " ·" : ""}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+          {/* Accordion 1: Cuisines */}
+          <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+            <button
+              onClick={() => setOpenFaq(openFaq === 1 ? null : 1)}
+              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
+            >
+              <span>Popular cuisines near me</span>
+              {openFaq === 1 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
+            </button>
+            {openFaq === 1 && (
+              <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+                {CUISINES.map((c, i) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
+                    className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                  >
+                    {c}{i < CUISINES.length - 1 ? " ·" : ""}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-        {/* Accordion 2: Restaurant Types */}
-        <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-          <button
-            onClick={() => setOpenFaq(openFaq === 2 ? null : 2)}
-            className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
-          >
-            <span>Popular restaurant types near me</span>
-            {openFaq === 2 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
-          </button>
-          {openFaq === 2 && (
-            <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-              {RESTAURANT_TYPES.map((t, i) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => navigate(`/search?q=${encodeURIComponent(t)}`)}
-                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                >
-                  {t}{i < RESTAURANT_TYPES.length - 1 ? " ·" : ""}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+          {/* Accordion 2: Restaurant Types */}
+          <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+            <button
+              onClick={() => setOpenFaq(openFaq === 2 ? null : 2)}
+              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
+            >
+              <span>Popular restaurant types near me</span>
+              {openFaq === 2 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
+            </button>
+            {openFaq === 2 && (
+              <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+                {RESTAURANT_TYPES.map((t, i) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => navigate(`/search?q=${encodeURIComponent(t)}`)}
+                    className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                  >
+                    {t}{i < RESTAURANT_TYPES.length - 1 ? " ·" : ""}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-        {/* Accordion 3: Top Restaurant Chains */}
-        <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-          <button
-            onClick={() => setOpenFaq(openFaq === 3 ? null : 3)}
-            className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
-          >
-            <span>Top Restaurant Chains</span>
-            {openFaq === 3 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
-          </button>
-          {openFaq === 3 && (
-            <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-              {CHAINS.map((c, i) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
-                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                >
-                  {c}{i < CHAINS.length - 1 ? " ·" : ""}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+          {/* Accordion 3: Top Restaurant Chains */}
+          <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+            <button
+              onClick={() => setOpenFaq(openFaq === 3 ? null : 3)}
+              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
+            >
+              <span>Top Restaurant Chains</span>
+              {openFaq === 3 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
+            </button>
+            {openFaq === 3 && (
+              <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+                {CHAINS.map((c, i) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
+                    className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                  >
+                    {c}{i < CHAINS.length - 1 ? " ·" : ""}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-        {/* Accordion 4: Cities We Deliver To */}
-        <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-          <button
-            onClick={() => setOpenFaq(openFaq === 4 ? null : 4)}
-            className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
-          >
-            <span>Cities We Deliver To</span>
-            {openFaq === 4 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
-          </button>
-          {openFaq === 4 && (
-            <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-              {CITIES.map((c, i) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => handleSelectCity(c)}
-                  className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                >
-                  {c}{i < CITIES.length - 1 ? " ·" : ""}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+          {/* Accordion 4: Cities We Deliver To */}
+          <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+            <button
+              onClick={() => setOpenFaq(openFaq === 4 ? null : 4)}
+              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800"
+            >
+              <span>Cities We Deliver To</span>
+              {openFaq === 4 ? <ChevronUp className="h-5 w-5 text-slate-400" /> : <ChevronDown className="h-5 w-5 text-slate-400" />}
+            </button>
+            {openFaq === 4 && (
+              <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+                {CITIES.map((c, i) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => handleSelectCity(c)}
+                    className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
+                  >
+                    {c}{i < CITIES.length - 1 ? " ·" : ""}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
       </div>
 
       {/* Interactive Map Picker Modal */}

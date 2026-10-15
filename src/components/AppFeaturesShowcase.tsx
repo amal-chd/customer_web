@@ -120,7 +120,7 @@ export function AppFeaturesShowcase() {
       <motion.div
         initial={{ opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 mx-auto max-w-xl px-4 sm:px-6 text-center"
       >
@@ -148,7 +148,7 @@ export function AppFeaturesShowcase() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-30px" }}
+          viewport={{ once: true, amount: 0.1 }}
           className="grid grid-cols-3 gap-3 sm:gap-4 items-stretch"
         >
           {APP_FEATURES.map((item) => (
