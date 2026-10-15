@@ -182,25 +182,149 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Mobile Dedicated Zomato-Style App Mockup (Screenshot 8) */}
-        <div className="lg:hidden flex flex-col items-center text-center mb-10">
-          <div className="w-64 max-w-[78vw] mx-auto mb-4 drop-shadow-2xl animate-float-slow">
-            <img
-              src="/zomato_assets/phone_mockups.png"
-              alt="The Kada Mobile App"
-              className="w-full h-auto object-contain"
-              loading="lazy"
+        {/* ─────────────────────────────────────────────────────────────
+            MOBILE VIEW: Dedicated Zomato-Style App Download Card
+           ───────────────────────────────────────────────────────────── */}
+        <div className="lg:hidden mb-8">
+          <div className="relative rounded-[2.5rem] bg-gradient-to-b from-[#FFF0F2] via-[#FFF6F7] to-white border border-rose-100/80 p-6 pt-7 pb-8 shadow-xl overflow-hidden text-center">
+            {/* Ambient background soft glow */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 h-44 w-72 rounded-full bg-rose-200/40 blur-2xl"
             />
+
+            {/* Dual Phone Mockup Graphic */}
+            <div className="relative w-64 max-w-[76vw] mx-auto mb-3 drop-shadow-xl animate-float-slow">
+              <img
+                src="/images/kada_app_phones.png"
+                alt="The Kada Mobile App"
+                className="w-full h-auto object-contain mx-auto"
+                loading="lazy"
+              />
+            </div>
+
+            {/* Section Typography */}
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+              Download the app now!
+            </h3>
+            <p className="text-slate-600 text-xs sm:text-sm font-medium mt-2 max-w-xs mx-auto leading-relaxed">
+              Experience seamless food ordering with the Kada app
+            </p>
+
+            {/* Official Store Download Badges Side-by-Side */}
+            <div className="flex items-center justify-center gap-3 mt-6">
+              {/* Apple App Store Badge */}
+              <a
+                href={appStoreUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Download on the App Store"
+                className="group flex items-center gap-2.5 rounded-xl bg-black px-3.5 py-2.5 text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+              >
+                <svg className="h-6 w-6 shrink-0 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.71-.93 2.73 1 .08 2.03-.49 2.65-1.23z" />
+                </svg>
+                <div className="text-left">
+                  <p className="text-[9px] uppercase font-bold text-slate-400 leading-none">Download on the</p>
+                  <p className="text-xs sm:text-sm font-black text-white leading-tight mt-0.5">App Store</p>
+                </div>
+              </a>
+
+              {/* Google Play Store Badge */}
+              <a
+                href={playStoreUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Get it on Google Play"
+                className="group flex items-center gap-2.5 rounded-xl bg-black px-3.5 py-2.5 text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+              >
+                <svg className="h-6 w-6 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.22-.924V2.738c0-.348.08-.667.22-.924z" />
+                  <path fill="#34A853" d="M15.206 13.412l2.253 2.253-11.45 6.442 9.197-8.695z" />
+                  <path fill="#EA4335" d="M15.206 10.588L6.01 1.892l11.45 6.442-2.254 2.254z" />
+                  <path fill="#FBBC04" d="M16.62 12l3.52-1.98a1.996 1.996 0 0 1 0 3.96L16.62 12z" />
+                </svg>
+                <div className="text-left">
+                  <p className="text-[9px] uppercase font-bold text-slate-400 leading-none">GET IT ON</p>
+                  <p className="text-xs sm:text-sm font-black text-white leading-tight mt-0.5">Google Play</p>
+                </div>
+              </a>
+            </div>
+
+            {/* Accordion / Optional Link sender for mobile */}
+            <div className="mt-6 pt-4 border-t border-rose-100/80">
+              <button
+                type="button"
+                onClick={() => setShowMobileForm(!showMobileForm)}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors"
+              >
+                <span>{showMobileForm ? "Hide share options" : "Need to send the link to another phone?"}</span>
+                {showMobileForm ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+              </button>
+
+              {showMobileForm && (
+                <div className="mt-4 pt-3 text-left animate-in fade-in duration-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveMode("whatsapp")}
+                      className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                        activeMode === "whatsapp" ? "bg-emerald-600 text-white shadow-xs" : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      <span>WhatsApp</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveMode("email")}
+                      className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                        activeMode === "email" ? "bg-primary text-white shadow-xs" : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      <Mail className="h-3.5 w-3.5" />
+                      <span>Email</span>
+                    </button>
+                  </div>
+
+                  <form onSubmit={activeMode === "whatsapp" ? handleWhatsAppSubmit : handleEmailSubmit} className="space-y-2">
+                    <div className="flex gap-2">
+                      {activeMode === "whatsapp" ? (
+                        <input
+                          type="tel"
+                          value={phoneVal}
+                          onChange={(e) => setPhoneVal(e.target.value)}
+                          placeholder="Enter 10-digit mobile number"
+                          className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs text-slate-900 bg-white"
+                        />
+                      ) : (
+                        <input
+                          type="email"
+                          value={emailVal}
+                          onChange={(e) => setEmailVal(e.target.value)}
+                          placeholder="Enter email address"
+                          className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs text-slate-900 bg-white"
+                        />
+                      )}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="rounded-xl bg-slate-900 text-white px-4 py-2 text-xs font-bold shrink-0"
+                      >
+                        {isSubmitting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Send"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
           </div>
-          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            Download the app now!
-          </h3>
-          <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-xs mx-auto">
-            Experience seamless food ordering with The Kada app
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        {/* ─────────────────────────────────────────────────────────────
+            DESKTOP VIEW: Full Interactive Experience (hidden on mobile)
+           ───────────────────────────────────────────────────────────── */}
+        <div className="hidden lg:grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* ─────────────────────────────────────────────────────────────
               LEFT COLUMN: Interactive Living Phone Mockup (Desktop Only)
              ───────────────────────────────────────────────────────────── */}
