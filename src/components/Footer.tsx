@@ -23,11 +23,11 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-10 border-b border-slate-800/80">
           <div className="space-y-2 max-w-xl">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-tr from-blue-600 to-indigo-600 p-0.5 shadow-md shadow-blue-500/20 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-md shadow-black/10 flex items-center justify-center shrink-0">
                 <img
                   src="/logo.png"
                   alt="The Kada Logo"
-                  className="w-full h-full object-cover rounded-[10px]"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <h2 className="text-3xl font-black italic tracking-tighter text-white">

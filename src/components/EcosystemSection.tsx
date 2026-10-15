@@ -1,17 +1,15 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, type Variants } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface EcosystemProduct {
   id: string;
   name: string;
   desc: string;
   logo: string;
-  cardBg: string;
-  borderCol: string;
-  hoverBorder: string;
-  hoverShadow: string;
   href: string;
+  cta: string;
+  accent: string;
   isExternal: boolean;
 }
 
@@ -19,187 +17,241 @@ const PRODUCTS: EcosystemProduct[] = [
   {
     id: "the-kada",
     name: "the kada",
-    desc: "Get the app now to start ordering your favorite dishes!",
+    desc: "Experience lightning-fast hyper-local food delivery, 1-tap table reservations & live GPS tracking.",
     logo: "/ecosystem/the-kada.png",
-    cardBg: "from-blue-50/80 via-white to-blue-100/50",
-    borderCol: "border-blue-200/80",
-    hoverBorder: "hover:border-primary/50",
-    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(37,99,235,0.22)]",
     href: "/order",
+    cta: "Order now",
+    accent: "#1E6EF4",
     isExternal: false,
   },
   {
     id: "kada-dine",
     name: "kada dine",
-    desc: "Complete cloud POS, QR table ordering & operations for your restaurant",
+    desc: "Complete cloud POS, QR table ordering, kitchen displays & automated billing for modern restaurants.",
     logo: "/ecosystem/kada-dine.png",
-    cardBg: "from-[#FFFBEA] via-[#FFFDF5] to-[#FEF3C7]",
-    borderCol: "border-[#FDE68A]",
-    hoverBorder: "hover:border-amber-300",
-    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(245,158,11,0.22)]",
     href: "https://kadadine.thekada.in",
+    cta: "Explore dine",
+    accent: "#F59E0B",
     isExternal: true,
   },
   {
     id: "kada-delivery",
     name: "kada delivery",
-    desc: "The best fleet network for lightning-fast deliveries & flexible earnings",
+    desc: "The best fleet network for lightning-fast deliveries, daily automated payouts & flexible rider shifts.",
     logo: "/ecosystem/kada-delivery.png",
-    cardBg: "from-[#F5F1FF] via-[#FAF8FF] to-[#EDE5FF]",
-    borderCol: "border-[#DDD6FE]",
-    hoverBorder: "hover:border-purple-300",
-    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(139,92,246,0.22)]",
     href: "https://rider.thekada.in",
+    cta: "Deliver with us",
+    accent: "#10B981",
     isExternal: true,
   },
   {
     id: "kada-host",
     name: "kada host",
-    desc: "Front desk, housekeeping, operations & booking engine for hosts",
+    desc: "Front desk check-ins, guest QR room service, automated housekeeping boards & direct hotel bookings.",
     logo: "/ecosystem/kada-host.png",
-    cardBg: "from-[#EFF6FF] via-[#F8FBFF] to-[#DBEAFE]",
-    borderCol: "border-[#BFDBFE]",
-    hoverBorder: "hover:border-blue-300",
-    hoverShadow: "hover:shadow-[0_24px_50px_-15px_rgba(59,130,246,0.22)]",
     href: "https://host.thekada.in",
+    cta: "Host guests",
+    accent: "#6366F1",
     isExternal: true,
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const cardItemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 24,
-    },
-  },
-};
-
 export function EcosystemSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+
+  const count = PRODUCTS.length;
+  const prevIndex = (activeIndex - 1 + count) % count;
+  const nextIndex = (activeIndex + 1) % count;
+
+  const activeProduct = PRODUCTS[activeIndex];
+  const prevProduct = PRODUCTS[prevIndex];
+  const nextProduct = PRODUCTS[nextIndex];
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + count) % count);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % count);
+  };
+
+  // Auto-advance every 4.5 seconds
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % count);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isPaused, count]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (diff > 45) {
+      handlePrev();
+    } else if (diff < -45) {
+      handleNext();
+    }
+    touchStartX.current = null;
+  };
+
+  const renderCardLink = (content: React.ReactNode, className?: string) => {
+    return activeProduct.isExternal ? (
+      <a
+        href={activeProduct.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {content}
+      </a>
+    ) : (
+      <Link to={activeProduct.href} className={className}>
+        {content}
+      </Link>
+    );
+  };
+
   return (
-    <section className="bg-white py-16 sm:py-24 border-b border-slate-100/80">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+    <section className="bg-white py-16 sm:py-24 border-b border-slate-100">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
         {/* Brand Wordmark (matching reference: bold, lowercase, tight tracking) */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
-            the kada
-          </h2>
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
+          the kada
+        </h2>
 
-          {/* Subtitle with refined divider rules (matching reference image) */}
-          <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4 mb-12 sm:mb-16">
-            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
-            <div className="text-center">
-              <p className="text-[11px] sm:text-xs md:text-sm font-extrabold tracking-[0.25em] text-slate-400 uppercase leading-snug">
-                POWERING INDIA&apos;S<br className="sm:hidden" /> CHANGING LIFESTYLES
-              </p>
-            </div>
-            <div className="h-px bg-gradient-to-l from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
-          </div>
-        </motion.div>
-
-        {/* Mobile Swipe Cue */}
-        <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 px-1">
-          <span>Explore Ecosystem</span>
-          <span className="text-primary font-bold">Swipe →</span>
+        {/* Subtitle flanked by horizontal lines */}
+        <div className="flex items-center justify-center gap-3 sm:gap-5 mt-3 sm:mt-4 mb-10 sm:mb-14 px-4">
+          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
+          <p className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.22em] text-slate-400 uppercase text-center whitespace-nowrap">
+            POWERING INDIA&apos;S CHANGING LIFESTYLE
+          </p>
+          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
         </div>
 
-        {/* 4 Cards: Mobile Horizontal Snap Rail, Desktop 4-col Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-30px" }}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 lg:gap-8 no-scrollbar touch-pan-x-scroll"
-        >
-          {PRODUCTS.map((prod) => {
-            const cardContent = (
-              <div
-                className={`group h-full rounded-[32px] bg-gradient-to-b ${prod.cardBg} border ${prod.borderCol} ${prod.hoverBorder} ${prod.hoverShadow} p-8 sm:p-9 pt-10 pb-8 flex flex-col items-center justify-between transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden`}
+        {/* Center Stage Card Container matching Reference Design in Kada Style */}
+        <div className="relative mx-auto max-w-xs sm:max-w-[380px]">
+          <div
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            className="relative bg-white rounded-[32px] sm:rounded-[36px] border border-slate-100 shadow-[0_12px_44px_rgba(0,0,0,0.06)] p-6 sm:p-8 pt-8 sm:pt-10 pb-7 sm:pb-9 text-center overflow-hidden transition-all duration-300"
+          >
+            {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
+            <div className="relative h-28 sm:h-32 flex items-center justify-center mb-5 select-none">
+              {/* Peeking Left App Icon (Click to select previous) */}
+              <button
+                type="button"
+                onClick={handlePrev}
+                aria-label={`Previous: ${prevProduct.name}`}
+                className="absolute -left-7 sm:-left-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-75 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
               >
-                {/* Subtle top inner sheen */}
-                <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-white/60 to-transparent pointer-events-none rounded-t-[32px]" />
+                <img
+                  src={prevProduct.logo}
+                  alt={prevProduct.name}
+                  className="w-full h-full object-cover rounded-[22px] sm:rounded-[26px]"
+                />
+              </button>
 
-                {/* App Squircle Logo */}
-                <div className="relative w-[124px] h-[124px] sm:w-[136px] sm:h-[136px] rounded-[28px] overflow-hidden shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12),0_4px_10px_-2px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.04] bg-white transition-transform duration-500 ease-out group-hover:scale-[1.04]">
+              {/* Center Active App Icon */}
+              {renderCardLink(
+                <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-105 group bg-white">
                   <img
-                    src={prod.logo}
-                    alt={prod.name}
-                    className="w-full h-full object-cover rounded-[28px] scale-[1.03]"
-                    loading="lazy"
+                    key={activeProduct.id}
+                    src={activeProduct.logo}
+                    alt={activeProduct.name}
+                    className="w-full h-full object-cover rounded-[26px] sm:rounded-[30px] animate-in fade-in duration-300"
                   />
                 </div>
+              )}
 
-                {/* Content */}
-                <div className="mt-7 flex-1 flex flex-col justify-between w-full">
-                  <div>
-                    <h3 className="text-2xl sm:text-[26px] font-black text-slate-900 tracking-tight lowercase">
-                      {prod.name}
-                    </h3>
-                    <p className="mt-2.5 text-xs sm:text-[13px] font-medium text-slate-500 leading-relaxed max-w-[220px] mx-auto min-h-[44px]">
-                      {prod.desc}
-                    </p>
-                  </div>
-
-                  {/* Refined "Check it out ▶" CTA in Kada style */}
-                  <div className="mt-8 flex items-center justify-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 transition-all">
-                    <span>Check it out</span>
-                    <span className="text-primary text-[10px] sm:text-xs transition-transform duration-300 group-hover:translate-x-1">
-                      ▶
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-
-            return prod.isExternal ? (
-              <motion.a
-                key={prod.id}
-                variants={cardItemVariants}
-                whileHover={{ y: -6 }}
-                href={prod.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-full text-inherit no-underline"
+              {/* Peeking Right App Icon (Click to select next) */}
+              <button
+                type="button"
+                onClick={handleNext}
+                aria-label={`Next: ${nextProduct.name}`}
+                className="absolute -right-7 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-75 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
               >
-                {cardContent}
-              </motion.a>
-            ) : (
-              <motion.div
-                key={prod.id}
-                variants={cardItemVariants}
-                whileHover={{ y: -6 }}
-                className="block snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-full"
-              >
-                <Link
-                  to={prod.href}
-                  className="block h-full text-inherit no-underline"
-                >
-                  {cardContent}
-                </Link>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                <img
+                  src={nextProduct.logo}
+                  alt={nextProduct.name}
+                  className="w-full h-full object-cover rounded-[22px] sm:rounded-[26px]"
+                />
+              </button>
+            </div>
+
+            {/* App Title */}
+            {renderCardLink(
+              <span className="inline-block font-black text-2xl sm:text-[26px] text-slate-900 tracking-tight lowercase hover:text-primary transition-colors">
+                {activeProduct.name}
+              </span>
+            )}
+
+            {/* App Description */}
+            <p className="mt-2 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[270px] sm:max-w-[290px] mx-auto leading-relaxed min-h-[38px] sm:min-h-[40px]">
+              {activeProduct.desc}
+            </p>
+
+            {/* Direct Call to Action with Brand Colored Arrow */}
+            <div className="mt-5">
+              {renderCardLink(
+                <span className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
+                  <span>{activeProduct.cta}</span>
+                  <span
+                    className="text-[10px] sm:text-xs transition-transform duration-200 group-hover:translate-x-1"
+                    style={{ color: activeProduct.accent }}
+                  >
+                    ▶
+                  </span>
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Slider Controls: Arrows and Dots */}
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous ecosystem app"
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex items-center gap-1.5">
+              {PRODUCTS.map((prod, index) => (
+                <button
+                  key={prod.id}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-label={`Go to ${prod.name}`}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    index === activeIndex
+                      ? "w-6 bg-slate-900"
+                      : "w-2 bg-slate-200 hover:bg-slate-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next ecosystem app"
+              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
