@@ -169,7 +169,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-gradient-to-b from-[#FFF5F6] via-[#FFF0F2] to-white py-14 sm:py-20 z-10 w-full ${className}`}
+      className={`relative overflow-hidden bg-gradient-to-b from-[#F0F6FF] via-[#F8FAFC] to-white py-14 sm:py-20 z-10 w-full ${className}`}
     >
 
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
@@ -177,7 +177,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
         aria-hidden="true"
         className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
       >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-rose-400/25 fill-none" strokeWidth="1.2">
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-blue-400/25 fill-none" strokeWidth="1.2">
           <circle cx="100" cy="100" r="140" strokeDasharray="6 6" />
           <circle cx="100" cy="100" r="190" />
           <circle cx="100" cy="100" r="240" strokeDasharray="4 4" />
@@ -187,7 +187,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
         aria-hidden="true"
         className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
       >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-rose-400/25 fill-none" strokeWidth="1.2">
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-blue-400/25 fill-none" strokeWidth="1.2">
           <circle cx="300" cy="100" r="140" strokeDasharray="6 6" />
           <circle cx="300" cy="100" r="190" />
           <circle cx="300" cy="100" r="240" strokeDasharray="4 4" />
@@ -209,11 +209,11 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
             MOBILE VIEW: Dedicated Zomato-Style App Download Card
            ───────────────────────────────────────────────────────────── */}
         <div className="lg:hidden mb-8">
-          <div className="relative rounded-[2.5rem] bg-gradient-to-b from-[#FFF0F2] via-[#FFF6F7] to-white border border-rose-100/80 p-6 pt-7 pb-8 shadow-xl overflow-hidden text-center">
+          <div className="relative rounded-[2.5rem] bg-gradient-to-b from-[#F0F6FF] via-white to-blue-50/40 border border-blue-100/90 p-6 pt-7 pb-8 shadow-xl overflow-hidden text-center">
             {/* Ambient background soft glow */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 h-44 w-72 rounded-full bg-rose-200/40 blur-2xl"
+              className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 h-44 w-72 rounded-full bg-blue-200/30 blur-2xl"
             />
 
             {/* Dual Phone Mockup Graphic */}
@@ -275,7 +275,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
             </div>
 
             {/* Accordion / Optional Link sender for mobile */}
-            <div className="mt-6 pt-4 border-t border-rose-100/80">
+            <div className="mt-6 pt-4 border-t border-blue-100/80">
               <button
                 type="button"
                 onClick={() => setShowMobileForm(!showMobileForm)}
