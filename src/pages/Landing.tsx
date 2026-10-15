@@ -275,21 +275,23 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
-      <section className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full overflow-hidden flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16">
-        {/* Background Video */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster="https://b.zmtcdn.com/web_assets/8313a97515fcb0447d2d77c276532a511583262271.png"
-          className="absolute inset-0 h-full w-full object-cover scale-105"
-        >
-          <source src="/food-hero.mp4" type="video/mp4" />
-        </video>
+      <section className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30">
+        {/* Background Video Wrapper (Clipped to hero bounds) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="https://b.zmtcdn.com/web_assets/8313a97515fcb0447d2d77c276532a511583262271.png"
+            className="absolute inset-0 h-full w-full object-cover scale-105"
+          >
+            <source src="/food-hero.mp4" type="video/mp4" />
+          </video>
 
-        {/* Ambient Overlay Gradient (Zomato style) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85" />
+          {/* Ambient Overlay Gradient (Zomato style) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85" />
+        </div>
 
         {/* ── Hero Center Content ── */}
         <div className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12">
@@ -359,14 +361,14 @@ export default function Landing() {
 
             {/* Location Selector Dropdown (Desktop / Tablet) */}
             {showLocationDropdown && (
-              <div className="absolute left-0 top-full mt-2 w-full sm:w-96 rounded-2xl bg-white p-3 shadow-2xl border border-slate-100 z-50 text-left animate-in fade-in duration-150">
+              <div className="absolute left-0 top-full mt-2 w-full sm:w-96 rounded-2xl bg-white p-3 shadow-2xl border border-slate-100/80 z-50 text-left animate-in fade-in duration-150">
                 {/* Grouped Actions (Matches Mobile App Card) */}
                 <div className="rounded-xl border border-slate-100 bg-slate-50/70 overflow-hidden divide-y divide-slate-100">
                   {/* 1. Detect Location Button */}
                   <button
                     onClick={handleDetectLocation}
                     disabled={locating}
-                    className="flex w-full items-center gap-3 p-3 hover:bg-white transition-colors text-left group"
+                    className="flex w-full items-center gap-3 p-3 hover:bg-white transition-colors text-left group cursor-pointer"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                       <Navigation className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} />
@@ -388,9 +390,9 @@ export default function Landing() {
                       setShowLocationDropdown(false);
                       setShowMapModal(true);
                     }}
-                    className="flex w-full items-center gap-3 p-3 hover:bg-white transition-colors text-left group"
+                    className="flex w-full items-center gap-3 p-3 hover:bg-white transition-colors text-left group cursor-pointer"
                   >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                       <Compass className="h-4 w-4" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -424,7 +426,7 @@ export default function Landing() {
                   </button>
                 </div>
 
-                <div className="max-h-56 overflow-y-auto space-y-1 pr-0.5 no-scrollbar">
+                <div className="max-h-48 overflow-y-auto space-y-0.5 pr-0.5 no-scrollbar">
                   {POPULAR_LOCALITIES.map((loc) => {
                     const isSelected =
                       currentLoc.label.toLowerCase().includes(loc.name.toLowerCase()) ||
@@ -440,15 +442,12 @@ export default function Landing() {
                             : "text-slate-700 hover:bg-slate-50 hover:text-primary"
                         }`}
                       >
-                        <div className="min-w-0 flex-1 pr-2">
-                          <p className="truncate">{loc.name}</p>
-                          <p className="text-[10px] text-slate-400 font-medium">{loc.city}</p>
-                        </div>
+                        <span className="truncate pr-2">{loc.name}</span>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <span className="text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded-md">
                             {loc.places}
                           </span>
-                          {isSelected && <Check className="h-3.5 w-3.5 text-primary" />}
+                          {isSelected && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
                         </div>
                       </button>
                     );
