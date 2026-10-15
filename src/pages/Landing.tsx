@@ -13,6 +13,7 @@ import {
   Store,
   Compass,
   ChevronUp,
+  Check,
 } from "lucide-react";
 import {
   getDiscoveryLocation,
@@ -20,6 +21,8 @@ import {
   requestBrowserLocation,
   searchPlaces,
   POPULAR_AREAS,
+  POPULAR_LOCALITIES,
+  onLocationChange,
   type DeliveryLocation,
   type PlaceSuggestion,
 } from "@/services/location";
@@ -30,18 +33,8 @@ import { EcosystemSection } from "@/components/EcosystemSection";
 import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
 import { GetAppSection } from "@/components/GetAppSection";
 import { handleFoodImageError } from "@/lib/foodImages";
-
-const POPULAR_LOCALITIES = [
-  { name: "Kakkanad", places: "148 places", lat: 10.0159, lng: 76.3419 },
-  { name: "Edachira & Infopark", places: "92 places", lat: 10.0094, lng: 76.3619 },
-  { name: "Kaloor & Palarivattom", places: "124 places", lat: 9.9934, lng: 76.2929 },
-  { name: "MG Road & Marine Drive", places: "110 places", lat: 9.9675, lng: 76.2841 },
-  { name: "Fort Kochi & Mattancherry", places: "85 places", lat: 9.9638, lng: 76.2435 },
-  { name: "Panampilly Nagar", places: "64 places", lat: 9.9602, lng: 76.2952 },
-  { name: "Aluva & Kalamassery", places: "105 places", lat: 10.1076, lng: 76.3516 },
-  { name: "Koramangala, Bengaluru", places: "210 places", lat: 12.9352, lng: 77.6245 },
-  { name: "Indiranagar, Bengaluru", places: "175 places", lat: 12.9784, lng: 77.6408 },
-];
+import { LocationPickerSheet } from "@/components/LocationPickerSheet";
+import { MapLocationPickerModal } from "@/components/MapLocationPickerModal";
 
 export interface CollectionItem {
   id: string;
@@ -169,6 +162,8 @@ export default function Landing() {
   const navigate = useNavigate();
   const [currentLoc, setCurrentLoc] = useState<DeliveryLocation>(getDiscoveryLocation());
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [showLocationSheet, setShowLocationSheet] = useState(false);
+  const [showMapModal, setShowMapModal] = useState(false);
   const [locating, setLocating] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -180,6 +175,13 @@ export default function Landing() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Keep location in sync with global location updates across the app
+  useEffect(() => {
+    return onLocationChange((newLoc) => {
+      setCurrentLoc(newLoc);
+    });
+  }, []);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -200,7 +202,7 @@ export default function Landing() {
       setShowLocationDropdown(false);
       toast(`Location set to ${loc.label}`);
     } catch {
-      toast("Location access denied. Please select from the list.");
+      toast("Location access denied. Please select from the list or map.");
     } finally {
       setLocating(false);
     }
@@ -217,7 +219,7 @@ export default function Landing() {
     saveLocation(deliveryLoc);
     setCurrentLoc(deliveryLoc);
     setShowLocationDropdown(false);
-    navigate("/order");
+    toast(`Location set to ${loc.name}`);
   }
 
   async function handleSearchChange(val: string) {
@@ -319,13 +321,24 @@ export default function Landing() {
                 <MapPin className="h-5 w-5 text-primary shrink-0" />
                 <button
                   type="button"
-                  onClick={() => setShowLocationDropdown((prev) => !prev)}
-                  className="flex-1 flex items-center justify-between text-left truncate outline-none"
+                  onClick={() => {
+                    if (typeof window !== "undefined" && window.innerWidth < 640) {
+                      setShowLocationSheet(true);
+                    } else {
+                      setShowLocationDropdown((prev) => !prev);
+                    }
+                  }}
+                  className="flex-1 flex items-center justify-between text-left truncate outline-none cursor-pointer group"
+                  title="Change location"
                 >
-                  <span className="truncate text-sm font-bold text-slate-800">
+                  <span className="truncate text-sm font-bold text-slate-800 group-hover:text-primary transition-colors">
                     {currentLoc.label}
                   </span>
-                  <ChevronDown className="h-4 w-4 text-slate-400 shrink-0 ml-1" />
+                  <ChevronDown
+                    className={`h-4 w-4 text-slate-400 group-hover:text-primary transition-transform duration-200 shrink-0 ml-1 ${
+                      showLocationDropdown ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
               </div>
 
@@ -344,39 +357,117 @@ export default function Landing() {
               </div>
             </form>
 
-            {/* Location Selector Dropdown */}
+            {/* Location Selector Dropdown (Desktop / Tablet) */}
             {showLocationDropdown && (
-              <div className="absolute left-0 top-full mt-2 w-full sm:w-80 rounded-2xl bg-white p-3 shadow-2xl border border-slate-100 z-30 text-left animate-in fade-in duration-150">
-                {/* Detect Location Button */}
-                <button
-                  onClick={handleDetectLocation}
-                  disabled={locating}
-                  className="flex w-full items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors text-primary font-bold text-sm"
-                >
-                  <Navigation className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} />
-                  <div>
-                    <p className="leading-none">Detect current location</p>
-                    <p className="text-[11px] font-semibold text-slate-400 mt-1">Using GPS</p>
-                  </div>
-                </button>
+              <div className="absolute left-0 top-full mt-2 w-full sm:w-96 rounded-2xl bg-white p-3 shadow-2xl border border-slate-100 z-50 text-left animate-in fade-in duration-150">
+                {/* Grouped Actions (Matches Mobile App Card) */}
+                <div className="rounded-xl border border-slate-100 bg-slate-50/70 overflow-hidden divide-y divide-slate-100">
+                  {/* 1. Detect Location Button */}
+                  <button
+                    onClick={handleDetectLocation}
+                    disabled={locating}
+                    className="flex w-full items-center gap-3 p-3 hover:bg-white transition-colors text-left group"
+                  >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                      <Navigation className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold text-primary leading-tight">
+                        {locating ? "Locating with GPS..." : "Detect current location"}
+                      </p>
+                      <p className="text-[11px] font-semibold text-slate-400 mt-0.5 truncate">
+                        {currentLoc.isGps ? "Using your GPS coordinates" : "Using GPS"}
+                      </p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-primary transition-colors" />
+                  </button>
 
-                <div className="my-2 border-t border-slate-100" />
+                  {/* 2. Select Location on Map */}
+                  <button
+                    onClick={() => {
+                      setShowLocationDropdown(false);
+                      setShowMapModal(true);
+                    }}
+                    className="flex w-full items-center gap-3 p-3 hover:bg-white transition-colors text-left group"
+                  >
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                      <Compass className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold text-slate-800 group-hover:text-primary transition-colors leading-tight">
+                        Select location on map
+                      </p>
+                      <p className="text-[11px] font-semibold text-slate-400 mt-0.5 truncate">
+                        Drag pin to your exact building or gate
+                      </p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-primary transition-colors" />
+                  </button>
+                </div>
 
-                <p className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-3 mb-1">
-                  Popular Localities
-                </p>
+                <div className="my-2.5 border-t border-slate-100" />
 
-                <div className="max-h-48 overflow-y-auto space-y-1">
-                  {POPULAR_LOCALITIES.slice(0, 6).map((loc) => (
-                    <button
-                      key={loc.name}
-                      onClick={() => handleSelectLocality(loc)}
-                      className="w-full text-left px-3 py-2 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-50 hover:text-primary transition-colors flex items-center justify-between"
-                    >
-                      <span>{loc.name}</span>
-                      <span className="text-[10px] text-slate-400 font-semibold">{loc.places}</span>
-                    </button>
-                  ))}
+                {/* Popular Localities Section */}
+                <div className="flex items-center justify-between px-2 mb-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                    Popular Localities
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowLocationDropdown(false);
+                      setShowLocationSheet(true);
+                    }}
+                    className="text-[11px] font-bold text-primary hover:underline cursor-pointer"
+                  >
+                    Search all...
+                  </button>
+                </div>
+
+                <div className="max-h-56 overflow-y-auto space-y-1 pr-0.5 no-scrollbar">
+                  {POPULAR_LOCALITIES.map((loc) => {
+                    const isSelected =
+                      currentLoc.label.toLowerCase().includes(loc.name.toLowerCase()) ||
+                      currentLoc.area?.toLowerCase() === loc.name.toLowerCase();
+
+                    return (
+                      <button
+                        key={loc.name}
+                        onClick={() => handleSelectLocality(loc)}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-between cursor-pointer ${
+                          isSelected
+                            ? "bg-primary/10 text-primary font-black"
+                            : "text-slate-700 hover:bg-slate-50 hover:text-primary"
+                        }`}
+                      >
+                        <div className="min-w-0 flex-1 pr-2">
+                          <p className="truncate">{loc.name}</p>
+                          <p className="text-[10px] text-slate-400 font-medium">{loc.city}</p>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded-md">
+                            {loc.places}
+                          </span>
+                          {isSelected && <Check className="h-3.5 w-3.5 text-primary" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Search Area Footer Button */}
+                <div className="mt-2 pt-2 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowLocationDropdown(false);
+                      setShowLocationSheet(true);
+                    }}
+                    className="w-full text-center py-2 text-xs font-bold text-slate-600 hover:text-primary transition-colors flex items-center justify-center gap-1.5 cursor-pointer rounded-lg hover:bg-slate-50"
+                  >
+                    <Search className="h-3.5 w-3.5" />
+                    <span>Search area, street or saved address</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -603,6 +694,39 @@ export default function Landing() {
           )}
         </div>
       </section>
+
+      {/* Interactive Map Picker Modal */}
+      {showMapModal && (
+        <MapLocationPickerModal
+          initialLat={currentLoc.lat}
+          initialLng={currentLoc.lng}
+          onSelect={(res) => {
+            setShowMapModal(false);
+            const loc: DeliveryLocation = {
+              lat: res.lat,
+              lng: res.lng,
+              label: res.label,
+              area: res.area,
+              line1: res.line1,
+              pincode: res.pincode,
+              isGps: false,
+            };
+            saveLocation(loc);
+            setCurrentLoc(loc);
+            toast(`Location set to ${loc.label}`);
+          }}
+          onClose={() => setShowMapModal(false)}
+        />
+      )}
+
+      {/* Full Location Picker Sheet (Mobile bottom sheet / Desktop modal) */}
+      <LocationPickerSheet
+        isOpen={showLocationSheet}
+        onClose={() => setShowLocationSheet(false)}
+        onLocationSelected={(loc) => {
+          setCurrentLoc(loc);
+        }}
+      />
     </div>
   );
 }

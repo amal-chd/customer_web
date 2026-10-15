@@ -21,9 +21,12 @@ import {
   saveAddressToStorage,
   deleteAddressFromStorage,
   POPULAR_AREAS,
+  POPULAR_LOCALITIES,
+  formatDistance,
   type DeliveryLocation,
   type DeliveryAddress,
   type PlaceSuggestion,
+  type PopularLocality,
 } from "@/services/location";
 import { MapLocationPickerModal } from "@/components/MapLocationPickerModal";
 import { useAuth } from "@/context/AuthContext";
@@ -108,6 +111,17 @@ export function LocationPickerSheet({
     applyLocation(loc);
   }
 
+  function handleSelectPopularLocality(p: PopularLocality) {
+    const loc: DeliveryLocation = {
+      lat: p.lat,
+      lng: p.lng,
+      label: p.name,
+      area: p.name,
+      isGps: false,
+    };
+    applyLocation(loc);
+  }
+
   function handleSelectPopular(p: (typeof POPULAR_AREAS)[0]) {
     const loc: DeliveryLocation = {
       lat: p.lat,
@@ -151,6 +165,9 @@ export function LocationPickerSheet({
     <>
       <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
         <div className="relative flex max-h-[90vh] w-full max-w-xl flex-col rounded-t-[2rem] sm:rounded-3xl bg-white shadow-2xl overflow-hidden">
+          {/* Mobile Drag Handle */}
+          <div className="w-10 h-1 bg-slate-300 rounded-full mx-auto my-2.5 sm:hidden shrink-0" />
+
           {/* Header */}
           <div className="flex items-center justify-between border-b border-slate-100 p-5 pb-4">
             <div>
@@ -204,9 +221,9 @@ export function LocationPickerSheet({
               )}
             </div>
 
-            {/* Quick Actions Card */}
+            {/* Grouped Quick Actions Card (Exact Mobile App Match) */}
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white divide-y divide-slate-100 shadow-sm">
-              {/* Use Current Location */}
+              {/* 1. Use Current Location */}
               <button
                 onClick={handleUseGps}
                 disabled={locating}
@@ -220,13 +237,30 @@ export function LocationPickerSheet({
                     {locating ? "Locating with GPS..." : "Use current location"}
                   </p>
                   <p className="truncate text-xs font-medium text-slate-500">
-                    {currentLoc.isGps ? "Using your GPS coordinates" : "Detect via device GPS"}
+                    {currentLoc.isGps ? "Using your GPS coordinates" : currentLoc.label || "Detect via device GPS"}
                   </p>
                 </div>
                 <ChevronRight className="h-4 w-4 text-slate-400" />
               </button>
 
-              {/* Select Location on Map */}
+              {/* 2. Add Address */}
+              <button
+                onClick={() => setShowMapModal(true)}
+                className="flex w-full items-center gap-3.5 p-4 text-left transition-colors hover:bg-slate-50"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Plus className="h-5 w-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-black text-primary">Add Address</p>
+                  <p className="truncate text-xs font-medium text-slate-500">
+                    Save address for 1-tap checkout
+                  </p>
+                </div>
+                <ChevronRight className="h-4 w-4 text-slate-400" />
+              </button>
+
+              {/* 3. Select Location on Map */}
               <button
                 onClick={() => setShowMapModal(true)}
                 className="flex w-full items-center gap-3.5 p-4 text-left transition-colors hover:bg-slate-50"
@@ -235,8 +269,8 @@ export function LocationPickerSheet({
                   <Compass className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-black text-slate-900">Select location on map</p>
-                  <p className="text-xs font-medium text-slate-500">
+                  <p className="text-sm font-black text-primary">Select Location on Map</p>
+                  <p className="truncate text-xs font-medium text-slate-500">
                     Drag pin to your exact building or gate
                   </p>
                 </div>
@@ -244,7 +278,7 @@ export function LocationPickerSheet({
               </button>
             </div>
 
-            {/* Rain / Delivery Notice Banner */}
+            {/* Rain / Delivery Notice Banner (Zomato blue card) */}
             <div className="flex items-center gap-3 rounded-2xl bg-blue-50 border border-blue-100 p-4 text-blue-900">
               <CloudRain className="h-6 w-6 text-blue-600 shrink-0" />
               <p className="text-xs font-semibold leading-relaxed">
@@ -270,7 +304,14 @@ export function LocationPickerSheet({
                           {getAddressIcon(addr.label)}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-black text-slate-900">{addr.label}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-black text-slate-900">{addr.label}</p>
+                            {addr.lat && addr.lng && (
+                              <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60">
+                                {formatDistance(currentLoc.lat, currentLoc.lng, addr.lat, addr.lng)}
+                              </span>
+                            )}
+                          </div>
                           <p className="truncate text-xs font-medium text-slate-500 mt-0.5">
                             {[addr.line1, addr.area, addr.pincode].filter(Boolean).join(", ")}
                           </p>
@@ -289,21 +330,49 @@ export function LocationPickerSheet({
               </div>
             )}
 
-            {/* Popular Quick Areas */}
+            {/* Popular Localities Section */}
             <div>
-              <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">
-                Popular Quick Picks
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {POPULAR_AREAS.map((p) => (
-                  <button
-                    key={p.name}
-                    onClick={() => handleSelectPopular(p)}
-                    className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-bold text-slate-700 hover:border-primary hover:bg-white hover:text-primary transition-all"
-                  >
-                    📍 {p.name}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xs font-black uppercase tracking-wider text-slate-400">
+                  Popular Localities
+                </h3>
+                <span className="text-[11px] font-semibold text-slate-400">
+                  Kochi & Bengaluru
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {POPULAR_LOCALITIES.map((loc) => {
+                  const isSelected =
+                    currentLoc.label.toLowerCase().includes(loc.name.toLowerCase()) ||
+                    currentLoc.area?.toLowerCase() === loc.name.toLowerCase();
+
+                  return (
+                    <button
+                      key={loc.name}
+                      onClick={() => handleSelectPopularLocality(loc)}
+                      className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/5 text-primary shadow-xs"
+                          : "border-slate-200/80 bg-slate-50/60 hover:bg-white hover:border-primary/40 text-slate-800"
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1 pr-2">
+                        <p className={`text-xs font-black truncate ${isSelected ? "text-primary" : "text-slate-800"}`}>
+                          {loc.name}
+                        </p>
+                        <p className="text-[10px] font-semibold text-slate-400 truncate">
+                          {loc.city}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200/60">
+                          {loc.places}
+                        </span>
+                        {isSelected && <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

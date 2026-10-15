@@ -64,6 +64,58 @@ export const POPULAR_AREAS = [
   { name: "Trivandrum City", city: "Thiruvananthapuram", lat: 8.5241, lng: 76.9366 },
 ];
 
+export interface PopularLocality {
+  name: string;
+  city: string;
+  places: string;
+  lat: number;
+  lng: number;
+}
+
+export const POPULAR_LOCALITIES: PopularLocality[] = [
+  { name: "Kakkanad", city: "Kochi", places: "148 places", lat: 10.0159, lng: 76.3419 },
+  { name: "Edachira & Infopark", city: "Kochi", places: "92 places", lat: 10.0094, lng: 76.3619 },
+  { name: "Kaloor & Palarivattom", city: "Kochi", places: "124 places", lat: 9.9934, lng: 76.2929 },
+  { name: "MG Road & Marine Drive", city: "Kochi", places: "110 places", lat: 9.9675, lng: 76.2841 },
+  { name: "Fort Kochi & Mattancherry", city: "Kochi", places: "85 places", lat: 9.9638, lng: 76.2435 },
+  { name: "Panampilly Nagar", city: "Kochi", places: "64 places", lat: 9.9602, lng: 76.2952 },
+  { name: "Aluva & Kalamassery", city: "Kochi", places: "105 places", lat: 10.1076, lng: 76.3516 },
+  { name: "Koramangala", city: "Bengaluru", places: "210 places", lat: 12.9352, lng: 77.6245 },
+  { name: "Indiranagar", city: "Bengaluru", places: "175 places", lat: 12.9784, lng: 77.6408 },
+];
+
+export function calculateDistanceKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // Earth radius in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+export function formatDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): string {
+  const km = calculateDistanceKm(lat1, lon1, lat2, lon2);
+  if (km < 1) {
+    return `${Math.round(km * 1000)} m`;
+  }
+  return `${km.toFixed(1)} km`;
+}
+
 export function getSavedLocation(): DeliveryLocation | null {
   try {
     const raw = localStorage.getItem(LOCATION_KEY);
@@ -155,7 +207,6 @@ export async function reverseGeocode(
     const res = await fetch(url, {
       headers: {
         Accept: "application/json",
-        "User-Agent": "TheKadaWeb/1.0",
       },
     });
 
@@ -205,12 +256,26 @@ export async function reverseGeocode(
     };
   } catch (e) {
     console.warn("Reverse geocode fallback:", e);
+
+    // Find closest popular locality if within ~15 km
+    let bestName = "";
+    let bestDist = Infinity;
+    for (const p of POPULAR_LOCALITIES) {
+      const d = calculateDistanceKm(lat, lng, p.lat, p.lng);
+      if (d < bestDist) {
+        bestDist = d;
+        bestName = p.name;
+      }
+    }
+
+    const fallbackArea = bestDist <= 15 && bestName ? bestName : "Pinned location";
+
     return {
-      area: "Pinned location",
+      area: fallbackArea,
       line1: `Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
       landmark: "",
       pincode: "",
-      fullAddress: `Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`,
+      fullAddress: `${fallbackArea} (Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)})`,
     };
   }
 }
@@ -229,7 +294,6 @@ export async function searchPlaces(queryText: string): Promise<PlaceSuggestion[]
     const res = await fetch(url, {
       headers: {
         Accept: "application/json",
-        "User-Agent": "TheKadaWeb/1.0",
       },
     });
 
