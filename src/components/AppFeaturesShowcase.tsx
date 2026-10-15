@@ -93,19 +93,7 @@ const tileVariants: Variants = {
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white border-t border-blue-100/60 shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 pt-14 sm:pt-20 pb-14 sm:pb-20 select-none z-20">
-      {/* Top Side Curves Transition SVG */}
-      <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">
-        <svg
-          viewBox="0 0 1440 40"
-          fill="none"
-          preserveAspectRatio="none"
-          className="w-full h-6 sm:h-10 text-blue-50 fill-current block"
-        >
-          <path d="M0,40 C360,4 1080,4 1440,40 L1440,40 L0,40 Z" />
-        </svg>
-      </div>
-
+    <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-slate-50/40 to-white border-t border-blue-100/50 py-14 sm:py-20 select-none z-10">
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div
         aria-hidden="true"
@@ -173,10 +161,10 @@ export function AppFeaturesShowcase() {
             >
               <Link
                 to={item.to}
-                className="group flex flex-col items-center justify-between p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-shadow duration-200 text-center aspect-square h-full w-full"
+                className="group flex flex-col items-center justify-between p-2.5 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-shadow duration-200 text-center min-h-[105px] sm:min-h-[120px] w-full"
               >
                 <div className="flex-1 flex items-center justify-center w-full">
-                  <div className="h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
+                  <div className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -186,7 +174,7 @@ export function AppFeaturesShowcase() {
                   </div>
                 </div>
 
-                <span className="text-[11px] sm:text-xs font-black text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
                   {item.name}
                 </span>
               </Link>

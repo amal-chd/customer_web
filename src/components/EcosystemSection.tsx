@@ -119,18 +119,7 @@ export function EcosystemSection() {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] bg-white border-t border-slate-200/80 shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 pt-14 sm:pt-20 pb-16 sm:pb-24 z-20">
-      {/* Top Side Curves Transition SVG */}
-      <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">
-        <svg
-          viewBox="0 0 1440 40"
-          fill="none"
-          preserveAspectRatio="none"
-          className="w-full h-6 sm:h-10 text-white fill-current block"
-        >
-          <path d="M0,40 C360,4 1080,4 1440,40 L1440,40 L0,40 Z" />
-        </svg>
-      </div>
+    <section className="relative overflow-hidden bg-white border-t border-slate-100 py-16 sm:py-24 z-10">
 
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div
