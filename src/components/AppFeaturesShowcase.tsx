@@ -9,61 +9,70 @@ interface FeatureTile {
   to: string;
 }
 
-const APP_FEATURES: FeatureTile[] = [
-  {
-    id: "veg",
-    name: "Veg Mode",
-    image: "/zomato_assets/veg_mode.png",
-    to: "/order?veg=true",
-  },
-  {
-    id: "schedule",
-    name: "Schedule Order",
-    image: "/zomato_assets/schedule_order.png",
-    to: "/order",
-  },
-  {
-    id: "train",
-    name: "Express Delivery",
-    image: "/zomato_assets/train_order.png",
-    to: "/order",
-  },
-  {
-    id: "healthy",
-    name: "Healthy Bowls",
-    image: "/zomato_assets/healthy.png",
-    to: "/search?q=Healthy",
-  },
-  {
-    id: "party",
-    name: "Plan a Party",
-    image: "/zomato_assets/party.png",
-    to: "/search?q=Party",
-  },
-  {
-    id: "gourmet",
-    name: "Gourmet Dine",
-    image: "/zomato_assets/gourmet.png",
-    to: "/search?q=Gourmet",
-  },
-  {
-    id: "collections",
-    name: "Collections",
-    image: "/zomato_assets/collections.png",
-    to: "/search",
-  },
-  {
-    id: "offers",
-    name: "Super Offers",
-    image: "/zomato_assets/offers.png",
-    to: "/order",
-  },
-  {
-    id: "gifts",
-    name: "Gift Cards",
-    image: "/zomato_assets/gift_cards.png",
-    to: "/account",
-  },
+const FEATURE_COLUMNS: FeatureTile[][] = [
+  // Column 1
+  [
+    {
+      id: "veg",
+      name: "Veg Mode",
+      image: "/zomato_assets/veg_mode.png",
+      to: "/order?veg=true",
+    },
+    {
+      id: "healthy",
+      name: "Healthy Bowls",
+      image: "/zomato_assets/healthy.png",
+      to: "/search?q=Healthy",
+    },
+    {
+      id: "collections",
+      name: "Collections",
+      image: "/zomato_assets/collections.png",
+      to: "/search",
+    },
+  ],
+  // Column 2 (Elevated Center Column as in Reference)
+  [
+    {
+      id: "schedule",
+      name: "Schedule Order",
+      image: "/zomato_assets/schedule_order.png",
+      to: "/order",
+    },
+    {
+      id: "party",
+      name: "Plan a Party",
+      image: "/zomato_assets/party.png",
+      to: "/search?q=Party",
+    },
+    {
+      id: "offers",
+      name: "Super Offers",
+      image: "/zomato_assets/offers.png",
+      to: "/order",
+    },
+  ],
+  // Column 3
+  [
+    {
+      id: "train",
+      name: "Express Delivery",
+      image: "/zomato_assets/train_order.png",
+      to: "/order",
+    },
+    {
+      id: "gourmet",
+      name: "Gourmet Dine",
+      image: "/zomato_assets/gourmet.png",
+      to: "/search?q=Gourmet",
+    },
+    {
+      id: "gifts",
+      name: "Gift Cards",
+      image: "/zomato_assets/gift_cards.png",
+      to: "/account",
+    },
+  ],
 ];
 
 export function AppFeaturesShowcase() {
@@ -111,41 +120,50 @@ export function AppFeaturesShowcase() {
         </p>
       </div>
 
-      {/* ── Staggered App Tiles Grid in The Kada Style ── */}
-      <div className="relative z-10 mx-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 mt-5 sm:mt-8">
-        <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 items-stretch">
-          {APP_FEATURES.map((item) => (
-            <motion.div
-              key={item.id}
-              whileHover={{ y: -4, scale: 1.02 }}
-              whileTap={{ scale: 0.96 }}
-              className="h-full"
+      {/* ── Staggered 3-Column App Tiles Grid (Zomato Signature Offset) ── */}
+      <div className="relative z-10 mx-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 mt-6 sm:mt-9">
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 items-start pt-2 sm:pt-3">
+          {FEATURE_COLUMNS.map((column, colIdx) => (
+            <div
+              key={colIdx}
+              className={`flex flex-col gap-2.5 sm:gap-3.5 md:gap-4 ${
+                colIdx === 1 ? "-translate-y-2 sm:-translate-y-3" : ""
+              }`}
             >
-              <Link
-                to={item.to}
-                className="group flex flex-col items-center justify-between p-2 sm:p-3 md:p-3.5 rounded-2xl bg-white border border-blue-100/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-all duration-200 text-center min-h-[90px] sm:min-h-[110px] md:min-h-[120px] w-full"
-              >
-                <div className="flex-1 flex items-center justify-center w-full">
-                  <div className="h-9 w-9 sm:h-11 sm:w-11 md:h-13 md:w-13 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="max-h-full max-w-full object-contain filter drop-shadow-xs"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
+              {column.map((item) => (
+                <motion.div
+                  key={item.id}
+                  whileHover={{ y: -4, scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="w-full"
+                >
+                  <Link
+                    to={item.to}
+                    className="group flex flex-col items-center justify-between p-2 sm:p-3 md:p-3.5 rounded-2xl sm:rounded-3xl bg-white border border-slate-100 shadow-[0_6px_20px_rgba(15,23,42,0.05)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-all duration-300 text-center min-h-[92px] sm:min-h-[112px] md:min-h-[122px] w-full"
+                  >
+                    <div className="flex-1 flex items-center justify-center w-full py-0.5">
+                      <div className="h-9 w-9 sm:h-11 sm:w-11 md:h-13 md:w-13 flex items-center justify-center transform group-hover:scale-108 transition-transform duration-200">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="max-h-full max-w-full object-contain filter drop-shadow-xs"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
 
-                <span className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
-                  {item.name}
-                </span>
-              </Link>
-            </motion.div>
+                    <span className="text-[10px] sm:text-xs md:text-sm font-black text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
+                      {item.name}
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           ))}
         </div>
 
         {/* Bottom Tagline */}
-        <p className="text-center text-slate-700 font-extrabold text-xs sm:text-sm md:text-base mt-5 sm:mt-7 tracking-tight">
+        <p className="text-center text-slate-700 font-extrabold text-xs sm:text-sm md:text-base mt-4 sm:mt-6 tracking-tight">
           ...and a lot more features inside The Kada app
         </p>
       </div>

@@ -22,9 +22,9 @@ import InvestorRelations from "./pages/InvestorRelations";
 import RouteSeo from "./components/RouteSeo";
 
 const pageVariants = {
-  initial: { opacity: 0, y: 10, scale: 0.99 },
-  in: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" as const } },
-  out: { opacity: 0, y: -10, scale: 0.99, transition: { duration: 0.2, ease: "easeIn" as const } }
+  initial: { opacity: 0 },
+  in: { opacity: 1, transition: { duration: 0.25, ease: "easeOut" as const } },
+  out: { opacity: 0, transition: { duration: 0.15, ease: "easeIn" as const } }
 };
 
 function PageTransition({ children }: { children: React.ReactNode }) {

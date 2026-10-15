@@ -325,6 +325,21 @@ export default function Landing() {
           style={{ y: contentY, opacity: contentOpacity }}
           className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12 will-change-transform"
         >
+          {/* Centered Brand Mark (Zomato Signature Hero) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-4 sm:mb-6 flex items-center justify-center gap-3.5"
+          >
+            <div className="h-11 w-11 sm:h-14 sm:w-14 rounded-2xl bg-white p-2 shadow-2xl flex items-center justify-center">
+              <img src="/logo.png" alt="The Kada" className="h-full w-full object-contain" />
+            </div>
+            <span className="text-3xl sm:text-5xl font-black italic tracking-tighter text-white drop-shadow-lg">
+              The <span className="text-blue-400">Kada</span>
+            </span>
+          </motion.div>
+
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -541,12 +556,12 @@ export default function Landing() {
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (CRISP WHITE) ─── */}
-      <div className="sticky top-0 z-10 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-24 sm:pb-16">
+      <div className="sticky top-0 z-10 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
         <BetterFoodSection />
       </div>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SLATE/ICE #F8FAFC) ─── */}
-      <div className="sticky top-0 z-20 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-24 sm:pb-16">
+      <div className="sticky top-0 z-20 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-4 sm:mb-6">
             <div>
@@ -624,23 +639,23 @@ export default function Landing() {
         </section>
       </div>
 
-      {/* ─── CARD 3: APP FEATURES SHOWCASE (SOFT ROYAL BLUE TINT #F0F6FF) ─── */}
-      <div className="sticky top-0 z-30 min-h-[100svh] w-full flex flex-col justify-center bg-[#F0F6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-24 sm:pb-16">
+      {/* ─── CARD 3: APP FEATURES SHOWCASE (SOFT ROYAL BLUE TINT #EFF6FF) ─── */}
+      <div className="sticky top-0 z-30 min-h-[100svh] w-full flex flex-col justify-center bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
         <AppFeaturesShowcase />
       </div>
 
       {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SLATE/ICE #F8FAFC) ─── */}
-      <div className="sticky top-0 z-40 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-24 sm:pb-16">
+      <div className="sticky top-0 z-40 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
         <EcosystemSection />
       </div>
 
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (CRISP WHITE) ─── */}
-      <div className="sticky top-0 z-50 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-24 sm:pb-16">
+      <div className="sticky top-0 z-50 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
         <GetAppSection />
       </div>
 
-      {/* ─── SECTION 6: EXPLORE OPTIONS NEAR YOU (ACCORDIONS - NATURAL FLOW TO FOOTER) ─── */}
-      <div className="relative z-60 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] -mt-8 sm:-mt-12 pt-12 sm:pt-16 pb-24 sm:pb-28">
+      {/* ─── SECTION 6: EXPLORE OPTIONS NEAR YOU (SLATE/ICE #F8FAFC - NATURAL FLOW TO FOOTER) ─── */}
+      <div className="relative z-60 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] pt-12 sm:pt-16 pb-24 sm:pb-28">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
             Explore options near you

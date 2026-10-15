@@ -49,7 +49,7 @@ export function MobileStickyAppBar() {
         <div className="flex items-center gap-1.5 shrink-0">
           <Link
             to="/order"
-            className="rounded-full bg-white hover:bg-slate-100 active:scale-95 text-[#E23744] px-3.5 py-1.5 text-[11px] font-black shadow-sm transition-all tracking-tight whitespace-nowrap"
+            className="rounded-full bg-white hover:bg-slate-100 active:scale-95 text-primary px-3.5 py-1.5 text-[11px] font-black shadow-sm transition-all tracking-tight whitespace-nowrap"
           >
             Order on app
           </Link>

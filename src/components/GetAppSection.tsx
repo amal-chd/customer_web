@@ -208,84 +208,77 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* ─────────────────────────────────────────────────────────────
-            MOBILE VIEW: Dedicated Zomato-Style App Download Card
+            MOBILE VIEW: Dedicated Zomato-Style App Download Experience
            ───────────────────────────────────────────────────────────── */}
-        <div className="lg:hidden mb-4">
-          <div className="relative rounded-[2rem] bg-gradient-to-b from-blue-50/50 via-white to-slate-50/40 border border-blue-100/90 p-5 pt-6 pb-6 shadow-lg overflow-hidden text-center">
-            {/* Ambient background soft glow */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 h-44 w-72 rounded-full bg-blue-200/30 blur-2xl"
+        <div className="lg:hidden text-center max-w-sm mx-auto">
+          {/* Dual Phone Mockup Graphic */}
+          <div className="relative w-52 max-w-[62vw] mx-auto mb-3 drop-shadow-xl animate-float-slow">
+            <img
+              src="/images/kada_app_phones.png"
+              alt="The Kada Mobile App"
+              className="w-full h-auto object-contain mx-auto max-h-[160px]"
+              loading="lazy"
             />
+          </div>
 
-            {/* Dual Phone Mockup Graphic */}
-            <div className="relative w-48 max-w-[55vw] mx-auto mb-2 drop-shadow-xl animate-float-slow">
-              <img
-                src="/images/kada_app_phones.png"
-                alt="The Kada Mobile App"
-                className="w-full h-auto object-contain mx-auto max-h-[140px]"
-                loading="lazy"
-              />
-            </div>
+          {/* Section Typography */}
+          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+            Download the app now!
+          </h3>
+          <p className="text-slate-500 text-xs sm:text-sm font-semibold mt-1.5 max-w-xs mx-auto leading-relaxed">
+            Experience seamless food ordering with the Kada app
+          </p>
 
-            {/* Section Typography */}
-            <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight">
-              Download the app now!
-            </h3>
-            <p className="text-slate-600 text-xs font-medium mt-1 max-w-xs mx-auto leading-relaxed">
-              Experience seamless food ordering with the Kada app
-            </p>
+          {/* Official Store Download Badges Side-by-Side */}
+          <div className="flex items-center justify-center gap-3 mt-5">
+            {/* Apple App Store Badge */}
+            <a
+              href={appStoreUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Download on the App Store"
+              className="group flex items-center gap-2.5 rounded-2xl bg-black px-4 py-2.5 text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+            >
+              <svg className="h-6 w-6 shrink-0 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.71-.93 2.73 1 .08 2.03-.49 2.65-1.23z" />
+              </svg>
+              <div className="text-left">
+                <p className="text-[9px] uppercase font-bold text-slate-400 leading-none">Download on the</p>
+                <p className="text-xs sm:text-sm font-black text-white leading-tight mt-0.5">App Store</p>
+              </div>
+            </a>
 
-            {/* Official Store Download Badges Side-by-Side */}
-            <div className="flex items-center justify-center gap-2.5 mt-4">
-              {/* Apple App Store Badge */}
-              <a
-                href={appStoreUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Download on the App Store"
-                className="group flex items-center gap-2 rounded-xl bg-black px-3 py-2 text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-              >
-                <svg className="h-5 w-5 shrink-0 fill-current text-white" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.71-.93 2.73 1 .08 2.03-.49 2.65-1.23z" />
-                </svg>
-                <div className="text-left">
-                  <p className="text-[8px] uppercase font-bold text-slate-400 leading-none">Download on the</p>
-                  <p className="text-xs font-black text-white leading-tight mt-0.5">App Store</p>
-                </div>
-              </a>
+            {/* Google Play Store Badge */}
+            <a
+              href={playStoreUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Get it on Google Play"
+              className="group flex items-center gap-2.5 rounded-2xl bg-black px-4 py-2.5 text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+            >
+              <svg className="h-6 w-6 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.22-.924V2.738c0-.348.08-.667.22-.924z" />
+                <path fill="#34A853" d="M15.206 13.412l2.253 2.253-11.45 6.442 9.197-8.695z" />
+                <path fill="#EA4335" d="M15.206 10.588L6.01 1.892l11.45 6.442-2.254 2.254z" />
+                <path fill="#FBBC04" d="M16.62 12l3.52-1.98a1.996 1.996 0 0 1 0 3.96L16.62 12z" />
+              </svg>
+              <div className="text-left">
+                <p className="text-[9px] uppercase font-bold text-slate-400 leading-none">GET IT ON</p>
+                <p className="text-xs sm:text-sm font-black text-white leading-tight mt-0.5">Google Play</p>
+              </div>
+            </a>
+          </div>
 
-              {/* Google Play Store Badge */}
-              <a
-                href={playStoreUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Get it on Google Play"
-                className="group flex items-center gap-2 rounded-xl bg-black px-3 py-2 text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-              >
-                <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="#4285F4" d="M3.609 1.814L13.792 12 3.61 22.186a1.996 1.996 0 0 1-.22-.924V2.738c0-.348.08-.667.22-.924z" />
-                  <path fill="#34A853" d="M15.206 13.412l2.253 2.253-11.45 6.442 9.197-8.695z" />
-                  <path fill="#EA4335" d="M15.206 10.588L6.01 1.892l11.45 6.442-2.254 2.254z" />
-                  <path fill="#FBBC04" d="M16.62 12l3.52-1.98a1.996 1.996 0 0 1 0 3.96L16.62 12z" />
-                </svg>
-                <div className="text-left">
-                  <p className="text-[8px] uppercase font-bold text-slate-400 leading-none">GET IT ON</p>
-                  <p className="text-xs font-black text-white leading-tight mt-0.5">Google Play</p>
-                </div>
-              </a>
-            </div>
-
-            {/* Accordion / Optional Link sender for mobile */}
-            <div className="mt-6 pt-4 border-t border-blue-100/80">
-              <button
-                type="button"
-                onClick={() => setShowMobileForm(!showMobileForm)}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors"
-              >
-                <span>{showMobileForm ? "Hide share options" : "Need to send the link to another phone?"}</span>
-                {showMobileForm ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
-              </button>
+          {/* Accordion / Optional Link sender for mobile */}
+          <div className="mt-5 pt-3">
+            <button
+              type="button"
+              onClick={() => setShowMobileForm(!showMobileForm)}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors"
+            >
+              <span>{showMobileForm ? "Hide share options" : "Need to send the link to another phone?"}</span>
+              {showMobileForm ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+            </button>
 
               {showMobileForm && (
                 <div className="mt-4 pt-3 text-left animate-in fade-in duration-200">
@@ -344,7 +337,6 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
               )}
             </div>
           </div>
-        </div>
 
         {/* ─────────────────────────────────────────────────────────────
             DESKTOP VIEW: Full Interactive Experience (hidden on mobile)
