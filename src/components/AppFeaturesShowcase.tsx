@@ -319,8 +319,12 @@ export function AppFeaturesShowcase() {
             </div>
           </div>
 
-          {/* 8 Feature Pills Grid */}
-          <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
+          {/* Quick Category Action Rail: Smooth horizontal swipe on mobile, 4-col grid on tablet */}
+          <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 px-1">
+            <span>Trending categories</span>
+            <span className="text-primary font-bold">Scroll →</span>
+          </div>
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-2.5 pb-2 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-4 sm:gap-2.5 no-scrollbar touch-pan-x-scroll">
             {[
               { name: "Healthy", q: "Healthy", icon: "🥗", to: "/search?q=Healthy" },
               { name: "Veg Mode", q: "Pure Veg", icon: "🌿", to: "/order?veg=true" },
@@ -334,10 +338,10 @@ export function AppFeaturesShowcase() {
               <Link
                 key={f.name}
                 to={f.to}
-                className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-primary/40 text-center transition-all active:scale-95"
+                className="snap-start shrink-0 min-w-[82px] sm:min-w-0 sm:w-auto flex flex-col items-center justify-center p-3 sm:p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-primary/40 text-center transition-all active:scale-95"
               >
-                <span className="text-xl sm:text-2xl mb-1">{f.icon}</span>
-                <span className="text-[10px] sm:text-[11px] font-black text-slate-800 line-clamp-1 leading-tight">{f.name}</span>
+                <span className="text-2xl mb-1.5">{f.icon}</span>
+                <span className="text-[11px] font-black text-slate-800 whitespace-nowrap leading-tight">{f.name}</span>
               </Link>
             ))}
           </div>

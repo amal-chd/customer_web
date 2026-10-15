@@ -438,13 +438,17 @@ export default function Landing() {
           </Link>
         </div>
 
-        {/* Collections Cards Grid: 1 single row of 4 cards on desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Collections Cards: Smooth horizontal scroll snap rail on mobile (Zomato-style), clean 4-col grid on desktop */}
+        <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2 px-1">
+          <span>Swipe collections</span>
+          <span className="text-primary font-bold">Scroll →</span>
+        </div>
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-5 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 no-scrollbar touch-pan-x-scroll">
           {COLLECTIONS.map((c) => (
             <Link
               key={c.id}
               to={c.to}
-              className="group relative h-72 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
+              className="group relative snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-76 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
             >
               <img
                 src={c.image}

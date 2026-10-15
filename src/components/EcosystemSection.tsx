@@ -85,8 +85,14 @@ export function EcosystemSection() {
           <div className="h-px bg-gradient-to-l from-transparent via-slate-200 to-slate-300 flex-1 max-w-[80px] sm:max-w-[140px]" />
         </div>
 
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* Mobile Swipe Cue */}
+        <div className="flex sm:hidden items-center justify-between text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 px-1">
+          <span>Explore Ecosystem</span>
+          <span className="text-primary font-bold">Swipe →</span>
+        </div>
+
+        {/* 4 Cards: Mobile Horizontal Snap Rail, Desktop 4-col Grid */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory gap-5 pb-6 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 lg:gap-8 no-scrollbar touch-pan-x-scroll">
           {PRODUCTS.map((prod) => {
             const cardContent = (
               <div
@@ -133,7 +139,7 @@ export function EcosystemSection() {
                 href={prod.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block h-full text-inherit no-underline"
+                className="block snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-full text-inherit no-underline"
               >
                 {cardContent}
               </a>
@@ -141,7 +147,7 @@ export function EcosystemSection() {
               <Link
                 key={prod.id}
                 to={prod.href}
-                className="block h-full text-inherit no-underline"
+                className="block snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-full text-inherit no-underline"
               >
                 {cardContent}
               </Link>

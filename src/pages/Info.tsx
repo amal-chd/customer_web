@@ -14,6 +14,8 @@ import {
   Store
 } from "lucide-react";
 import { toast } from "@/components/Toast";
+import { UnifiedContactHub } from "@/components/UnifiedContactHub";
+import { db } from "@/lib/firebase";
 
 // ─── ABOUT PAGE ─────────────────────────────────────────────────────────────
 export function About() {
@@ -78,132 +80,13 @@ export function About() {
 
 // ─── CONTACT PAGE ────────────────────────────────────────────────────────────
 export function Contact() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
-  const [sending, setSending] = useState(false);
-
-  function handleSend(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim() || !email.trim() || !msg.trim()) {
-      toast("Please fill all required fields");
-      return;
-    }
-    setSending(true);
-    setTimeout(() => {
-      toast("Thank you! Your message has been sent.");
-      setName("");
-      setEmail("");
-      setMsg("");
-      setSending(false);
-    }, 1200);
-  }
-
   return (
-    <div className="bg-slate-50 py-12 sm:py-16">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="grid gap-8 md:grid-cols-12 items-start">
-          <div className="md:col-span-5 space-y-6">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-primary mb-3">
-                Support & Contact
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-ink">
-                Get in Touch
-              </h1>
-              <p className="mt-2 text-sm sm:text-base font-semibold text-sub leading-relaxed">
-                Have questions about your order, restaurant partnerships, or general feedback? Our team is here to assist.
-              </p>
-            </div>
-
-            <div className="space-y-3.5">
-              <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white border border-line shadow-xs">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[11px] font-black text-sub uppercase tracking-wider">Email Us</p>
-                  <a href="mailto:support@thekada.in" className="text-sm font-bold text-ink hover:text-primary transition-colors block truncate">
-                    support@thekada.in
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white border border-line shadow-xs">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[11px] font-black text-sub uppercase tracking-wider">Call Support</p>
-                  <a href="tel:+919496491654" className="text-sm font-bold text-ink hover:text-primary transition-colors block truncate">
-                    +91 9496491654
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white border border-line shadow-xs">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                  <MapPin className="h-5 w-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[11px] font-black text-sub uppercase tracking-wider">Corporate Office</p>
-                  <p className="text-sm font-bold text-ink">The Kada, Kannur, Kerala 670001, India</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="md:col-span-7">
-            <form onSubmit={handleSend} className="card p-6 sm:p-8 space-y-4 shadow-sm">
-              <h3 className="text-lg font-black text-ink">Send a message</h3>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-wider text-sub block">Your Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Full name"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-4 text-sm font-semibold outline-none focus:border-primary focus:bg-white transition-colors"
-                  required
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-wider text-sub block">Email Address</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-4 text-sm font-semibold outline-none focus:border-primary focus:bg-white transition-colors"
-                  required
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-black uppercase tracking-wider text-sub block">Message</label>
-                <textarea
-                  value={msg}
-                  onChange={(e) => setMsg(e.target.value)}
-                  placeholder="Tell us what we can help you with..."
-                  rows={4}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-4 text-sm font-semibold outline-none focus:border-primary focus:bg-white transition-colors resize-none"
-                  required
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                disabled={sending}
-                className="btn-primary w-full py-3.5 font-black flex items-center justify-center cursor-pointer disabled:opacity-50"
-              >
-                {sending ? "Sending..." : "Submit Message"}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+    <div className="bg-slate-50 min-h-screen py-8 sm:py-12">
+      <UnifiedContactHub
+        brand="customer"
+        initialMode="contact"
+        dbInstance={db}
+      />
     </div>
   );
 }
