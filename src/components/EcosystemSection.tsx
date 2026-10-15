@@ -119,7 +119,7 @@ export function EcosystemSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#F8FAFC] py-14 sm:py-20 z-10 w-full">
+    <section className="relative overflow-hidden bg-transparent py-4 sm:py-8 z-10 w-full">
 
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div
@@ -147,12 +147,12 @@ export function EcosystemSection() {
 
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center z-10">
         {/* Brand Wordmark (matching reference: bold, lowercase, tight tracking) */}
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
+        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
           the kada
         </h2>
 
         {/* Subtitle flanked by horizontal lines */}
-        <div className="flex items-center justify-center gap-3 sm:gap-5 mt-3 sm:mt-4 mb-10 sm:mb-14 px-4">
+        <div className="flex items-center justify-center gap-3 sm:gap-5 mt-2 sm:mt-3 mb-6 sm:mb-10 px-4">
           <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
           <p className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.22em] text-slate-400 uppercase text-center whitespace-nowrap">
             POWERING INDIA&apos;S CHANGING LIFESTYLE
@@ -167,32 +167,32 @@ export function EcosystemSection() {
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-white rounded-[32px] sm:rounded-[38px] border border-slate-100/90 shadow-[0_16px_50px_rgba(0,0,0,0.07)] p-6 sm:p-8 pt-8 sm:pt-10 pb-7 sm:pb-9 text-center overflow-hidden transition-all duration-300"
+            className="relative bg-white rounded-[28px] sm:rounded-[38px] border border-slate-100/90 shadow-[0_16px_50px_rgba(0,0,0,0.07)] p-4 sm:p-8 pt-5 sm:pt-9 pb-5 sm:pb-8 text-center overflow-hidden transition-all duration-300"
           >
             {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
-            <div className="relative h-28 sm:h-32 flex items-center justify-center mb-5 select-none">
+            <div className="relative h-22 sm:h-30 flex items-center justify-center mb-3 sm:mb-5 select-none">
               {/* Peeking Left App Icon (Click to select previous) */}
               <button
                 type="button"
                 onClick={handlePrev}
                 aria-label={`Previous: ${prevProduct.name}`}
-                className="absolute -left-7 sm:-left-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+                className="absolute -left-5 sm:-left-8 w-16 h-16 sm:w-24 sm:h-24 rounded-[18px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
               >
                 <img
                   src={prevProduct.logo}
                   alt={prevProduct.name}
-                  className="w-full h-full object-cover rounded-[22px] sm:rounded-[26px]"
+                  className="w-full h-full object-cover rounded-[18px] sm:rounded-[26px]"
                 />
               </button>
 
               {/* Center Active App Icon */}
               {renderCardLink(
-                <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-105 group bg-white">
+                <div className="relative z-10 w-20 h-20 sm:w-28 sm:h-28 rounded-[22px] sm:rounded-[30px] overflow-hidden shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-105 group bg-white">
                   <img
                     key={activeProduct.id}
                     src={activeProduct.logo}
                     alt={activeProduct.name}
-                    className="w-full h-full object-cover rounded-[26px] sm:rounded-[30px] animate-in fade-in duration-300"
+                    className="w-full h-full object-cover rounded-[22px] sm:rounded-[30px] animate-in fade-in duration-300"
                   />
                 </div>
               )}
@@ -202,30 +202,30 @@ export function EcosystemSection() {
                 type="button"
                 onClick={handleNext}
                 aria-label={`Next: ${nextProduct.name}`}
-                className="absolute -right-7 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+                className="absolute -right-5 sm:-right-8 w-16 h-16 sm:w-24 sm:h-24 rounded-[18px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
               >
                 <img
                   src={nextProduct.logo}
                   alt={nextProduct.name}
-                  className="w-full h-full object-cover rounded-[22px] sm:rounded-[26px]"
+                  className="w-full h-full object-cover rounded-[18px] sm:rounded-[26px]"
                 />
               </button>
             </div>
 
             {/* App Title */}
             {renderCardLink(
-              <span className="inline-block font-black text-2xl sm:text-[26px] text-slate-900 tracking-tight lowercase hover:text-primary transition-colors">
+              <span className="inline-block font-black text-xl sm:text-[26px] text-slate-900 tracking-tight lowercase hover:text-primary transition-colors">
                 {activeProduct.name}
               </span>
             )}
 
             {/* App Description */}
-            <p className="mt-2 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[270px] sm:max-w-[290px] mx-auto leading-relaxed min-h-[38px] sm:min-h-[40px]">
+            <p className="mt-1 sm:mt-2 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[260px] sm:max-w-[290px] mx-auto leading-relaxed min-h-[32px] sm:min-h-[40px]">
               {activeProduct.desc}
             </p>
 
             {/* Direct Call to Action with Brand Colored Arrow */}
-            <div className="mt-5">
+            <div className="mt-3.5 sm:mt-5">
               {renderCardLink(
                 <span className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
                   <span>{activeProduct.cta}</span>
@@ -241,12 +241,12 @@ export function EcosystemSection() {
           </div>
 
           {/* Slider Controls: Arrows and Dots */}
-          <div className="flex items-center justify-center gap-3 mt-6">
+          <div className="flex items-center justify-center gap-3 mt-4 sm:mt-6">
             <button
               type="button"
               onClick={handlePrev}
               aria-label="Previous ecosystem app"
-              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>

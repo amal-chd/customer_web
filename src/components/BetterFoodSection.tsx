@@ -23,7 +23,7 @@ export function BetterFoodSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-transparent pt-12 sm:pt-16 pb-14 sm:pb-20 z-20 select-none"
+      className="relative w-full overflow-hidden bg-transparent py-4 sm:py-8 z-20 select-none"
     >
       {/* ── Scroll-Linked Parallax Food Stickers (Strictly Desktop / Tablet Gutters: hidden on mobile) ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">

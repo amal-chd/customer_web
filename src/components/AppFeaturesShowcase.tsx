@@ -68,7 +68,7 @@ const APP_FEATURES: FeatureTile[] = [
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden bg-white py-12 sm:py-16 select-none z-10 w-full">
+    <section className="relative overflow-hidden bg-transparent py-4 sm:py-8 select-none z-10 w-full">
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div
         aria-hidden="true"
@@ -93,12 +93,12 @@ export function AppFeaturesShowcase() {
 
       {/* ── Section Header in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-xl px-4 sm:px-6 text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[11px] sm:text-xs font-black uppercase tracking-wider text-primary mb-2 sm:mb-3">
           <Sparkles className="h-3.5 w-3.5" />
           The Kada Experience
         </span>
 
-        <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           What&apos;s waiting for you on the{" "}
           <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Kada app
@@ -106,27 +106,27 @@ export function AppFeaturesShowcase() {
           ?
         </h2>
 
-        <p className="mt-3 sm:mt-4 text-xs sm:text-base font-semibold text-slate-500 max-w-md mx-auto leading-relaxed">
+        <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base font-semibold text-slate-500 max-w-md mx-auto leading-relaxed">
           Our app is packed with features that enable you to experience hyper-local food delivery & dining like never before
         </p>
       </div>
 
       {/* ── Staggered App Tiles Grid in The Kada Style ── */}
-      <div className="relative z-10 mx-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 mt-8 sm:mt-12">
-        <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
+      <div className="relative z-10 mx-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 mt-5 sm:mt-8">
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 items-stretch">
           {APP_FEATURES.map((item) => (
             <motion.div
               key={item.id}
-              whileHover={{ y: -6, scale: 1.03 }}
+              whileHover={{ y: -4, scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               className="h-full"
             >
               <Link
                 to={item.to}
-                className="group flex flex-col items-center justify-between p-2.5 sm:p-3.5 md:p-4 rounded-2xl bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-all duration-200 text-center min-h-[105px] sm:min-h-[120px] md:min-h-[130px] w-full"
+                className="group flex flex-col items-center justify-between p-2 sm:p-3 md:p-3.5 rounded-2xl bg-white border border-blue-100/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-all duration-200 text-center min-h-[90px] sm:min-h-[110px] md:min-h-[120px] w-full"
               >
                 <div className="flex-1 flex items-center justify-center w-full">
-                  <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
+                  <div className="h-9 w-9 sm:h-11 sm:w-11 md:h-13 md:w-13 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -136,7 +136,7 @@ export function AppFeaturesShowcase() {
                   </div>
                 </div>
 
-                <span className="text-[11px] sm:text-xs md:text-sm font-bold text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
+                <span className="text-[10px] sm:text-xs md:text-sm font-bold text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
                   {item.name}
                 </span>
               </Link>
@@ -145,7 +145,7 @@ export function AppFeaturesShowcase() {
         </div>
 
         {/* Bottom Tagline */}
-        <p className="text-center text-slate-700 font-extrabold text-sm sm:text-base mt-8 sm:mt-10 tracking-tight">
+        <p className="text-center text-slate-700 font-extrabold text-xs sm:text-sm md:text-base mt-5 sm:mt-7 tracking-tight">
           ...and a lot more features inside The Kada app
         </p>
       </div>
