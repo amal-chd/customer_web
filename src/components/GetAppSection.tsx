@@ -18,6 +18,8 @@ import {
   Gift,
   ExternalLink,
   MessageCircle,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import {
   sendAppDownloadEmail,
@@ -67,6 +69,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [copiedLink, setCopiedLink] = useState(false);
+  const [showMobileForm, setShowMobileForm] = useState(false);
 
   // Dynamic device detection
   const [detectedOs, setDetectedOs] = useState<"ios" | "android" | "desktop">("desktop");

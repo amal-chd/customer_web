@@ -119,8 +119,44 @@ export function EcosystemSection() {
   };
 
   return (
-    <section className="bg-white py-16 sm:py-24 border-b border-slate-100">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+    <section className="relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] bg-white border-t border-slate-200/80 shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 pt-14 sm:pt-20 pb-16 sm:pb-24 z-20">
+      {/* Top Side Curves Transition SVG */}
+      <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">
+        <svg
+          viewBox="0 0 1440 40"
+          fill="none"
+          preserveAspectRatio="none"
+          className="w-full h-6 sm:h-10 text-white fill-current block"
+        >
+          <path d="M0,40 C360,4 1080,4 1440,40 L1440,40 L0,40 Z" />
+        </svg>
+      </div>
+
+      {/* Top Decorative Ambient Side Curves (Left and Right) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+          <circle cx="120" cy="120" r="80" />
+          <circle cx="120" cy="120" r="140" />
+          <circle cx="120" cy="120" r="200" />
+          <circle cx="120" cy="120" r="260" />
+        </svg>
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+          <circle cx="280" cy="120" r="80" />
+          <circle cx="280" cy="120" r="140" />
+          <circle cx="280" cy="120" r="200" />
+          <circle cx="280" cy="120" r="260" />
+        </svg>
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center z-10">
         {/* Brand Wordmark (matching reference: bold, lowercase, tight tracking) */}
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
           the kada
@@ -136,13 +172,13 @@ export function EcosystemSection() {
         </div>
 
         {/* Center Stage Card Container matching Reference Design in Kada Style */}
-        <div className="relative mx-auto max-w-xs sm:max-w-[380px]">
+        <div className="relative mx-auto max-w-xs sm:max-w-[390px]">
           <div
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-white rounded-[32px] sm:rounded-[36px] border border-slate-100 shadow-[0_12px_44px_rgba(0,0,0,0.06)] p-6 sm:p-8 pt-8 sm:pt-10 pb-7 sm:pb-9 text-center overflow-hidden transition-all duration-300"
+            className="relative bg-white rounded-[32px] sm:rounded-[38px] border border-slate-100/90 shadow-[0_16px_50px_rgba(0,0,0,0.07)] p-6 sm:p-8 pt-8 sm:pt-10 pb-7 sm:pb-9 text-center overflow-hidden transition-all duration-300"
           >
             {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
             <div className="relative h-28 sm:h-32 flex items-center justify-center mb-5 select-none">
@@ -151,7 +187,7 @@ export function EcosystemSection() {
                 type="button"
                 onClick={handlePrev}
                 aria-label={`Previous: ${prevProduct.name}`}
-                className="absolute -left-7 sm:-left-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-75 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+                className="absolute -left-7 sm:-left-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
               >
                 <img
                   src={prevProduct.logo}
@@ -177,7 +213,7 @@ export function EcosystemSection() {
                 type="button"
                 onClick={handleNext}
                 aria-label={`Next: ${nextProduct.name}`}
-                className="absolute -right-7 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-75 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+                className="absolute -right-7 sm:-right-8 w-20 h-20 sm:w-24 sm:h-24 rounded-[22px] sm:rounded-[26px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
               >
                 <img
                   src={nextProduct.logo}

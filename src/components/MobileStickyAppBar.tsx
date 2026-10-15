@@ -26,35 +26,32 @@ export function MobileStickyAppBar() {
 
   return (
     <div className="fixed bottom-3 left-3 right-3 sm:hidden z-50 pointer-events-auto animate-in slide-in-from-bottom-4 duration-300">
-      <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-slate-800/80 p-2.5 pl-3 pr-3 shadow-[0_16px_40px_rgba(15,23,42,0.5)]">
+      <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-black/95 backdrop-blur-xl border border-white/10 p-2.5 pl-3 pr-3 shadow-[0_16px_40px_rgba(0,0,0,0.55)]">
         {/* Left Side: App Icon + Descriptive Text */}
         <div className="flex items-center gap-2.5 min-w-0">
           {/* App Squircle Icon with The Kada Logo */}
-          <div className="h-10 w-10 shrink-0 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-md shadow-black/10">
+          <div className="h-9 w-9 shrink-0 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-sm shadow-black/10">
             <img
               src="/logo.png"
               alt="The Kada"
-              className="h-7 w-7 object-contain"
+              className="h-full w-full object-contain"
             />
           </div>
 
           <div className="min-w-0 leading-tight">
-            <p className="text-[12px] font-black text-white tracking-tight truncate">
-              Order on The Kada App
-            </p>
-            <p className="text-[11px] font-semibold text-slate-400 truncate">
-              Fast delivery · Best offers · Live GPS
+            <p className="text-[12px] font-bold text-white tracking-tight truncate">
+              Online ordering and much more on the app
             </p>
           </div>
         </div>
 
         {/* Right Side: CTA Pill + Optional Dismiss */}
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0">
           <Link
             to="/order"
-            className="rounded-full bg-primary hover:bg-primary-dark active:scale-95 text-white px-4 py-2 text-[12px] font-black shadow-md shadow-primary/30 transition-all tracking-tight whitespace-nowrap"
+            className="rounded-full bg-white hover:bg-slate-100 active:scale-95 text-[#E23744] px-3.5 py-1.5 text-[11px] font-black shadow-sm transition-all tracking-tight whitespace-nowrap"
           >
-            Order now
+            Order on app
           </Link>
           <button
             onClick={() => setVisible(false)}
