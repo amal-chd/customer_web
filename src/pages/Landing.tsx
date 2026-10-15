@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import {
   MapPin,
   Search,
@@ -176,6 +177,20 @@ export default function Landing() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  // Scroll-driven transforms for cinematic hero entrance and slide-up transition
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const videoScale = useTransform(heroScroll, [0, 1], shouldReduceMotion ? [1, 1] : [1.02, 1.2]);
+  const videoY = useTransform(heroScroll, [0, 1], shouldReduceMotion ? [0, 0] : [0, 50]);
+  const videoDim = useTransform(heroScroll, [0, 0.85], shouldReduceMotion ? [0.65, 0.65] : [0.6, 0.88]);
+  const contentY = useTransform(heroScroll, [0, 1], shouldReduceMotion ? [0, 0] : [0, -60]);
+  const contentOpacity = useTransform(heroScroll, [0, 0.68], shouldReduceMotion ? [1, 1] : [1, 0.05]);
 
   // Keep location in sync with global location updates across the app
   useEffect(() => {
@@ -276,9 +291,15 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
-      <section className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30">
+      <section
+        ref={heroRef}
+        className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30 select-none overflow-hidden"
+      >
         {/* Background Video Wrapper (Clipped to hero bounds) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          style={{ scale: videoScale, y: videoY }}
+          className="absolute inset-0 overflow-hidden pointer-events-none will-change-transform"
+        >
           <video
             autoPlay
             loop
@@ -291,33 +312,60 @@ export default function Landing() {
           </video>
 
           {/* Ambient Overlay Gradient (Zomato style) */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85" />
-        </div>
+          <motion.div
+            style={{ opacity: videoDim }}
+            className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85"
+          />
+        </motion.div>
 
         {/* ── Hero Center Content ── */}
-        <div className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12">
+        <motion.div
+          style={{ y: contentY, opacity: contentOpacity }}
+          className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12 will-change-transform"
+        >
           {/* Brand Wordmark (The Kada iconic bold centered logo) */}
-          <div className="flex items-center justify-center gap-3">
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-center gap-3"
+          >
             <Link
               to="/order"
               className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white drop-shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               The <span className="text-primary italic">Kada</span>
             </Link>
-          </div>
+          </motion.div>
 
-          <h1 className="mt-4 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white/95 tracking-tight drop-shadow-sm">
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-4 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white/95 tracking-tight drop-shadow-sm"
+          >
             Discover the best food &amp; drinks in{" "}
             <span className="text-white underline decoration-primary decoration-4 underline-offset-4">
               {currentLoc.label.split(",")[0]}
             </span>
-          </h1>
-          <p className="mt-2 text-sm sm:text-base md:text-lg font-medium text-white/85 max-w-lg mx-auto drop-shadow-sm">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-2 text-sm sm:text-base md:text-lg font-medium text-white/85 max-w-lg mx-auto drop-shadow-sm"
+          >
             Experience fast &amp; easy online ordering on The Kada app
-          </p>
+          </motion.p>
 
           {/* ── Iconic Dual-Part Search Box (Zomato Signature) ── */}
-          <div className="mt-8 sm:mt-10 max-w-3xl mx-auto relative" ref={dropdownRef}>
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 sm:mt-10 max-w-3xl mx-auto relative"
+            ref={dropdownRef}
+          >
             <form
               onSubmit={handleSearchSubmit}
               className="flex flex-col sm:flex-row items-center h-auto sm:h-14 w-full rounded-2xl bg-white shadow-2xl p-2 sm:p-2 sm:px-4 border border-white/20 divide-y sm:divide-y-0 sm:divide-x divide-slate-200"
@@ -498,8 +546,8 @@ export default function Landing() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Bottom spacer */}
         <div className="relative z-20 h-10" />
