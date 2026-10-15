@@ -296,21 +296,24 @@ export default function Landing() {
 
         {/* ── Hero Center Content ── */}
         <div className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12">
-          {/* Brand Wordmark (Zomato iconic bold centered logo) */}
+          {/* Brand Wordmark (The Kada iconic bold centered logo) */}
           <div className="flex items-center justify-center gap-3">
             <Link
               to="/order"
-              className="text-5xl sm:text-7xl lg:text-8xl font-black italic tracking-tighter text-white drop-shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white drop-shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              the kada
+              The <span className="text-primary italic">Kada</span>
             </Link>
           </div>
 
           <h1 className="mt-4 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white/95 tracking-tight drop-shadow-sm">
-            India&apos;s #1 food delivery app
+            Discover the best food &amp; drinks in{" "}
+            <span className="text-white underline decoration-primary decoration-4 underline-offset-4">
+              {currentLoc.label.split(",")[0]}
+            </span>
           </h1>
           <p className="mt-2 text-sm sm:text-base md:text-lg font-medium text-white/85 max-w-lg mx-auto drop-shadow-sm">
-            Experience fast &amp; easy online ordering on the Kada app
+            Experience fast &amp; easy online ordering on The Kada app
           </p>
 
           {/* ── Iconic Dual-Part Search Box (Zomato Signature) ── */}

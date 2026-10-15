@@ -1,9 +1,7 @@
-import { motion } from "framer-motion";
-
 export function BetterFoodSection() {
   return (
     <section className="relative w-full overflow-hidden bg-white pt-10 sm:pt-16 pb-12 sm:pb-16 z-20 select-none">
-      {/* ── Floating Playful Food Stickers (Zomato Signature) ── */}
+      {/* ── Floating Playful Food Stickers (Smooth multi-speed float keyframes) ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         {/* 1. Fresh Basil Leaf (Top Left) */}
         <div className="absolute top-4 sm:top-8 left-[18%] sm:left-[26%] w-7 h-7 sm:w-10 sm:h-10 animate-float-slow opacity-95">
@@ -66,26 +64,33 @@ export function BetterFoodSection() {
         </div>
       </div>
 
-      {/* ── Section Content ── */}
+      {/* ── Section Content in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-xl px-4 sm:px-6 text-center">
-        <h2 className="text-3xl sm:text-5xl font-black text-[#E23744] tracking-tight leading-tight">
-          Better food for<br />more people
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
+          The Kada Quality
+        </span>
+
+        <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+          Better food for{" "}
+          <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            everyone
+          </span>
         </h2>
 
         <p className="mt-3 sm:mt-4 text-xs sm:text-base font-semibold text-slate-500 max-w-md mx-auto leading-relaxed">
-          For over a decade, we&apos;ve enabled our customers to discover new tastes, delivered right to their doorstep
+          Connecting you with authentic restaurants, cloud kitchens, and iconic food spots delivered fresh across the state
         </p>
 
-        {/* ── Stacked & Tilted Playful Stat Badges (Zomato Signature) ── */}
+        {/* ── Stacked & Tilted Playful Stat Badges in The Kada Royal Blue Palette ── */}
         <div className="relative mx-auto mt-10 sm:mt-12 w-full max-w-xs sm:max-w-sm h-52 sm:h-60">
-          {/* Card 1: 3,00,000+ restaurants (Top-Left, tilted -2deg) */}
-          <div className="absolute top-0 left-0 z-10 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3 sm:py-3.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-slate-100/90 transform -rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300 w-[240px] sm:w-[260px]">
+          {/* Card 1: 500+ Verified Restaurants (Top-Left, tilted -2deg) */}
+          <div className="absolute top-0 left-0 z-10 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3 sm:py-3.5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] border border-slate-100 transform -rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-300 w-[240px] sm:w-[260px]">
             <div className="text-left">
               <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                3,00,000+
+                500+
               </p>
-              <p className="text-[11px] sm:text-xs font-bold text-slate-400">
-                restaurants
+              <p className="text-[11px] sm:text-xs font-bold text-slate-500">
+                top restaurants
               </p>
             </div>
             <div className="h-10 w-10 shrink-0">
@@ -97,32 +102,32 @@ export function BetterFoodSection() {
             </div>
           </div>
 
-          {/* Card 2: 800+ cities (Tilted +4.5deg, overlapping right) */}
-          <div className="absolute top-12 sm:top-14 right-0 z-20 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3 sm:py-3.5 shadow-[0_12px_36px_rgba(0,0,0,0.1)] border border-slate-100/90 transform rotate-[4.5deg] hover:rotate-0 hover:scale-105 transition-all duration-300 w-[200px] sm:w-[220px]">
+          {/* Card 2: 14 Districts Covered (Tilted +4.5deg, overlapping right) */}
+          <div className="absolute top-12 sm:top-14 right-0 z-20 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3 sm:py-3.5 shadow-[0_12px_36px_rgba(37,99,235,0.08)] border border-blue-50 transform rotate-[4.5deg] hover:rotate-0 hover:scale-105 transition-all duration-300 w-[205px] sm:w-[225px]">
             <div className="text-left">
-              <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                800+
+              <p className="text-xl sm:text-2xl font-black text-primary tracking-tight">
+                14 Districts
               </p>
-              <p className="text-[11px] sm:text-xs font-bold text-slate-400">
-                cities
+              <p className="text-[11px] sm:text-xs font-bold text-slate-500">
+                across Kerala
               </p>
             </div>
             <div className="h-10 w-10 shrink-0">
               <img
                 src="/zomato_assets/pin_icon.png"
-                alt="Cities"
+                alt="Districts"
                 className="w-full h-full object-contain"
               />
             </div>
           </div>
 
-          {/* Card 3: 3 billion+ orders delivered (Tilted -1deg, overlapping bottom) */}
-          <div className="absolute top-26 sm:top-30 left-3 sm:left-5 z-30 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3 sm:py-3.5 shadow-[0_14px_40px_rgba(0,0,0,0.12)] border border-slate-100/90 transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300 w-[250px] sm:w-[270px]">
+          {/* Card 3: 1 Million+ orders delivered (Tilted -1deg, overlapping bottom) */}
+          <div className="absolute top-26 sm:top-30 left-3 sm:left-5 z-30 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 sm:px-5 py-3 sm:py-3.5 shadow-[0_14px_40px_rgba(15,23,42,0.08)] border border-slate-100 transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300 w-[250px] sm:w-[270px]">
             <div className="text-left">
               <p className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                3 billion+
+                1 Million+
               </p>
-              <p className="text-[11px] sm:text-xs font-bold text-slate-400">
+              <p className="text-[11px] sm:text-xs font-bold text-slate-500">
                 orders delivered
               </p>
             </div>

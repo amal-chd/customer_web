@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 interface FeatureTile {
   id: string;
   name: string;
   image: string;
   to: string;
-  tag?: string;
 }
 
 const APP_FEATURES: FeatureTile[] = [
@@ -18,7 +17,7 @@ const APP_FEATURES: FeatureTile[] = [
   },
   {
     id: "schedule",
-    name: "Schedule your order",
+    name: "Schedule Order",
     image: "/zomato_assets/schedule_order.png",
     to: "/order",
   },
@@ -30,7 +29,7 @@ const APP_FEATURES: FeatureTile[] = [
   },
   {
     id: "healthy",
-    name: "Healthy",
+    name: "Healthy Bowls",
     image: "/zomato_assets/healthy.png",
     to: "/search?q=Healthy",
   },
@@ -42,7 +41,7 @@ const APP_FEATURES: FeatureTile[] = [
   },
   {
     id: "gourmet",
-    name: "Gourmet",
+    name: "Gourmet Dine",
     image: "/zomato_assets/gourmet.png",
     to: "/search?q=Gourmet",
   },
@@ -54,7 +53,7 @@ const APP_FEATURES: FeatureTile[] = [
   },
   {
     id: "offers",
-    name: "Offers",
+    name: "Super Offers",
     image: "/zomato_assets/offers.png",
     to: "/order",
   },
@@ -68,25 +67,35 @@ const APP_FEATURES: FeatureTile[] = [
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden rounded-t-[36px] sm:rounded-t-[48px] bg-[#FFF5F6] border-t border-rose-100/70 pt-12 sm:pt-16 pb-14 sm:pb-20 select-none">
-      {/* ── Section Header ── */}
+    <section className="relative overflow-hidden rounded-t-[36px] sm:rounded-t-[48px] bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white border-t border-blue-100/60 pt-12 sm:pt-16 pb-14 sm:pb-20 select-none">
+      {/* ── Section Header in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-xl px-4 sm:px-6 text-center">
-        <h2 className="text-3xl sm:text-5xl font-black text-[#E23744] tracking-tight leading-tight">
-          What&apos;s waiting for<br />you on the app?
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
+          <Sparkles className="h-3.5 w-3.5" />
+          The Kada Experience
+        </span>
+
+        <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+          What&apos;s waiting for you on the{" "}
+          <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            Kada app
+          </span>
+          ?
         </h2>
+
         <p className="mt-3 sm:mt-4 text-xs sm:text-base font-semibold text-slate-500 max-w-md mx-auto leading-relaxed">
-          Our app is packed with features that enable you to experience food delivery like never before
+          Our app is packed with features that enable you to experience hyper-local food delivery & dining like never before
         </p>
       </div>
 
-      {/* ── 3-Column Staggered App Tiles Grid (Zomato Mobile Signature) ── */}
+      {/* ── 3-Column Staggered App Tiles Grid in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-xs sm:max-w-md px-4 mt-8 sm:mt-10">
         <div className="grid grid-cols-3 gap-3 sm:gap-4 items-stretch">
           {APP_FEATURES.map((item) => (
             <Link
               key={item.id}
               to={item.to}
-              className="group flex flex-col items-center justify-between p-3 sm:p-4 rounded-2xl bg-white border border-rose-100/60 shadow-[0_4px_16px_rgba(226,55,68,0.06)] hover:shadow-[0_8px_24px_rgba(226,55,68,0.12)] hover:-translate-y-1 active:scale-95 transition-all duration-200 text-center aspect-square"
+              className="group flex flex-col items-center justify-between p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 hover:-translate-y-1 active:scale-95 transition-all duration-200 text-center aspect-square"
             >
               <div className="flex-1 flex items-center justify-center w-full">
                 <div className="h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center transform group-hover:scale-105 transition-transform">
@@ -99,7 +108,7 @@ export function AppFeaturesShowcase() {
                 </div>
               </div>
 
-              <span className="text-[11px] sm:text-xs font-black text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1">
+              <span className="text-[11px] sm:text-xs font-black text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
                 {item.name}
               </span>
             </Link>
@@ -107,8 +116,8 @@ export function AppFeaturesShowcase() {
         </div>
 
         {/* Bottom Tagline */}
-        <p className="text-center text-slate-800 font-black text-base sm:text-lg mt-8 sm:mt-10 tracking-tight">
-          ...and a lot more
+        <p className="text-center text-slate-700 font-extrabold text-sm sm:text-base mt-8 sm:mt-10 tracking-tight">
+          ...and a lot more features inside The Kada app
         </p>
       </div>
     </section>

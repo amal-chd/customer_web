@@ -16,7 +16,6 @@ export function MobileStickyAppBar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show immediately or after tiny scroll
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -27,22 +26,24 @@ export function MobileStickyAppBar() {
 
   return (
     <div className="fixed bottom-3 left-3 right-3 sm:hidden z-50 pointer-events-auto animate-in slide-in-from-bottom-4 duration-300">
-      <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-[#0B0B0D]/95 backdrop-blur-xl border border-white/10 p-2.5 pl-3 pr-3 shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+      <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-slate-800/80 p-2.5 pl-3 pr-3 shadow-[0_16px_40px_rgba(15,23,42,0.5)]">
         {/* Left Side: App Icon + Descriptive Text */}
         <div className="flex items-center gap-2.5 min-w-0">
-          {/* App Squircle Icon */}
-          <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-rose-500 to-[#E23744] p-1.5 flex items-center justify-center shadow-md">
-            <span className="text-white font-black italic tracking-tighter text-xs">
-              KADA
-            </span>
+          {/* App Squircle Icon with The Kada Logo */}
+          <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-primary to-indigo-600 p-1.5 flex items-center justify-center shadow-md">
+            <img
+              src="/logo.png"
+              alt="The Kada"
+              className="h-7 w-7 object-contain"
+            />
           </div>
 
           <div className="min-w-0 leading-tight">
-            <p className="text-[12px] font-bold text-white tracking-tight truncate">
-              Online ordering and
+            <p className="text-[12px] font-black text-white tracking-tight truncate">
+              Order on The Kada App
             </p>
-            <p className="text-[11px] font-semibold text-white/75 truncate">
-              much more on the app
+            <p className="text-[11px] font-semibold text-slate-400 truncate">
+              Fast delivery · Best offers · Live GPS
             </p>
           </div>
         </div>
@@ -51,14 +52,14 @@ export function MobileStickyAppBar() {
         <div className="flex items-center gap-1 shrink-0">
           <Link
             to="/order"
-            className="rounded-full bg-white px-4 py-2 text-[12px] font-black text-[#E23744] hover:bg-slate-100 active:scale-95 transition-all shadow-md tracking-tight whitespace-nowrap"
+            className="rounded-full bg-primary hover:bg-primary-dark active:scale-95 text-white px-4 py-2 text-[12px] font-black shadow-md shadow-primary/30 transition-all tracking-tight whitespace-nowrap"
           >
-            Order on app
+            Order now
           </Link>
           <button
             onClick={() => setVisible(false)}
             aria-label="Dismiss app banner"
-            className="p-1 text-white/40 hover:text-white transition-colors"
+            className="p-1 text-slate-400 hover:text-white transition-colors"
           >
             <X className="h-3.5 w-3.5" />
           </button>
