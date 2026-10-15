@@ -289,11 +289,11 @@ export default function Landing() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-clip">
+    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className="sticky top-0 z-10 min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 select-none"
+        className="relative z-10 min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 select-none"
       >
         {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -541,7 +541,7 @@ export default function Landing() {
       </section>
 
       {/* ─── SLIDE-UP CURVED WHITE SHEET (NATURAL FLOW OVER HERO) ─── */}
-      <div className="relative z-20 -mt-8 sm:-mt-14 rounded-t-[36px] sm:rounded-t-[48px] bg-white shadow-[0_-24px_60px_rgba(0,0,0,0.16)] overflow-hidden">
+      <div className="relative z-20 -mt-8 sm:-mt-14 rounded-t-[36px] sm:rounded-t-[48px] bg-white shadow-[0_-24px_60px_rgba(0,0,0,0.16)]">
         {/* 1. Better food for everyone (Quality & Stats) */}
         <BetterFoodSection />
 
