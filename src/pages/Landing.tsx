@@ -323,26 +323,11 @@ export default function Landing() {
           style={{ y: contentY, opacity: contentOpacity }}
           className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12 will-change-transform"
         >
-          {/* Brand Wordmark (The Kada iconic bold centered logo) */}
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center gap-3"
-          >
-            <Link
-              to="/order"
-              className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white drop-shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
-            >
-              The <span className="text-primary italic">Kada</span>
-            </Link>
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white/95 tracking-tight drop-shadow-sm"
+            className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white/95 tracking-tight drop-shadow-md"
           >
             Discover the best food &amp; drinks in{" "}
             <span className="text-white underline decoration-primary decoration-4 underline-offset-4">
@@ -553,10 +538,10 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── SLIDE-UP CURVED WHITE SHEET (ZOMATO SIGNATURE SCROLL ARCHITECTURE) ─── */}
-      <div className="relative z-20 -mt-8 sm:-mt-14 rounded-t-[36px] sm:rounded-t-[48px] bg-white shadow-[0_-20px_60px_rgba(0,0,0,0.14)] overflow-hidden">
-        {/* ─── 1. BETTER FOOD FOR MORE PEOPLE (FLOATING STICKERS & TILTED STATS) ─── */}
+      {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-20 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
         <BetterFoodSection />
+      </div>
 
         {/* ─── 2. COLLECTIONS SECTION ─────────────────────── */}
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden">

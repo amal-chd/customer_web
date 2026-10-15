@@ -169,8 +169,42 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-gradient-to-b from-[#fafcff] via-[#f5f8fc] to-[#eef3f9] border-y border-slate-200/90 py-16 sm:py-24 ${className}`}
+      className={`relative overflow-hidden rounded-t-[44px] sm:rounded-t-[60px] lg:rounded-t-[72px] bg-gradient-to-b from-[#fafcff] via-[#f5f8fc] to-[#eef3f9] border-t border-slate-200/80 shadow-[0_-16px_48px_rgba(15,23,42,0.04)] -mt-8 sm:-mt-12 pt-16 sm:pt-24 pb-16 sm:pb-24 z-20 ${className}`}
     >
+      {/* Top Side Curves Transition SVG */}
+      <div className="absolute top-0 inset-x-0 -translate-y-[99%] overflow-hidden leading-none pointer-events-none">
+        <svg
+          viewBox="0 0 1440 40"
+          fill="none"
+          preserveAspectRatio="none"
+          className="w-full h-6 sm:h-10 text-[#fafcff] fill-current block"
+        >
+          <path d="M0,40 C360,4 1080,4 1440,40 L1440,40 L0,40 Z" />
+        </svg>
+      </div>
+
+      {/* Top Decorative Ambient Side Curves (Left and Right) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+          <circle cx="100" cy="100" r="140" strokeDasharray="6 6" />
+          <circle cx="100" cy="100" r="190" />
+          <circle cx="100" cy="100" r="240" strokeDasharray="4 4" />
+        </svg>
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
+      >
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+          <circle cx="300" cy="100" r="140" strokeDasharray="6 6" />
+          <circle cx="300" cy="100" r="190" />
+          <circle cx="300" cy="100" r="240" strokeDasharray="4 4" />
+        </svg>
+      </div>
+
       {/* Background Decorative Ambient Blurs */}
       <div
         aria-hidden="true"
