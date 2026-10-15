@@ -169,7 +169,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-gradient-to-b from-[#fafcff] via-[#f5f8fc] to-[#eef3f9] border-t border-slate-200/80 py-16 sm:py-24 z-10 ${className}`}
+      className={`relative overflow-hidden bg-gradient-to-b from-[#FFF5F6] via-[#FFF0F2] to-white py-14 sm:py-20 z-10 w-full ${className}`}
     >
 
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
@@ -177,7 +177,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
         aria-hidden="true"
         className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
       >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-rose-400/25 fill-none" strokeWidth="1.2">
           <circle cx="100" cy="100" r="140" strokeDasharray="6 6" />
           <circle cx="100" cy="100" r="190" />
           <circle cx="100" cy="100" r="240" strokeDasharray="4 4" />
@@ -187,7 +187,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
         aria-hidden="true"
         className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
       >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-primary/20 fill-none" strokeWidth="1.2">
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-rose-400/25 fill-none" strokeWidth="1.2">
           <circle cx="300" cy="100" r="140" strokeDasharray="6 6" />
           <circle cx="300" cy="100" r="190" />
           <circle cx="300" cy="100" r="240" strokeDasharray="4 4" />

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Sparkles } from "lucide-react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface FeatureTile {
   id: string;
@@ -66,34 +66,9 @@ const APP_FEATURES: FeatureTile[] = [
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const tileVariants: Variants = {
-  hidden: { opacity: 0, y: 18, scale: 0.94 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 280,
-      damping: 24,
-    },
-  },
-};
-
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/60 via-slate-50/40 to-white border-t border-blue-100/50 py-14 sm:py-20 select-none z-10">
+    <section className="relative overflow-hidden bg-white py-12 sm:py-16 select-none z-10 w-full">
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div
         aria-hidden="true"
@@ -117,13 +92,7 @@ export function AppFeaturesShowcase() {
       </div>
 
       {/* ── Section Header in The Kada Style ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 mx-auto max-w-xl px-4 sm:px-6 text-center"
-      >
+      <div className="relative z-10 mx-auto max-w-xl px-4 sm:px-6 text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
           <Sparkles className="h-3.5 w-3.5" />
           The Kada Experience
@@ -140,31 +109,24 @@ export function AppFeaturesShowcase() {
         <p className="mt-3 sm:mt-4 text-xs sm:text-base font-semibold text-slate-500 max-w-md mx-auto leading-relaxed">
           Our app is packed with features that enable you to experience hyper-local food delivery & dining like never before
         </p>
-      </motion.div>
+      </div>
 
       {/* ── Staggered App Tiles Grid in The Kada Style ── */}
-      <div className="relative z-10 mx-auto max-w-xs sm:max-w-md px-4 mt-8 sm:mt-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-3 gap-3 sm:gap-4 items-stretch"
-        >
+      <div className="relative z-10 mx-auto max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 mt-8 sm:mt-12">
+        <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-5 items-stretch">
           {APP_FEATURES.map((item) => (
             <motion.div
               key={item.id}
-              variants={tileVariants}
               whileHover={{ y: -6, scale: 1.03 }}
               whileTap={{ scale: 0.96 }}
               className="h-full"
             >
               <Link
                 to={item.to}
-                className="group flex flex-col items-center justify-between p-2.5 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-shadow duration-200 text-center min-h-[105px] sm:min-h-[120px] w-full"
+                className="group flex flex-col items-center justify-between p-2.5 sm:p-3.5 md:p-4 rounded-2xl bg-white/95 backdrop-blur-sm border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.04)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.12)] hover:border-primary/40 transition-all duration-200 text-center min-h-[105px] sm:min-h-[120px] md:min-h-[130px] w-full"
               >
                 <div className="flex-1 flex items-center justify-center w-full">
-                  <div className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
+                  <div className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 flex items-center justify-center transform group-hover:scale-105 transition-transform duration-200">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -174,24 +136,18 @@ export function AppFeaturesShowcase() {
                   </div>
                 </div>
 
-                <span className="text-[11px] sm:text-xs font-bold text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
+                <span className="text-[11px] sm:text-xs md:text-sm font-bold text-slate-800 tracking-tight leading-tight line-clamp-2 mt-1 group-hover:text-primary transition-colors">
                   {item.name}
                 </span>
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Bottom Tagline */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center text-slate-700 font-extrabold text-sm sm:text-base mt-8 sm:mt-10 tracking-tight"
-        >
+        <p className="text-center text-slate-700 font-extrabold text-sm sm:text-base mt-8 sm:mt-10 tracking-tight">
           ...and a lot more features inside The Kada app
-        </motion.p>
+        </p>
       </div>
     </section>
   );

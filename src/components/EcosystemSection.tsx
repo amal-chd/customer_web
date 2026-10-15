@@ -119,7 +119,7 @@ export function EcosystemSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white border-t border-slate-100 py-16 sm:py-24 z-10">
+    <section className="relative overflow-hidden bg-[#F8FAFC] py-14 sm:py-20 z-10 w-full">
 
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div

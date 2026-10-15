@@ -540,13 +540,14 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── SLIDE-UP CURVED WHITE SHEET (NATURAL CONTINUOUS FLOW ACROSS ALL SECTIONS) ─── */}
-      <div className="relative z-20 -mt-8 sm:-mt-14 rounded-t-[36px] sm:rounded-t-[48px] bg-white shadow-[0_-20px_60px_rgba(0,0,0,0.12)]">
-        {/* 1. Better food for everyone (Quality & Stats) */}
+      {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-20 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
         <BetterFoodSection />
+      </div>
 
-        {/* 2. Curated City Collections */}
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 border-t border-slate-100 overflow-hidden w-full">
+      {/* ─── CARD 2: CURATED COLLECTIONS (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-30 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden w-full">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
             <div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
@@ -621,17 +622,25 @@ export default function Landing() {
             ))}
           </div>
         </section>
+      </div>
 
-        {/* 3. App Features Showcase */}
+      {/* ─── CARD 3: APP FEATURES SHOWCASE (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-40 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
         <AppFeaturesShowcase />
+      </div>
 
-        {/* 4. Ecosystem Showcase */}
+      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-50 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
         <EcosystemSection />
+      </div>
 
-        {/* 5. Get The Kada App Section */}
+      {/* ─── CARD 5: STANDARDIZED GET THE KADA APP SECTION (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-60 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-[#fafcff] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
         <GetAppSection />
+      </div>
 
-        {/* 6. Explore options near you (Accordions) */}
+      {/* ─── CARD 6: EXPLORE OPTIONS NEAR YOU (ACCORDIONS) ─── */}
+      <div className="relative z-70 w-full bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.18)] -mt-8 sm:-mt-12 overflow-hidden">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 space-y-4">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
             Explore options near you
