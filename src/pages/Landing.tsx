@@ -295,28 +295,30 @@ export default function Landing() {
         ref={heroRef}
         className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30 select-none"
       >
-        {/* Background Video Wrapper (Clipped to hero bounds) */}
-        <motion.div
-          style={{ scale: videoScale, y: videoY }}
-          className="absolute inset-0 overflow-hidden pointer-events-none will-change-transform"
-        >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="https://b.zmtcdn.com/web_assets/8313a97515fcb0447d2d77c276532a511583262271.png"
-            className="absolute inset-0 h-full w-full object-cover scale-105"
-          >
-            <source src="/food-hero.mp4" type="video/mp4" />
-          </video>
-
-          {/* Ambient Overlay Gradient (Zomato style) */}
+        {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
-            style={{ opacity: videoDim }}
-            className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85"
-          />
-        </motion.div>
+            style={{ scale: videoScale, y: videoY }}
+            className="absolute inset-0 will-change-transform"
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="https://b.zmtcdn.com/web_assets/8313a97515fcb0447d2d77c276532a511583262271.png"
+              className="absolute inset-0 h-full w-full object-cover scale-105"
+            >
+              <source src="/food-hero.mp4" type="video/mp4" />
+            </video>
+
+            {/* Ambient Overlay Gradient (Zomato style) */}
+            <motion.div
+              style={{ opacity: videoDim }}
+              className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85"
+            />
+          </motion.div>
+        </div>
 
         {/* ── Hero Center Content ── */}
         <motion.div
@@ -543,8 +545,9 @@ export default function Landing() {
         <BetterFoodSection />
       </div>
 
-        {/* ─── 2. COLLECTIONS SECTION ─────────────────────── */}
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden">
+      {/* ─── CARD 2: CURATED COLLECTIONS (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-30 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden w-full">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
@@ -619,18 +622,26 @@ export default function Landing() {
           ))}
         </div>
       </section>
+      </div>
 
-      {/* ─── 3. WHAT'S WAITING FOR YOU ON THE APP? (FEATURE SHOWCASE) ───── */}
-      <AppFeaturesShowcase />
+      {/* ─── CARD 3: APP FEATURES SHOWCASE (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-40 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-gradient-to-b from-blue-50/70 via-slate-50/50 to-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        <AppFeaturesShowcase />
+      </div>
 
-      {/* ─── 4. THE KADA ECOSYSTEM SECTION (MATCHING REFERENCE) ─────────── */}
-      <EcosystemSection />
+      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-50 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        <EcosystemSection />
+      </div>
 
-      {/* ─── 5. STANDARDIZED GET THE KADA APP SECTION (DYNAMIC PHONE MOCKUP, DUAL DISPATCH & QR) ─── */}
-      <GetAppSection />
+      {/* ─── CARD 5: STANDARDIZED GET THE KADA APP SECTION (ZOMATO-STYLE STEP-BY-STEP STACK) ─── */}
+      <div className="sticky top-0 z-60 min-h-[90vh] sm:min-h-screen w-full flex flex-col justify-center bg-[#fafcff] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.16)] -mt-8 sm:-mt-12 overflow-hidden">
+        <GetAppSection />
+      </div>
 
-      {/* ─── 6. EXPLORE OPTIONS NEAR YOU (ACCORDIONS) ──────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 space-y-4">
+      {/* ─── CARD 6: EXPLORE OPTIONS NEAR YOU (ACCORDIONS) ─── */}
+      <div className="relative z-70 w-full bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-24px_60px_rgba(0,0,0,0.18)] -mt-8 sm:-mt-12 overflow-hidden">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 space-y-4">
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
           Explore options near you
         </h2>
