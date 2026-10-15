@@ -62,8 +62,8 @@ export function SiteLayout() {
         className={cn(
           "transition-all duration-300 w-full",
           isTransparent
-            ? "fixed top-0 left-0 right-0 z-50"
-            : "sticky top-0 z-50 border-b",
+            ? "fixed top-0 left-0 right-0 z-[90]"
+            : "sticky top-0 z-[90] border-b",
           isTransparent
             ? (isHeaderSolid
                 ? "bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs py-2.5 sm:py-3 text-slate-900"

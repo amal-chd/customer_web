@@ -293,7 +293,7 @@ export default function Landing() {
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30 select-none overflow-hidden"
+        className="relative min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 z-30 select-none"
       >
         {/* Background Video Wrapper (Clipped to hero bounds) */}
         <motion.div
@@ -559,7 +559,7 @@ export default function Landing() {
         <BetterFoodSection />
 
         {/* ─── 2. COLLECTIONS SECTION ─────────────────────── */}
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
@@ -595,7 +595,7 @@ export default function Landing() {
             <Link
               key={c.id}
               to={c.to}
-              className="group relative snap-start shrink-0 w-[82vw] max-w-[320px] sm:w-auto h-76 sm:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
+              className="group relative snap-start shrink-0 w-[78vw] max-w-[290px] sm:w-auto h-[320px] sm:h-[360px] lg:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
             >
               <img
                 src={c.image}
@@ -603,10 +603,10 @@ export default function Landing() {
                 onError={(e) => handleFoodImageError(e, c.title)}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
 
               {/* Floating Badge Tag at top */}
-              <div className="absolute top-3 left-3 z-10">
+              <div className="absolute top-3.5 left-3.5 z-20">
                 <span
                   className={`inline-flex items-center rounded-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-xs ${c.badgeColor}`}
                 >
@@ -615,7 +615,7 @@ export default function Landing() {
               </div>
 
               {/* Card Content at bottom */}
-              <div className="relative z-10 p-4 sm:p-5 text-white">
+              <div className="relative z-20 p-4 sm:p-5 text-white">
                 <h3 className="text-base sm:text-lg font-black tracking-tight leading-snug drop-shadow-sm group-hover:text-blue-200 transition-colors">
                   {c.title}
                 </h3>
