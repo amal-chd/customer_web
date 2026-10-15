@@ -179,11 +179,29 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Mobile Dedicated Zomato-Style App Mockup (Screenshot 8) */}
+        <div className="lg:hidden flex flex-col items-center text-center mb-10">
+          <div className="w-64 max-w-[78vw] mx-auto mb-4 drop-shadow-2xl animate-float-slow">
+            <img
+              src="/zomato_assets/phone_mockups.png"
+              alt="The Kada Mobile App"
+              className="w-full h-auto object-contain"
+              loading="lazy"
+            />
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            Download the app now!
+          </h3>
+          <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5 max-w-xs mx-auto">
+            Experience seamless food ordering with The Kada app
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* ─────────────────────────────────────────────────────────────
-              LEFT COLUMN: Interactive Living Phone Mockup
+              LEFT COLUMN: Interactive Living Phone Mockup (Desktop Only)
              ───────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
+          <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center">
             {/* Phone Screen Selector Tabs */}
             <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200 shadow-xs mb-6 max-w-full overflow-x-auto">
               <button

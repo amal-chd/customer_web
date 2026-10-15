@@ -31,6 +31,7 @@ import { Spinner } from "@/components/bits";
 import { getVendorOnboardingUrl } from "@/lib/urls";
 import { EcosystemSection } from "@/components/EcosystemSection";
 import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
+import { BetterFoodSection } from "@/components/BetterFoodSection";
 import { GetAppSection } from "@/components/GetAppSection";
 import { handleFoodImageError } from "@/lib/foodImages";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
@@ -301,15 +302,15 @@ export default function Landing() {
               to="/order"
               className="text-5xl sm:text-7xl lg:text-8xl font-black italic tracking-tighter text-white drop-shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              The Kada
+              the kada
             </Link>
           </div>
 
-          <p className="mt-4 text-xl sm:text-3xl lg:text-4xl font-extrabold text-white/95 tracking-tight drop-shadow-sm">
-            Discover the best food & drinks in{" "}
-            <span className="text-white underline decoration-primary decoration-4 underline-offset-4">
-              {currentLoc.label.split(",")[0]}
-            </span>
+          <h1 className="mt-4 text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white/95 tracking-tight drop-shadow-sm">
+            India&apos;s #1 food delivery app
+          </h1>
+          <p className="mt-2 text-sm sm:text-base md:text-lg font-medium text-white/85 max-w-lg mx-auto drop-shadow-sm">
+            Experience fast &amp; easy online ordering on the Kada app
           </p>
 
           {/* ── Iconic Dual-Part Search Box (Zomato Signature) ── */}
@@ -501,8 +502,13 @@ export default function Landing() {
         <div className="relative z-20 h-10" />
       </section>
 
-      {/* ─── 2. COLLECTIONS SECTION ─────────────────────── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {/* ─── SLIDE-UP CURVED WHITE SHEET (ZOMATO SIGNATURE SCROLL ARCHITECTURE) ─── */}
+      <div className="relative z-20 -mt-8 sm:-mt-14 rounded-t-[36px] sm:rounded-t-[48px] bg-white shadow-[0_-20px_60px_rgba(0,0,0,0.14)] overflow-hidden">
+        {/* ─── 1. BETTER FOOD FOR MORE PEOPLE (FLOATING STICKERS & TILTED STATS) ─── */}
+        <BetterFoodSection />
+
+        {/* ─── 2. COLLECTIONS SECTION ─────────────────────── */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
@@ -693,6 +699,7 @@ export default function Landing() {
           )}
         </div>
       </section>
+      </div>
 
       {/* Interactive Map Picker Modal */}
       {showMapModal && (

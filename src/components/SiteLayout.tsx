@@ -7,6 +7,7 @@ import { getVendorOnboardingUrl } from "@/lib/urls";
 import { toast } from "@/components/Toast";
 import { Footer } from "./Footer";
 import { JoinUsDropdown, JOIN_PARTNERS } from "./JoinUsDropdown";
+import { MobileStickyAppBar } from "./MobileStickyAppBar";
 
 const NAV = [
   { label: "Home", to: "/" },
@@ -253,6 +254,9 @@ export function SiteLayout() {
 
       {/* Unified Professional Footer */}
       <Footer />
+
+      {/* Floating Bottom App Bar (Zomato Mobile Signature) */}
+      <MobileStickyAppBar />
     </div>
   );
 }
