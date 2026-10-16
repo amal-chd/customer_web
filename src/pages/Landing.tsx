@@ -642,13 +642,13 @@ export default function Landing() {
         <AppFeaturesShowcase />
       </div>
 
-      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SLATE/ICE #F8FAFC) ─── */}
-      <div className="sticky top-0 z-40 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
+      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (CRISP WHITE LIKE ZOMATO ETERNAL) ─── */}
+      <div className="sticky top-0 z-40 w-full min-h-[420px] sm:min-h-[460px] md:min-h-[500px] flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-5 sm:pt-6 pb-6 sm:pb-8">
         <EcosystemSection />
       </div>
 
-      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (CRISP WHITE) ─── */}
-      <div className="sticky top-0 z-50 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
+      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SOFT ROYAL TINT #EFF6FF) ─── */}
+      <div className="sticky top-0 z-50 w-full min-h-[440px] sm:min-h-[480px] md:min-h-[520px] flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-6 pb-8 sm:pb-12">
         <GetAppSection />
       </div>
 

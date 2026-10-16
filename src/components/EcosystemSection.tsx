@@ -118,9 +118,29 @@ export function EcosystemSection() {
     );
   };
 
-  return (
-    <section className="relative overflow-hidden bg-transparent pt-1 pb-4 sm:pb-6 z-10 w-full">
+  const renderAppIcon = (prod: EcosystemProduct) => {
+    if (prod.id === "the-kada") {
+      return (
+        <div className="w-full h-full bg-gradient-to-br from-blue-600 via-primary to-indigo-700 p-2.5 sm:p-3 flex items-center justify-center">
+          <img
+            src={prod.logo}
+            alt={prod.name}
+            className="w-full h-full object-contain filter brightness-0 invert"
+          />
+        </div>
+      );
+    }
+    return (
+      <img
+        src={prod.logo}
+        alt={prod.name}
+        className="w-full h-full object-cover scale-110"
+      />
+    );
+  };
 
+  return (
+    <section className="relative overflow-hidden bg-transparent pt-1 pb-2 sm:pb-4 z-10 w-full select-none">
       {/* Top Decorative Ambient Side Curves (Left and Right) */}
       <div
         aria-hidden="true"
@@ -146,86 +166,75 @@ export function EcosystemSection() {
       </div>
 
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center z-10">
-        {/* Brand Wordmark (matching reference: bold, lowercase, tight tracking) */}
-        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight lowercase">
+        {/* Brand Wordmark (matching Zomato eternal reference: bold, lowercase, tight tracking) */}
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight lowercase">
           the kada
         </h2>
 
         {/* Subtitle flanked by horizontal lines */}
-        <div className="flex items-center justify-center gap-3 sm:gap-5 mt-1.5 sm:mt-2 mb-4 sm:mb-6 px-4">
-          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
-          <p className="text-[10px] sm:text-xs md:text-sm font-extrabold tracking-[0.22em] text-slate-400 uppercase text-center whitespace-nowrap">
+        <div className="flex items-center justify-center gap-3 sm:gap-4 mt-1 mb-3.5 sm:mb-5 px-4">
+          <div className="h-px bg-slate-200 flex-1 max-w-[50px] sm:max-w-[100px]" />
+          <p className="text-[10px] sm:text-xs font-black tracking-[0.2em] text-slate-400 uppercase text-center whitespace-nowrap">
             POWERING INDIA&apos;S CHANGING LIFESTYLE
           </p>
-          <div className="h-px bg-slate-200 flex-1 max-w-[60px] sm:max-w-[120px]" />
+          <div className="h-px bg-slate-200 flex-1 max-w-[50px] sm:max-w-[100px]" />
         </div>
 
-        {/* Center Stage Card Container matching Reference Design in Kada Style */}
-        <div className="relative mx-auto max-w-xs sm:max-w-[390px]">
+        {/* Center Stage Card Container matching Reference Design in Zomato Style */}
+        <div className="relative mx-auto max-w-[280px] sm:max-w-[330px]">
           <div
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-white rounded-[24px] sm:rounded-[34px] border border-slate-100/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)] p-3.5 sm:p-7 pt-4 sm:pt-7 pb-4 sm:pb-6 text-center overflow-hidden transition-all duration-300"
+            className="relative bg-white rounded-3xl border border-slate-100 shadow-[0_10px_35px_rgba(0,0,0,0.06)] p-5 sm:p-6 text-center overflow-hidden transition-all duration-300"
           >
             {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
-            <div className="relative h-20 sm:h-28 flex items-center justify-center mb-2.5 sm:mb-4 select-none">
-              {/* Peeking Left App Icon (Click to select previous) */}
+            <div className="relative h-24 sm:h-28 flex items-center justify-center mb-3 select-none">
+              {/* Left Peeking Icon (Tap to go previous) */}
               <button
                 type="button"
                 onClick={handlePrev}
                 aria-label={`Previous: ${prevProduct.name}`}
-                className="absolute -left-5 sm:-left-8 w-15 h-15 sm:w-22 sm:h-22 rounded-[16px] sm:rounded-[24px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+                className="absolute -left-7 sm:-left-9 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden opacity-35 hover:opacity-75 transition-all cursor-pointer shadow-sm"
               >
-                <img
-                  src={prevProduct.logo}
-                  alt={prevProduct.name}
-                  className="w-full h-full object-cover rounded-[16px] sm:rounded-[24px]"
-                />
+                {renderAppIcon(prevProduct)}
               </button>
 
               {/* Center Active App Icon */}
               {renderCardLink(
-                <div className="relative z-10 w-18 h-18 sm:w-26 sm:h-26 rounded-[20px] sm:rounded-[28px] overflow-hidden shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-105 group bg-white">
-                  <img
-                    key={activeProduct.id}
-                    src={activeProduct.logo}
-                    alt={activeProduct.name}
-                    className="w-full h-full object-cover rounded-[20px] sm:rounded-[28px] animate-in fade-in duration-300"
-                  />
+                <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-105 group bg-white flex items-center justify-center">
+                  <div key={activeProduct.id} className="w-full h-full animate-in fade-in duration-300 flex items-center justify-center">
+                    {renderAppIcon(activeProduct)}
+                  </div>
                 </div>
               )}
 
-              {/* Peeking Right App Icon (Click to select next) */}
+              {/* Right Peeking Icon (Tap to go next) */}
               <button
                 type="button"
                 onClick={handleNext}
                 aria-label={`Next: ${nextProduct.name}`}
-                className="absolute -right-5 sm:-right-8 w-15 h-15 sm:w-22 sm:h-22 rounded-[16px] sm:rounded-[24px] overflow-hidden opacity-40 hover:opacity-80 transition-all duration-300 cursor-pointer shadow-sm scale-90 -translate-y-0.5"
+                className="absolute -right-7 sm:-right-9 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden opacity-35 hover:opacity-75 transition-all cursor-pointer shadow-sm"
               >
-                <img
-                  src={nextProduct.logo}
-                  alt={nextProduct.name}
-                  className="w-full h-full object-cover rounded-[16px] sm:rounded-[24px]"
-                />
+                {renderAppIcon(nextProduct)}
               </button>
             </div>
 
             {/* App Title */}
             {renderCardLink(
-              <span className="inline-block font-black text-lg sm:text-[24px] text-slate-900 tracking-tight lowercase hover:text-primary transition-colors">
+              <span className="inline-block font-black text-lg sm:text-xl text-slate-900 tracking-tight lowercase hover:text-primary transition-colors">
                 {activeProduct.name}
               </span>
             )}
 
             {/* App Description */}
-            <p className="mt-1 sm:mt-1.5 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[260px] sm:max-w-[290px] mx-auto leading-relaxed min-h-[30px] sm:min-h-[36px]">
+            <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[240px] mx-auto leading-relaxed min-h-[34px]">
               {activeProduct.desc}
             </p>
 
             {/* Direct Call to Action with Brand Colored Arrow */}
-            <div className="mt-2.5 sm:mt-4">
+            <div className="mt-3">
               {renderCardLink(
                 <span className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
                   <span>{activeProduct.cta}</span>
@@ -238,43 +247,6 @@ export function EcosystemSection() {
                 </span>
               )}
             </div>
-          </div>
-
-          {/* Slider Controls: Arrows and Dots */}
-          <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous ecosystem app"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            <div className="flex items-center gap-1.5">
-              {PRODUCTS.map((prod, index) => (
-                <button
-                  key={prod.id}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  aria-label={`Go to ${prod.name}`}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    index === activeIndex
-                      ? "w-6 bg-slate-900"
-                      : "w-2 bg-slate-200 hover:bg-slate-300"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next ecosystem app"
-              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all cursor-pointer"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>
