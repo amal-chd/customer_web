@@ -441,12 +441,12 @@ export default function Landing() {
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (SHADE 1: ICE GLACIER BLUE) ─── */}
-      <div className="sticky top-0 z-10 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-b from-[#F0F9FF] via-[#E0F2FE] to-[#BAE6FD] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-6 sm:-mt-8 overflow-hidden transform-gpu will-change-transform pb-8 sm:pb-4">
+      <div className="sticky top-14 sm:top-16 z-10 w-full flex flex-col justify-start bg-gradient-to-b from-[#F0F9FF] via-[#E0F2FE] to-[#D5ECFD] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] border-t border-sky-200/50 overflow-hidden transform-gpu will-change-transform py-4 sm:py-6">
         <BetterFoodSection />
       </div>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SHADE 2: ROYAL PERIWINKLE BLUE) ─── */}
-      <div className="sticky top-0 z-20 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-b from-[#EEF2FF] via-[#E0E7FF] to-[#D5E3FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.13)] overflow-hidden relative py-3 sm:py-6 transform-gpu will-change-transform pb-10 sm:pb-6">
+      <div className="sticky top-14 sm:top-16 z-20 w-full flex flex-col justify-start bg-gradient-to-b from-[#EEF2FF] via-[#E0E7FF] to-[#D5E3FF] shadow-[0_-20px_50px_rgba(0,0,0,0.13)] border-t border-indigo-200/50 overflow-hidden relative py-4 sm:py-6 transform-gpu will-change-transform">
         {/* Special Architectural Blueprint Grid Pattern */}
         <div
           aria-hidden="true"
@@ -552,19 +552,19 @@ export default function Landing() {
       </div>
 
       {/* ─── CARD 3: APP FEATURES SHOWCASE (SHADE 3: CERULEAN SKY BLUE - 100% OPAQUE) ─── */}
-      <div className="sticky top-0 z-30 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-b from-[#E0F2FE] via-[#BAE6FD] to-[#A5F3FC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden transform-gpu will-change-transform pb-10 sm:pb-6">
+      <div className="sticky top-14 sm:top-16 z-30 w-full flex flex-col justify-start bg-gradient-to-b from-[#E0F2FE] via-[#BAE6FD] to-[#A5F3FC] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] border-t border-sky-200/50 overflow-hidden transform-gpu will-change-transform py-4 sm:py-6">
         <AppFeaturesShowcase />
       </div>
 
       {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SHADE 4: DEEP SAPPHIRE MIDNIGHT BLUE - SPECIAL SECTION - 100% OPAQUE) ─── */}
-      <div className="sticky top-0 z-40 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-br from-[#071329] via-[#0B2149] to-[#143B7A] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.22)] overflow-hidden transform-gpu will-change-transform pb-10 sm:pb-6">
+      <div className="sticky top-14 sm:top-16 z-40 w-full flex flex-col justify-start bg-gradient-to-br from-[#071329] via-[#0B2149] to-[#143B7A] shadow-[0_-25px_60px_rgba(0,0,0,0.4)] border-t border-cyan-500/30 overflow-hidden transform-gpu will-change-transform py-4 sm:py-6">
         <EcosystemSection />
       </div>
 
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SLATE-ICE AZURE BLUE - 100% OPAQUE) ─── */}
       <div
         id="get-app-section"
-        className="sticky top-0 z-50 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-b from-[#EFF6FF] via-[#E8F2FC] to-[#DBEAFE] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.18)] overflow-hidden pb-12 sm:pb-8 transform-gpu will-change-transform"
+        className="sticky top-14 sm:top-16 z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#EFF6FF] via-[#E8F2FC] to-[#DBEAFE] shadow-[0_-20px_50px_rgba(0,0,0,0.18)] border-t border-white/80 overflow-hidden py-4 sm:py-6 transform-gpu will-change-transform"
       >
         <GetAppSection />
       </div>

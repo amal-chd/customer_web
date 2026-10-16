@@ -87,7 +87,7 @@ const FEATURE_COLUMNS: FeatureTile[][] = [
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-6 sm:py-10 select-none z-10 bg-gradient-to-b from-[#E0F2FE] via-[#BAE6FD] to-[#A5F3FC]">
+    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 bg-gradient-to-b from-[#E0F2FE] via-[#BAE6FD] to-[#A5F3FC]">
       {/* ── SPECIAL BACKGROUND PATTERN: High-Tech Wave Radar Arcs & Micro-Grid ── */}
       <div
         aria-hidden="true"

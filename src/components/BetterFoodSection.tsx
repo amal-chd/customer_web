@@ -24,7 +24,7 @@ export function BetterFoodSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-full flex flex-col justify-center items-center overflow-hidden select-none z-20 py-4 sm:py-8"
+      className="relative w-full h-full flex flex-col justify-center items-center overflow-hidden select-none z-20 py-3 sm:py-5"
     >
       {/* ── SPECIAL BACKGROUND PATTERN: Precision Micro-Dot Matrix + Ambient Radial Bloom ── */}
       <div

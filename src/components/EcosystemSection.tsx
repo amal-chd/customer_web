@@ -147,7 +147,7 @@ export function EcosystemSection() {
   };
 
   return (
-    <section className="relative overflow-hidden w-full h-full flex flex-col justify-center items-center py-4 sm:py-8 select-none z-10 text-white">
+    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 text-white bg-gradient-to-br from-[#071329] via-[#0B2149] to-[#143B7A]">
       {/* ── SPECIAL BACKGROUND PATTERN: Deep Space Orbit Rings + Constellation Matrix Grid ── */}
       <div
         aria-hidden="true"
