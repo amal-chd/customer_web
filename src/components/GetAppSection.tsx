@@ -169,13 +169,20 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-transparent pt-1 pb-4 sm:pb-6 z-10 w-full ${className}`}
+      className={`relative overflow-hidden w-full h-full flex flex-col justify-center items-center py-4 sm:py-8 select-none z-10 ${className}`}
     >
-
-      {/* Soft Ambient Radial Glow (Continuous, zero harsh cut-offs) */}
+      {/* ── SPECIAL BACKGROUND PATTERN: Precision Micro-Pattern + Soft Ambient Spotlight ── */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-96 bg-gradient-to-b from-blue-500/10 via-primary/5 to-transparent blur-3xl"
+        className="pointer-events-none absolute inset-0 opacity-25"
+        style={{
+          backgroundImage: "radial-gradient(#2563eb 1.2px, transparent 1.2px)",
+          backgroundSize: "22px 22px",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[380px] bg-blue-400/15 rounded-full blur-[120px]"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
