@@ -7,12 +7,14 @@
   html {
     -webkit-text-size-adjust: 100%;
     overflow-x: clip;
+    touch-action: pan-x pan-y;
   }
   body {
     @apply bg-slate-50 text-slate-900 font-sans antialiased;
     min-height: 100dvh;
     overflow-x: clip;
     -webkit-tap-highlight-color: transparent;
+    touch-action: pan-x pan-y;
   }
   /* iOS Safari zooms the page when a field under 16px gets focus. */
   @media (max-width: 640px) {

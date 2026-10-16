@@ -900,7 +900,7 @@ export default function Account() {
               <div>
                 <h2 className="text-lg font-black text-slate-900">Customer Support Hub</h2>
                 <p className="text-xs font-semibold text-slate-400">
-                  We are here to assist you 24/7 with any order, payment, or delivery questions
+                  We are here to help with any order, payment, or delivery question
                 </p>
               </div>
 

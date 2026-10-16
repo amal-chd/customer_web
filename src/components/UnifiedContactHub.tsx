@@ -65,7 +65,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     name: "The Kada",
     tagline: "Hyperlocal Food Ordering & Diner Support Desk",
     sub: "Live order assistance, real-time delivery tracking help, instant refund support, and restaurant partnership onboarding.",
-    heroBadge: "🍽️ 24/7 Diner & Customer Care Desk",
+    heroBadge: "🍽️ Diner & Customer Care Desk",
     heroTitlePrefix: "We're here to help make your",
     heroTitleHighlight: "dining experience delightful.",
     heroSubtitle: "Have questions about an active order, delivery ETA, refund, payment, dietary inquiry, or want to partner your kitchen? Reach our local support desk instantly.",
@@ -73,7 +73,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
       { icon: Zap, text: "Live order help (< 2 min SLA)", color: "text-amber-500" },
       { icon: ShieldCheck, text: "Instant refund & payment support", color: "text-emerald-500" },
       { icon: Utensils, text: "500+ partnered local kitchens", color: "text-blue-500" },
-      { icon: Clock, text: "24/7 dedicated support desk", color: "text-purple-500" },
+      { icon: Clock, text: "Dedicated support desk", color: "text-purple-500" },
     ],
     businessLabel: "Your Name / Order ID",
     businessPlaceholder: "e.g. Rahul Sharma (or Order #KD-9281)",
@@ -322,7 +322,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     faqs: [
       {
         q: "Where is The Kada Digital Ventures based?",
-        a: "We are headquartered in Kannur, Kerala, India. Our core engineering, product design, and 24/7 technical operations teams operate directly out of Kannur.",
+        a: "We are headquartered in Kannur, Kerala, India. Our core engineering, product design, and technical operations teams operate directly out of Kannur.",
       },
       {
         q: "Do you offer custom software development beyond Kada Dine and Kada Host?",
@@ -349,7 +349,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
     heroBadge: "Direct Rider & Logistics Support Desk",
     heroTitlePrefix: "Ride with pride &",
     heroTitleHighlight: "earn flexibly every day.",
-    heroSubtitle: "Have questions about joining our delivery fleet, need help with active shifts, wallet payouts, or vehicle onboarding? Our team is available 24/7.",
+    heroSubtitle: "Have questions about joining our delivery fleet, need help with active shifts, wallet payouts, or vehicle onboarding? Our team is available every day from 8:30 AM to 10:30 PM.",
     trustBadges: [
       { icon: Zap, text: "Weekly automated bank payout", color: "text-amber-500" },
       { icon: ShieldCheck, text: "100% customer tip pass-through", color: "text-emerald-500" },
@@ -580,7 +580,7 @@ export function UnifiedContactHub({
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.08]">
           {activeConfig.heroTitlePrefix}{" "}
-          <span className="text-blue-600 italic">
+          <span className="text-blue-600">
             {activeConfig.heroTitleHighlight}
           </span>
         </h1>
@@ -698,7 +698,7 @@ export function UnifiedContactHub({
               <div className="relative z-10 space-y-5">
                 <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-black uppercase tracking-wider border border-emerald-500/30">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Desk Active · Instant SLA
+                  Support desk · Daily 8:30 AM – 10:30 PM
                 </div>
 
                 <div className="space-y-2">
@@ -819,7 +819,7 @@ export function UnifiedContactHub({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Customer Helpline:</span>
-                  <span className="font-bold text-emerald-600">24/7 Priority Support</span>
+                  <span className="font-bold text-emerald-600">Priority Support</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Direct Email:</span>

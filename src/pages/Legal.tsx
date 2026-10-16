@@ -95,7 +95,7 @@ export function Refund() {
       intro="Last updated: June 2026. Refund eligibility and cancellation thresholds."
       sections={[
         {
-          title: "1. Free Trials & Subscriptions",
+          title: "1. Subscriptions",
           body: "Subscriptions can be cancelled anytime, preventing future renewals. No partial refunds are provided for active cycles."
         },
         {

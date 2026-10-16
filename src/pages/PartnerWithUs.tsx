@@ -63,7 +63,7 @@ const STEPS = [
   {
     step: "04",
     title: "Go Live & Receive Orders",
-    desc: "Once verified by our onboarding team, your restaurant is live to thousands of hungry local customers!",
+    desc: "Once verified by our onboarding team, your restaurant goes live for customers in your area.",
   },
 ];
 
@@ -111,7 +111,7 @@ export default function PartnerWithUs() {
           </h1>
 
           <p className="text-base sm:text-lg font-medium text-indigo-100 max-w-2xl mx-auto leading-relaxed">
-            Reach thousands of new customers in your locality. Enjoy low commission rates, complete menu control, instant order management, and fast daily payouts.
+            Reach new customers in your locality. Enjoy low commission rates, complete menu control, instant order management, and fast daily payouts.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -138,7 +138,7 @@ export default function PartnerWithUs() {
           </div>
 
           <p className="text-xs font-bold text-indigo-300">
-            ⚡ Self-serve setup · Get live in less than 24 hours · Zero hidden fees
+            ⚡ Self-serve setup · Zero hidden fees
           </p>
         </div>
       </section>
@@ -147,10 +147,10 @@ export default function PartnerWithUs() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { val: "0%", label: "Introductory Fee", sub: "For new onboarding partners" },
-            { val: "30 Mins", label: "Fast Onboarding", sub: "Quick online setup wizard" },
-            { val: "Daily", label: "Bank Settlement", sub: "Direct IFSC payouts" },
-            { val: "50,000+", label: "Active Diners", sub: "Hungry customers waiting" },
+            { val: "Self-serve", label: "Online Setup", sub: "Add your menu yourself" },
+            { val: "Your menu", label: "Full Control", sub: "Prices, photos and stock" },
+            { val: "Live", label: "Order Alerts", sub: "On the Kada Dine app" },
+            { val: "Kada Rider", label: "Delivery Fleet", sub: "Riders pick up from you" },
           ].map((s, i) => (
             <div
               key={i}

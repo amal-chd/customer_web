@@ -37,12 +37,25 @@ const pageVariants = {
   out: { opacity: 0, transition: { duration: 0.15, ease: "easeIn" as const } }
 };
 
-function PageTransition({ children }: { children: React.ReactNode }) {
-  // A new page starts at the top; Back/Forward keeps the browser's position.
-  const navType = useNavigationType();
+function ScrollToTop() {
+  const location = useLocation();
+
   useLayoutEffect(() => {
-    if (navType !== "POP") window.scrollTo(0, 0);
-  }, [navType]);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [location.pathname, location.search]);
+
+  return null;
+}
+
+function PageTransition({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [location.pathname, location.search]);
 
   return (
     <motion.div
@@ -63,6 +76,7 @@ function AnimatedRoutes() {
 
   return (
     <>
+      <ScrollToTop />
       <RouteSeo />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
