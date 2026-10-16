@@ -7,7 +7,6 @@ import {
   ChevronDown,
   ChevronRight,
   Navigation,
-  Sparkles,
   ArrowRight,
   UtensilsCrossed,
   Wine,
@@ -463,12 +462,8 @@ export default function Landing() {
         />
 
         <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden flex flex-col justify-center">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-3 sm:mb-4">
+          <div className="mb-3 sm:mb-4">
             <div>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-2">
-                <Sparkles className="h-3.5 w-3.5" />
-                Curated City Guides
-              </span>
               <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                 Collections in{" "}
                 <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -479,13 +474,6 @@ export default function Landing() {
                 Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
               </p>
             </div>
-            <Link
-              to="/search"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-primary hover:text-blue-700 transition-colors group shrink-0 bg-white/70 backdrop-blur-sm border border-white px-3.5 py-1.5 rounded-xl shadow-xs"
-            >
-              <span>All collections in {currentLoc.label.split(",")[0]}</span>
-              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
           </div>
 
           {/* Collections Cards: Smooth horizontal scroll snap rail on mobile, clean 4-col grid on desktop */}
