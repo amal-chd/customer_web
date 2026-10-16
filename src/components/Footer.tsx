@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, Globe, Heart, ArrowUp, ExternalLink } from "lucide-react";
+import { ChevronDown, Heart, ArrowUp, ExternalLink } from "lucide-react";
 import { getVendorOnboardingUrl } from "@/lib/urls";
 import { cn } from "@/lib/utils";
 
@@ -68,8 +68,6 @@ const FOOTER_SECTIONS: FooterSection[] = [
 ];
 
 export const Footer: React.FC = () => {
-  const [country, setCountry] = useState("India");
-  const [lang, setLang] = useState("EN");
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     about: true,
     ecosystem: false,
@@ -93,9 +91,9 @@ export const Footer: React.FC = () => {
       <div className="absolute bottom-0 left-10 w-96 h-96 bg-indigo-600/5 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-[calc(env(safe-area-inset-bottom)+5.5rem)] sm:pb-12">
-        {/* ─── 1. TOP BAR: BRAND + PRODUCT TAG + REGION ─────── */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 sm:pb-10 border-b border-slate-800/80">
-          <div className="space-y-2 max-w-xl">
+        {/* ─── 1. TOP BAR: BRAND ─────── */}
+        <div className="pb-8 sm:pb-10 border-b border-slate-800/80">
+          <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl overflow-hidden bg-white p-1.5 shadow-md shadow-black/10 flex items-center justify-center shrink-0">
                 <img
@@ -111,31 +109,6 @@ export const Footer: React.FC = () => {
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-medium">
               Order food and chef specials from top local kitchens and restaurants near you. Built for transparent pricing, live kitchen tracking, and lightning-fast hyperlocal delivery.
             </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2.5 sm:flex sm:items-center sm:gap-3">
-            {/* Region Switcher */}
-            <button
-              type="button"
-              onClick={() => setCountry((c) => (c === "India" ? "Global" : "India"))}
-              className="inline-flex items-center justify-between sm:justify-start gap-2 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
-            >
-              <span>{country === "India" ? "🇮🇳 India" : "🌐 Global"}</span>
-              <ChevronDown className="h-3.5 w-3.5 text-slate-500" />
-            </button>
-
-            {/* Language Switcher */}
-            <button
-              type="button"
-              onClick={() => setLang((l) => (l === "EN" ? "ML" : "EN"))}
-              className="inline-flex items-center justify-between sm:justify-start gap-2 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
-            >
-              <span className="flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5 text-slate-400" />
-                <span>{lang === "EN" ? "English" : "മലയാളം"}</span>
-              </span>
-              <ChevronDown className="h-3.5 w-3.5 text-slate-500" />
-            </button>
           </div>
         </div>
 
