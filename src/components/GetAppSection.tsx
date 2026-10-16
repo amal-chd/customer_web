@@ -1,22 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
-  Smartphone,
   Mail,
-  QrCode,
-  CheckCircle2,
-  Copy,
-  Check,
-  Send,
   Loader2,
   ArrowRight,
-  ShieldCheck,
-  Star,
-  Zap,
-  Navigation,
-  UtensilsCrossed,
-  CalendarCheck,
-  Gift,
-  ExternalLink,
   MessageCircle,
   ChevronDown,
   ChevronUp,
@@ -39,17 +25,6 @@ export interface GetAppSectionProps {
   playStoreUrl?: string;
 }
 
-const COUNTRY_CODES = [
-  { code: "+91", country: "India", flag: "🇮🇳" },
-  { code: "+971", country: "UAE", flag: "🇦🇪" },
-  { code: "+966", country: "Saudi Arabia", flag: "🇸🇦" },
-  { code: "+1", country: "USA/Canada", flag: "🇺🇸" },
-  { code: "+44", country: "UK", flag: "🇬🇧" },
-  { code: "+974", country: "Qatar", flag: "🇶🇦" },
-  { code: "+968", country: "Oman", flag: "🇴🇲" },
-  { code: "+65", country: "Singapore", flag: "🇸🇬" },
-];
-
 type ScreenTab = "tracking" | "order" | "dining" | "rewards";
 
 export const GetAppSection: React.FC<GetAppSectionProps> = ({
@@ -60,15 +35,11 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   appStoreUrl = OFFICIAL_APP_URLS.appStore,
   playStoreUrl = OFFICIAL_APP_URLS.playStore,
 }) => {
-  // Mode selection: "email" | "whatsapp" | "qr" (Zero SMS)
-  const [activeMode, setActiveMode] = useState<"email" | "whatsapp" | "qr">("email");
-  const [selectedCountry, setSelectedCountry] = useState("+91");
+  // Mode selection for mobile share drawer: "whatsapp" | "email"
+  const [activeMode, setActiveMode] = useState<"whatsapp" | "email">("whatsapp");
   const [phoneVal, setPhoneVal] = useState("");
   const [emailVal, setEmailVal] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [copiedLink, setCopiedLink] = useState(false);
   const [showMobileForm, setShowMobileForm] = useState(false);
 
   // Dynamic device detection
@@ -114,10 +85,9 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
 
     setIsSubmitting(true);
     try {
-      const res = await sendAppDownloadEmail(emailVal);
-      setIsSuccess(true);
-      setSuccessMessage(res.message || `Download link sent to ${emailVal}`);
+      await sendAppDownloadEmail(emailVal);
       toast.success("Download link sent to your email!");
+      setEmailVal("");
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : "Failed to send email link.";
       toast.error(errorMsg);
@@ -136,34 +106,17 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
 
     setIsSubmitting(true);
     try {
-      await recordAppDownloadWhatsApp(phoneVal, selectedCountry);
-      const url = generateWhatsAppShareUrl(`${selectedCountry.replace("+", "")}${digits.slice(-10)}`);
+      await recordAppDownloadWhatsApp(phoneVal, "+91");
+      const url = generateWhatsAppShareUrl(`91${digits.slice(-10)}`);
       window.open(url, "_blank", "noopener,noreferrer");
-      setIsSuccess(true);
-      setSuccessMessage(`Opening WhatsApp with your instant download link!`);
       toast.success("Opening WhatsApp!");
+      setPhoneVal("");
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : "Could not open WhatsApp.";
       toast.error(errorMsg);
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleCopyLink = () => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(OFFICIAL_APP_URLS.smartDownload);
-      setCopiedLink(true);
-      toast.success("Download link copied to clipboard!");
-      setTimeout(() => setCopiedLink(false), 2500);
-    }
-  };
-
-  const handleResetForm = () => {
-    setIsSuccess(false);
-    setPhoneVal("");
-    setEmailVal("");
-    setSuccessMessage("");
   };
 
   return (
@@ -361,58 +314,6 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
               LEFT COLUMN: Interactive Living Phone Mockup (Desktop Only)
              ───────────────────────────────────────────────────────────── */}
           <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center">
-            {/* Phone Screen Selector Tabs */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200 shadow-xs mb-3 max-w-full overflow-x-auto">
-              <button
-                type="button"
-                onClick={() => setActiveScreen("tracking")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                  activeScreen === "tracking"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
-              >
-                <Navigation className="h-3 w-3 shrink-0" />
-                <span>Live GPS</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveScreen("order")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                  activeScreen === "order"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
-              >
-                <UtensilsCrossed className="h-3 w-3 shrink-0" />
-                <span>1-Tap Order</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveScreen("dining")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                  activeScreen === "dining"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
-              >
-                <CalendarCheck className="h-3 w-3 shrink-0" />
-                <span>Dine-In</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveScreen("rewards")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                  activeScreen === "rewards"
-                    ? "bg-primary text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
-                }`}
-              >
-                <Gift className="h-3 w-3 shrink-0" />
-                <span>Offers</span>
-              </button>
-            </div>
-
             {/* Smartphone Device Shell */}
             <div
               className="relative w-64 sm:w-68 h-[460px] rounded-[2.6rem] bg-slate-950 p-2.5 shadow-2xl border-4 border-slate-800 ring-1 ring-white/10 transition-transform duration-500 hover:scale-[1.02]"
@@ -642,331 +543,20 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
                 )}
               </div>
             </div>
-
-            {/* Micro Floating Badges */}
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-slate-600">
-              <span className="flex items-center gap-1 bg-white/90 px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
-                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                <span>4.8 / 5 Rating</span>
-              </span>
-              <span className="flex items-center gap-1 bg-white/90 px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
-                <Zap className="h-3.5 w-3.5 text-primary" />
-                <span>~22 Min Delivery</span>
-              </span>
-              <span className="flex items-center gap-1 bg-white/90 px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                <span>Verified Partners</span>
-              </span>
-            </div>
           </div>
 
           {/* ─────────────────────────────────────────────────────────────
               RIGHT COLUMN: Action Center, Mode Selector, Forms, and Store Buttons
              ───────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-7 space-y-4">
-            {/* Header Badge & Title */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Title & Subtitle */}
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3.5 py-1 text-xs font-black text-primary border border-blue-200/80 mb-3">
-                <Smartphone className="h-3.5 w-3.5 text-primary" />
-                <span>Available for iOS & Android</span>
-              </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                 {headline}
               </h2>
-              <p className="mt-3 text-sm sm:text-base font-medium text-slate-600 leading-relaxed max-w-xl">
+              <p className="mt-4 text-base sm:text-lg font-medium text-slate-600 leading-relaxed max-w-xl">
                 {subtitle}
               </p>
-            </div>
-
-            {/* Interactive Mode Tabs (Email, WhatsApp, QR) */}
-            <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-slate-200/60 w-fit">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveMode("email");
-                  setIsSuccess(false);
-                }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition-all ${
-                  activeMode === "email"
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Mail className="h-4 w-4" />
-                <span>Email Address</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveMode("whatsapp");
-                  setIsSuccess(false);
-                }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition-all ${
-                  activeMode === "whatsapp"
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <MessageCircle className="h-4 w-4" />
-                <span>WhatsApp Link</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveMode("qr");
-                  setIsSuccess(false);
-                }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition-all ${
-                  activeMode === "qr"
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <QrCode className="h-4 w-4" />
-                <span>Scan QR Code</span>
-              </button>
-            </div>
-
-            {/* Dynamic Form Area */}
-            <div className="rounded-3xl bg-white p-5 sm:p-7 border border-slate-200/80 shadow-md">
-              {/* SUCCESS STATE */}
-              {isSuccess ? (
-                <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-5 space-y-3 animate-in fade-in">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="h-6 w-6 text-emerald-600 shrink-0 mt-0.5" />
-                    <div className="space-y-1">
-                      <h4 className="text-sm sm:text-base font-black text-emerald-900">
-                        Download Link Ready!
-                      </h4>
-                      <p className="text-xs sm:text-sm font-semibold text-emerald-800">
-                        {successMessage}
-                      </p>
-                      <p className="text-xs text-emerald-700 pt-1">
-                        Install directly from the App Store or Google Play to start enjoying exclusive app perks.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 flex flex-wrap items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={handleResetForm}
-                      className="text-xs font-black text-emerald-800 hover:text-emerald-950 underline cursor-pointer"
-                    >
-                      Send to another email or number
-                    </button>
-                    <span className="text-emerald-300">|</span>
-                    <a
-                      href={generateWhatsAppShareUrl(phoneVal)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-black text-emerald-700 hover:text-emerald-900"
-                    >
-                      <MessageCircle className="h-3.5 w-3.5" />
-                      <span>Open in WhatsApp</span>
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {/* EMAIL MODE */}
-                  {activeMode === "email" && (
-                    <form onSubmit={handleEmailSubmit} className="space-y-4">
-                      <label className="block text-xs font-black uppercase tracking-wider text-slate-500">
-                        Enter your email to receive direct App Store & Google Play links
-                      </label>
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <div className="relative flex-1">
-                          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
-                          <input
-                            type="email"
-                            value={emailVal}
-                            onChange={(e) => setEmailVal(e.target.value)}
-                            placeholder="you@example.com"
-                            required
-                            disabled={isSubmitting}
-                            className="w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3.5 text-sm font-bold text-slate-900 placeholder-slate-400 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
-                          />
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary to-indigo-600 px-6 py-3.5 text-sm font-black text-white shadow-md shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 transition-all whitespace-nowrap cursor-pointer"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                              <span>Sending...</span>
-                            </>
-                          ) : (
-                            <>
-                              <span>Send Link</span>
-                              <Send className="h-4 w-4" />
-                            </>
-                          )}
-                        </button>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-                        <span className="flex items-center gap-1">
-                          <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                          <span>Instant direct email with verified store badges.</span>
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setActiveMode("whatsapp")}
-                          className="font-bold text-emerald-700 hover:underline flex items-center gap-1"
-                        >
-                          <MessageCircle className="h-3.5 w-3.5" />
-                          <span>Prefer WhatsApp?</span>
-                        </button>
-                      </div>
-                    </form>
-                  )}
-
-                  {/* WHATSAPP MODE */}
-                  {activeMode === "whatsapp" && (
-                    <form onSubmit={handleWhatsAppSubmit} className="space-y-4">
-                      <label className="block text-xs font-black uppercase tracking-wider text-slate-500">
-                        Enter your WhatsApp number for immediate 1-tap download access
-                      </label>
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <div className="flex rounded-2xl border border-slate-200 bg-white overflow-hidden focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-600/10 flex-1">
-                          <select
-                            value={selectedCountry}
-                            onChange={(e) => setSelectedCountry(e.target.value)}
-                            className="bg-slate-50 border-r border-slate-200 px-3 py-3 text-xs sm:text-sm font-black text-slate-800 outline-none cursor-pointer"
-                            aria-label="Country Code"
-                          >
-                            {COUNTRY_CODES.map((c) => (
-                              <option key={c.code} value={c.code}>
-                                {c.flag} {c.code}
-                              </option>
-                            ))}
-                          </select>
-                          <input
-                            type="tel"
-                            value={phoneVal}
-                            onChange={(e) => setPhoneVal(e.target.value)}
-                            placeholder="Enter 10-digit WhatsApp number"
-                            required
-                            maxLength={15}
-                            disabled={isSubmitting}
-                            className="w-full px-4 py-3 text-sm font-bold text-slate-900 placeholder-slate-400 outline-none"
-                          />
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3.5 text-sm font-black text-white shadow-md shadow-emerald-600/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 transition-all whitespace-nowrap cursor-pointer"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                              <span>Opening...</span>
-                            </>
-                          ) : (
-                            <>
-                              <MessageCircle className="h-4 w-4" />
-                              <span>Open in WhatsApp</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-
-                      <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-                        <span className="flex items-center gap-1">
-                          <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                          <span>Instant delivery right inside WhatsApp. Zero spam.</span>
-                        </span>
-                        <a
-                          href={generateWhatsAppShareUrl()}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline flex items-center gap-1"
-                        >
-                          <span>Direct Link</span>
-                          <ExternalLink className="h-3 w-3" />
-                        </a>
-                      </div>
-                    </form>
-                  )}
-
-                  {/* QR CODE SCAN MODE */}
-                  {activeMode === "qr" && (
-                    <div className="flex flex-col sm:flex-row items-center gap-6 py-2 animate-in fade-in">
-                      {/* Crisp SVG QR Code Card */}
-                      <div className="relative p-3 rounded-2xl bg-white border border-slate-200 shadow-sm shrink-0">
-                        <div className="relative w-36 h-36 bg-slate-900 rounded-xl p-2.5 flex items-center justify-center">
-                          <svg className="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
-                            <rect x="0" y="0" width="28" height="28" rx="4" />
-                            <rect x="5" y="5" width="18" height="18" rx="2" fill="#0f172a" />
-                            <rect x="9" y="9" width="10" height="10" rx="1" fill="currentColor" />
-                            <rect x="72" y="0" width="28" height="28" rx="4" />
-                            <rect x="77" y="5" width="18" height="18" rx="2" fill="#0f172a" />
-                            <rect x="81" y="9" width="10" height="10" rx="1" fill="currentColor" />
-                            <rect x="0" y="72" width="28" height="28" rx="4" />
-                            <rect x="5" y="77" width="18" height="18" rx="2" fill="#0f172a" />
-                            <rect x="9" y="81" width="10" height="10" rx="1" fill="currentColor" />
-                            <rect x="36" y="8" width="8" height="8" rx="1" />
-                            <rect x="52" y="8" width="8" height="8" rx="1" />
-                            <rect x="36" y="24" width="8" height="8" rx="1" />
-                            <rect x="48" y="24" width="12" height="8" rx="1" />
-                            <rect x="8" y="36" width="8" height="8" rx="1" />
-                            <rect x="24" y="36" width="8" height="8" rx="1" />
-                            <rect x="72" y="36" width="8" height="8" rx="1" />
-                            <rect x="88" y="36" width="8" height="8" rx="1" />
-                            <rect x="8" y="48" width="12" height="8" rx="1" />
-                            <rect x="76" y="48" width="16" height="8" rx="1" />
-                            <rect x="8" y="60" width="8" height="8" rx="1" />
-                            <rect x="24" y="60" width="8" height="8" rx="1" />
-                            <rect x="72" y="60" width="8" height="8" rx="1" />
-                            <rect x="36" y="72" width="12" height="8" rx="1" />
-                            <rect x="56" y="72" width="8" height="8" rx="1" />
-                            <rect x="72" y="72" width="8" height="8" rx="1" />
-                            <rect x="36" y="84" width="8" height="8" rx="1" />
-                            <rect x="52" y="84" width="12" height="8" rx="1" />
-                            <rect x="72" y="84" width="8" height="8" rx="1" />
-                            <rect x="88" y="84" width="8" height="8" rx="1" />
-                          </svg>
-
-                          <div className="absolute inset-0 m-auto h-9 w-9 rounded-xl bg-white p-1 shadow-md flex items-center justify-center">
-                            <img src="/logo.png" alt="The Kada" className="h-full w-full object-contain" />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-3 flex-1 text-left">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-black border border-emerald-200">
-                          <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                          <span>Camera Scannable</span>
-                        </div>
-                        <h4 className="text-base font-black text-slate-900 leading-snug">
-                          Point your camera at this code to install
-                        </h4>
-                        <p className="text-xs font-medium text-slate-600">
-                          Works seamlessly on iOS Camera app and Android Google Lens. Automatically opens your phone’s App Store.
-                        </p>
-
-                        <div className="pt-1 flex flex-wrap items-center gap-3">
-                          <button
-                            type="button"
-                            onClick={handleCopyLink}
-                            className="inline-flex items-center gap-2 rounded-xl bg-slate-100 hover:bg-slate-200 px-3.5 py-2 text-xs font-black text-slate-800 transition-colors cursor-pointer"
-                          >
-                            {copiedLink ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-slate-500" />}
-                            <span>{copiedLink ? "Link Copied!" : "Copy Direct Download Link"}</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
             </div>
 
             {/* Official Store Download Badges */}

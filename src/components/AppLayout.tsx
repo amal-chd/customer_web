@@ -117,12 +117,12 @@ export function AppLayout() {
         </div>
       )}
 
-      {/* Mobile Floating Liquid Glass Capsule Nav (Centered & Elevated like Mobile App) */}
+      {/* Mobile Floating Modern Capsule Nav (Matching The Kada White & Royal Blue Style) */}
       <nav
         aria-label="Mobile navigation"
         className="md:hidden fixed bottom-3 inset-x-3 z-40 max-w-md mx-auto select-none"
       >
-        <div className="relative flex items-center justify-around h-[66px] px-2 rounded-[28px] bg-slate-950/92 text-white backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] before:absolute before:inset-x-8 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent pb-[env(safe-area-inset-bottom)]">
+        <div className="relative flex items-center justify-around h-[64px] px-2 rounded-[24px] bg-white/95 text-slate-700 backdrop-blur-2xl border border-slate-200/90 shadow-[0_12px_36px_-6px_rgba(15,23,42,0.16),0_4px_12px_rgba(15,23,42,0.06)] pb-[env(safe-area-inset-bottom)]">
           {TABS.map((t) => {
             const active = t.match(currentPath);
             const Icon = t.icon;
@@ -136,22 +136,22 @@ export function AppLayout() {
                   "relative flex flex-col items-center justify-center py-1.5 px-3 rounded-2xl transition-all duration-300 active:scale-90",
                   active
                     ? "text-white"
-                    : "text-slate-400 hover:text-slate-200"
+                    : "text-slate-500 hover:text-slate-900"
                 )}
               >
                 {active && (
-                  <span className="absolute inset-x-1.5 inset-y-1 rounded-xl bg-primary shadow-md shadow-primary/40 -z-10 animate-in fade-in zoom-in-95 duration-200" />
+                  <span className="absolute inset-x-1.5 inset-y-1 rounded-xl bg-gradient-to-r from-primary to-blue-600 shadow-md shadow-primary/30 -z-10 animate-in fade-in zoom-in-95 duration-200" />
                 )}
                 <div className="relative flex items-center justify-center">
-                  <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} strokeWidth={active ? 2.5 : 2} />
+                  <Icon className={cn("h-5 w-5 transition-transform", active ? "scale-105 text-white" : "text-slate-500")} strokeWidth={active ? 2.5 : 2} />
                   {showActiveOrderBadge && (
                     <span className="absolute -top-1 -right-1.5 flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 ring-2 ring-slate-950" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 ring-2 ring-white" />
                     </span>
                   )}
                 </div>
-                <span className={cn("text-[10px] mt-1 tracking-tight leading-none", active ? "font-black" : "font-semibold")}>
+                <span className={cn("text-[10px] mt-1 tracking-tight leading-none", active ? "font-black text-white" : "font-bold text-slate-600")}>
                   {t.label}
                 </span>
               </Link>
