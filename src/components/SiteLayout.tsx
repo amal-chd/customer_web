@@ -60,7 +60,7 @@ export function SiteLayout() {
       {/* Dynamic Header: Transparent over video on landing page, solid white on scroll / other pages */}
       <header
         className={cn(
-          "transition-all duration-300 w-full",
+          "hidden md:block transition-all duration-300 w-full",
           isTransparent
             ? "fixed top-0 left-0 right-0 z-[90]"
             : "sticky top-0 z-[90] border-b",
