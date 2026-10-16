@@ -4,7 +4,6 @@ import { X } from "lucide-react";
 
 export function MobileStickyAppBar() {
   const [visible, setVisible] = useState(true);
-  const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
 
   // Hide on checkout / order tracking / login pages to keep clear action space
@@ -13,14 +12,6 @@ export function MobileStickyAppBar() {
     pathname.startsWith("/order-tracking") ||
     pathname.startsWith("/login") ||
     pathname.startsWith("/delete-account");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   if (!visible || isExcludedPage) return null;
 

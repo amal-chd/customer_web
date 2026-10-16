@@ -228,7 +228,7 @@ export default function Restaurant() {
           {/* Main Menu Section (8 Cols on Desktop) */}
           <div className="lg:col-span-8">
             {/* Search and Veg Filter Bar */}
-            <div className="sticky top-20 z-30 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/95 p-3 backdrop-blur-md shadow-xs">
+            <div className="sticky top-3 md:top-20 z-30 flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/95 p-3 backdrop-blur-md shadow-xs">
               <div className="relative flex-1 min-w-[180px]">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <input

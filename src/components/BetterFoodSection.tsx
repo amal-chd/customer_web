@@ -41,7 +41,7 @@ export function BetterFoodSection() {
       />
 
       {/* ── Scroll-Linked Parallax Food Stickers ── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden hidden sm:block">
         {/* 1. Fresh Basil Leaf (Top Left) */}
         <motion.div
           style={{ y: basilY }}
@@ -142,7 +142,7 @@ export function BetterFoodSection() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             whileHover={{ scale: 1.05, zIndex: 30 }}
             transition={{ duration: 0.35 }}
             className="absolute top-0 left-1 sm:left-6 z-10 flex items-center justify-between gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl bg-white/95 backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 shadow-[0_12px_30px_rgba(15,23,42,0.08)] border border-white w-[190px] sm:w-[250px] text-left -rotate-1 hover:rotate-0 transition-transform duration-300 ring-1 ring-black/5"
@@ -168,7 +168,7 @@ export function BetterFoodSection() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             whileHover={{ scale: 1.05, zIndex: 30 }}
             transition={{ duration: 0.35, delay: 0.08 }}
             className="absolute top-12 sm:top-14 right-1 sm:right-6 z-20 flex items-center justify-between gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl bg-white/95 backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 shadow-[0_16px_36px_rgba(37,99,235,0.14)] border border-blue-100 w-[190px] sm:w-[250px] text-left rotate-[4deg] hover:rotate-0 transition-transform duration-300 ring-1 ring-blue-500/10"
@@ -194,7 +194,7 @@ export function BetterFoodSection() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             whileHover={{ scale: 1.05, zIndex: 30 }}
             transition={{ duration: 0.35, delay: 0.16 }}
             className="absolute top-26 sm:top-30 left-3 sm:left-12 z-15 flex items-center justify-between gap-3 sm:gap-4 rounded-2xl sm:rounded-3xl bg-white/95 backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4 shadow-[0_14px_32px_rgba(15,23,42,0.08)] border border-white w-[200px] sm:w-[260px] text-left -rotate-[2deg] hover:rotate-0 transition-transform duration-300 ring-1 ring-black/5"

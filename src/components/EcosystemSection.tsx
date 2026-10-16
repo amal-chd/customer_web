@@ -210,7 +210,7 @@ export function EcosystemSection() {
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            className="relative bg-white rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)] p-6 sm:p-7 text-center overflow-hidden transition-all duration-300"
+            className="relative bg-white rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)] p-6 sm:p-7 text-center overflow-hidden transition-all duration-300 touch-pan-y"
           >
             {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
             <div className="relative h-32 sm:h-36 flex items-center justify-center mb-1 select-none">
