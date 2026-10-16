@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import {
   sendAppDownloadEmail,
   recordAppDownloadWhatsApp,
@@ -151,50 +152,47 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
             Experience lightning-fast hyper-local food delivery &amp; live GPS tracking on The Kada
           </p>
 
-          {/* Living Mini Phone Mockup (100% Vector-Sharp, Transparent, Authentic Kerala Hyperlocal UI) */}
-          <div className="relative mx-auto my-3 w-56 sm:w-64 rounded-[2.2rem] bg-slate-950 p-2 shadow-2xl border-2 border-slate-800 ring-1 ring-black/10 select-none transform hover:scale-[1.02] transition-transform duration-300">
-            {/* Dynamic Island Pill */}
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-4 bg-black rounded-full z-20 flex items-center justify-between px-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[7px] font-black text-white/90">The Kada</span>
-              <span className="w-2 h-2 rounded-full bg-slate-900" />
-            </div>
+          {/* Kada-Styled QR Code Card */}
+          <div className="relative mx-auto my-4 inline-flex items-center justify-center p-3.5 bg-white rounded-3xl border border-blue-200/80 shadow-xl shadow-blue-500/10 select-none">
+            {/* Viewfinder corner brackets in Kada Blue */}
+            <span className="absolute -top-1.5 -left-1.5 w-4 h-4 border-t-2 border-l-2 border-primary rounded-tl-lg" />
+            <span className="absolute -top-1.5 -right-1.5 w-4 h-4 border-t-2 border-r-2 border-primary rounded-tr-lg" />
+            <span className="absolute -bottom-1.5 -left-1.5 w-4 h-4 border-b-2 border-l-2 border-primary rounded-bl-lg" />
+            <span className="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b-2 border-r-2 border-primary rounded-br-lg" />
 
-            {/* Screen Content */}
-            <div className="h-44 sm:h-52 w-full rounded-[1.8rem] overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 text-white p-3 pt-6 flex flex-col justify-between">
-              {/* Top Status */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
-                <div className="flex items-center gap-1.5">
-                  <div className="h-4 w-4 rounded-md bg-white p-0.5 flex items-center justify-center">
-                    <img src="/logo.png" alt="The Kada" className="w-full h-full object-contain" />
-                  </div>
-                  <span className="text-[10px] font-black text-white">The Kada App</span>
-                </div>
-                <span className="text-[8px] font-black text-emerald-400 bg-emerald-500/20 px-1.5 py-0.5 rounded-full">
-                  ⚡ 24 MINS
-                </span>
-              </div>
+            <QRCodeSVG
+              value={OFFICIAL_APP_URLS.smartDownload}
+              size={156}
+              level="H"
+              fgColor="#0F172A"
+              bgColor="#ffffff"
+              imageSettings={{
+                src: "/logo.png",
+                x: undefined,
+                y: undefined,
+                height: 34,
+                width: 34,
+                excavate: true,
+              }}
+            />
 
-              {/* Mini Featured Dish Card */}
-              <div className="bg-white/5 border border-white/10 rounded-xl p-2 flex items-center gap-2.5">
-                <img
-                  src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=200&q=80"
-                  alt="Dum Biryani"
-                  className="h-12 w-12 rounded-lg object-cover shrink-0"
-                />
-                <div className="min-w-0 flex-1 text-left">
-                  <p className="text-[10px] font-black text-white truncate">Thalassery Dum Biryani</p>
-                  <p className="text-[8px] text-slate-300">⭐ 4.9 · Malabar Spices</p>
-                  <p className="text-[9px] font-bold text-emerald-400 mt-0.5">₹180 <span className="line-through text-slate-500 text-[8px]">₹240</span></p>
-                </div>
-              </div>
-
-              {/* 1-Tap CTA Pill */}
-              <div className="w-full py-1.5 rounded-lg bg-primary text-center text-[10px] font-black text-white shadow-sm flex items-center justify-center gap-1">
-                <span>Order on App • Flat 50% OFF</span>
-                <ArrowRight className="h-2.5 w-2.5" />
-              </div>
-            </div>
+            {/* SVG Overlay to render Kada Blue (#1E6EF4) Rounded Corner Eyes */}
+            <svg
+              className="absolute inset-3.5 pointer-events-none"
+              viewBox="0 0 33 33"
+              width={156}
+              height={156}
+            >
+              {/* Top-Left Eye */}
+              <rect x="0.25" y="0.25" width="6.5" height="6.5" rx="1.5" fill="white" stroke="#1E6EF4" strokeWidth="1" />
+              <rect x="2" y="2" width="3" height="3" rx="0.8" fill="#1E6EF4" />
+              {/* Top-Right Eye */}
+              <rect x="26.25" y="0.25" width="6.5" height="6.5" rx="1.5" fill="white" stroke="#1E6EF4" strokeWidth="1" />
+              <rect x="28" y="2" width="3" height="3" rx="0.8" fill="#1E6EF4" />
+              {/* Bottom-Left Eye */}
+              <rect x="0.25" y="26.25" width="6.5" height="6.5" rx="1.5" fill="white" stroke="#1E6EF4" strokeWidth="1" />
+              <rect x="2" y="28" width="3" height="3" rx="0.8" fill="#1E6EF4" />
+            </svg>
           </div>
 
           {/* Official Store Download Badges Side-by-Side */}
