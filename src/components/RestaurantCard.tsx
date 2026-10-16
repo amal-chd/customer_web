@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Clock } from "lucide-react";
 import type { Restaurant } from "@/types";
-import { displayRating } from "@/types";
+import { displayRating, isTakingOrders } from "@/types";
 import { etaMinutes } from "@/lib/geo";
 import { restaurantImage, handleRestaurantImageError } from "@/lib/foodImages";
 import { RatingPill } from "./bits";
@@ -17,7 +17,7 @@ export function RestaurantCard({
 }) {
   const rating = displayRating(r);
   const eta = etaMinutes(r.distanceKm);
-  const isClosed = !r.acceptingOrders;
+  const isClosed = !isTakingOrders(r);
 
   useEffect(() => {
     if (sponsorAd?.id) {
@@ -55,7 +55,7 @@ export function RestaurantCard({
           </span>
         ) : (
           <span className="absolute left-2 top-2 sm:left-2.5 sm:top-2.5 rounded-lg bg-emerald-600/90 backdrop-blur-xs px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-white shadow-xs">
-            Free delivery
+            Open now
           </span>
         )}
 

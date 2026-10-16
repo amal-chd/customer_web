@@ -54,7 +54,8 @@
       "title": "Investor Relations - The Kada Hyperlocal Commerce",
       "description": "Financial reports, quarterly earnings, operating metrics, corporate governance, ESG impact, and investor presentations for The Kada.",
       "indexable": true,
-      "sitemap": false
+      "sitemap": false,
+      "canonicalPath": "/investor-relations"
     },
     {
       "path": "/contact",
@@ -85,7 +86,16 @@
       "title": "Partner with The Kada Dine - List Your Restaurant",
       "description": "Register your restaurant on The Kada Dine. 0% commission introductory plans, built-in POS, predictive KDS, and direct hyperlocal rider fleet.",
       "indexable": true,
-      "sitemap": false
+      "sitemap": false,
+      "canonicalPath": "/add-restaurant"
+    },
+    {
+      "path": "/partner-with-us",
+      "title": "Partner with The Kada Dine - List Your Restaurant",
+      "description": "Register your restaurant on The Kada Dine. 0% commission introductory plans, built-in POS, predictive KDS, and direct hyperlocal rider fleet.",
+      "indexable": true,
+      "sitemap": false,
+      "canonicalPath": "/add-restaurant"
     },
     {
       "path": "/restaurant",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HelpCircle,
@@ -16,9 +16,19 @@ import {
 import { toast } from "@/components/Toast";
 import { UnifiedContactHub } from "@/components/UnifiedContactHub";
 import { db } from "@/lib/firebase";
+import { DEFAULT_PLATFORM_STATS, fetchPlatformStats, type PlatformStats } from "@/services/platformStats";
 
 // ─── ABOUT PAGE ─────────────────────────────────────────────────────────────
 export function About() {
+  const [stats, setStats] = useState<PlatformStats>(DEFAULT_PLATFORM_STATS);
+  useEffect(() => {
+    let alive = true;
+    fetchPlatformStats().then((s) => alive && setStats(s));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   return (
     <div className="bg-slate-50 py-12 sm:py-16">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 space-y-10 sm:space-y-12">
@@ -62,9 +72,9 @@ export function About() {
 
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3">
           {[
-            { label: "Restaurants Partnered", val: "500+" },
-            { label: "On-Time Deliveries", val: "99.2%" },
-            { label: "Active Diners", val: "50,000+" }
+            { label: "Restaurants Partnered", val: stats.restaurants.stat },
+            { label: "Districts Served", val: stats.districts.mobileStat },
+            { label: "Orders Delivered", val: stats.orders.stat }
           ].map((stat) => (
             <div key={stat.label} className="card p-6 text-center">
               <p className="text-3xl sm:text-4xl font-black text-primary">{stat.val}</p>

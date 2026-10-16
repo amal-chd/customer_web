@@ -52,6 +52,12 @@ export function restaurantFromDoc(doc: DocumentSnapshot): Restaurant {
   };
 }
 
+/** Closed by the vendor, or paused (busy) until a time that hasn't passed. */
+export function isTakingOrders(r: Restaurant): boolean {
+  if (!r.acceptingOrders) return false;
+  return !(r.pausedUntil && new Date(r.pausedUntil).getTime() > Date.now());
+}
+
 export interface MenuVariant {
   name: string;
   price: number;

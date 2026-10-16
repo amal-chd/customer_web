@@ -334,7 +334,7 @@ const BRAND_CONFIGS: Record<BrandType, BrandConfiguration> = {
       },
       {
         q: "What support SLA is provided for enterprise deployments?",
-        a: "Enterprise clients receive dedicated Slack/WhatsApp support channels, guaranteed 15-minute response times, and optional on-site engineer deployment during major go-lives.",
+        a: "Enterprise clients receive dedicated Slack/WhatsApp support channels, priority response times, and optional on-site engineer deployment during major go-lives.",
       },
       {
         q: "How do we get started with a consultation?",
@@ -858,7 +858,7 @@ export function UnifiedContactHub({
                       <p className="text-xs sm:text-sm font-semibold text-slate-600 leading-relaxed">
                         {mode === "demo"
                           ? `Our ${activeConfig.name} team has logged your walkthrough request. A specialist will call/WhatsApp you shortly to confirm your slot.`
-                          : `Thank you for reaching out to ${activeConfig.name}. A representative has been assigned and will reply within 30 minutes.`}
+                          : `Thank you for reaching out to ${activeConfig.name}. Our team will get back to you as soon as possible.`}
                       </p>
                     </div>
 
@@ -1241,7 +1241,7 @@ export function UnifiedContactHub({
 
                     <div className="text-center text-[11px] font-bold text-slate-500 flex items-center justify-center gap-2">
                       <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                      <span>Zero spam guarantee · Direct team response within 30 minutes</span>
+                      <span>No spam · A real person from our team replies</span>
                     </div>
                   </motion.form>
                 )}

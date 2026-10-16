@@ -20,7 +20,8 @@ function replaceTag(html, regex, replacement) {
 }
 
 function renderHead(page) {
-  const canonical = `${manifest.siteUrl}${page.path === "/" ? "/" : page.path}`;
+  const canonicalPath = page.canonicalPath ?? page.path;
+  const canonical = `${manifest.siteUrl}${canonicalPath === "/" ? "/" : canonicalPath}`;
   const title = `${page.title} | The Kada`;
   const robots = page.indexable
     ? "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"

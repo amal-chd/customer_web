@@ -513,10 +513,10 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
                     <div className="my-auto space-y-2.5">
                       <div className="rounded-2xl bg-gradient-to-tr from-amber-500/20 via-orange-500/20 to-primary/20 border border-amber-400/40 p-3 text-center space-y-1">
                         <p className="text-[9px] uppercase font-black text-amber-300">Welcome Reward Unlocked</p>
-                        <p className="text-base font-black text-white">Flat ₹150 OFF</p>
-                        <p className="text-[10px] text-slate-300">+ Unlimited Free Delivery on first 3 orders</p>
+                        <p className="text-base font-black text-white">20% OFF</p>
+                        <p className="text-[10px] text-slate-300">Up to ₹50 on orders above ₹99</p>
                         <div className="inline-block mt-1 px-3 py-1 rounded-full bg-white text-slate-900 font-mono text-[10px] font-black tracking-wider">
-                          CODE: KADAWELCOME
+                          CODE: WELCOME
                         </div>
                       </div>
 

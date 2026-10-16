@@ -65,7 +65,7 @@ export async function payForOrder(opts: {
         amount: data.amount,
         currency: data.currency,
         name: "The Kada",
-        description: `Order ${opts.orderId}`,
+        description: "Food order",
         prefill: { name: opts.name, email: opts.email, contact: opts.contact },
         theme: { color: "#2563EB" },
         handler: (r: any) =>

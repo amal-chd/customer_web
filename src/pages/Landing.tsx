@@ -41,7 +41,6 @@ export interface CollectionItem {
   id: string;
   title: string;
   subtitle: string;
-  places: string;
   image: string;
   badge: string;
   badgeColor: string;
@@ -53,7 +52,6 @@ const COLLECTIONS: CollectionItem[] = [
     id: "trending",
     title: "Top Trending Spots",
     subtitle: "The most popular dining destinations this week",
-    places: "28 Places",
     image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
     badge: "🔥 TRENDING",
     badgeColor: "bg-rose-500/95 text-white",
@@ -63,7 +61,6 @@ const COLLECTIONS: CollectionItem[] = [
     id: "biryani",
     title: "Best Biryani in Town",
     subtitle: "Aromatic dum, Malabar, & Thalassery biryanis",
-    places: "24 Places",
     image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
     badge: "👑 ICONIC MUST-TRY",
     badgeColor: "bg-amber-500/95 text-white",
@@ -73,7 +70,6 @@ const COLLECTIONS: CollectionItem[] = [
     id: "cafes",
     title: "Cafes & Sweet Spots",
     subtitle: "Artisanal brews, cheesecakes, and cozy corners",
-    places: "19 Places",
     image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
     badge: "☕ AESTHETIC VIBES",
     badgeColor: "bg-blue-600/95 text-white",
@@ -83,7 +79,6 @@ const COLLECTIONS: CollectionItem[] = [
     id: "dining",
     title: "Table Booking & Fine Dine",
     subtitle: "Reserve premium tables with zero booking fee",
-    places: "16 Places",
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
     badge: "🥂 TABLE BOOKING",
     badgeColor: "bg-indigo-600/95 text-white",
@@ -383,9 +378,6 @@ export default function Landing() {
                       >
                         <span className="truncate pr-2">{loc.name}</span>
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <span className="text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded-md">
-                            {loc.places}
-                          </span>
                           {isSelected && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
                         </div>
                       </button>
@@ -512,8 +504,7 @@ export default function Landing() {
                   <p className="text-[10px] sm:text-[11px] text-slate-300 font-medium line-clamp-1 mt-0.5">
                     {c.subtitle}
                   </p>
-                  <div className="mt-2 flex items-center justify-between text-xs font-bold text-white/90 pt-1.5 border-t border-white/10">
-                    <span className="text-[10px] sm:text-[11px] text-blue-300 font-black">{c.places}</span>
+                  <div className="mt-2 flex items-center justify-end text-xs font-bold text-white/90 pt-1.5 border-t border-white/10">
                     <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] text-white/90 font-bold group-hover:text-blue-300 group-hover:translate-x-1 transition-all">
                       <span>Explore</span>
                       <ChevronRight className="h-3 w-3" />

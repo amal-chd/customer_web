@@ -68,7 +68,7 @@ const FAQS = [
   },
   {
     q: "What if an item is missing or damaged in my delivery?",
-    a: "We guarantee 100% order accuracy. If anything is wrong with your order, reach out to our 24/7 WhatsApp or Phone support immediately with a picture, and our resolution team will issue an instant replacement or refund.",
+    a: "If anything is wrong with your order, message our WhatsApp or phone support with a photo as soon as possible. Our team will review it and arrange a replacement or refund under our refund policy.",
   },
 ];
 
@@ -262,7 +262,7 @@ export default function Account() {
         <p className="mt-2 text-sm font-semibold text-slate-500">
           Sign in to manage your digital wallet, track orders, and view saved addresses.
         </p>
-        <button onClick={() => navigate("/login")} className="btn-primary mt-6 mx-auto">
+        <button onClick={() => navigate("/login?next=/account")} className="btn-primary mt-6 mx-auto">
           Sign In
         </button>
       </div>

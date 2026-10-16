@@ -7,6 +7,8 @@ type SeoPage = {
   title: string;
   description: string;
   indexable: boolean;
+  /** Alias routes point search engines at the primary URL. */
+  canonicalPath?: string;
   image?: string;
   jsonLd?: Record<string, unknown>;
 };
@@ -51,7 +53,8 @@ export function usePageSeo(page: SeoPage | null) {
   useEffect(() => {
     if (!page) return;
 
-    const canonical = `${seoPages.siteUrl}${page.path === "/" ? "/" : page.path}`;
+    const canonicalPath = page.canonicalPath ?? page.path;
+    const canonical = `${seoPages.siteUrl}${canonicalPath === "/" ? "/" : canonicalPath}`;
     const title = `${page.title} | The Kada`;
     const robots = page.indexable
       ? "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
@@ -72,7 +75,7 @@ export function usePageSeo(page: SeoPage | null) {
     setMeta("name", "twitter:image", page.image ?? `${seoPages.siteUrl}/og.png`);
     setCanonical(canonical);
     setStructuredData(jsonLd ? JSON.parse(jsonLd) as Record<string, unknown> : undefined);
-  }, [page?.path, page?.title, page?.description, page?.indexable, page?.image, jsonLd]);
+  }, [page?.path, page?.canonicalPath, page?.title, page?.description, page?.indexable, page?.image, jsonLd]);
 }
 
 export default function RouteSeo() {

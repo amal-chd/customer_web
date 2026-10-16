@@ -238,7 +238,7 @@ export default function PartnerWithUs() {
           <div className="rounded-3xl bg-gradient-to-r from-primary via-indigo-600 to-primary p-8 sm:p-10 text-white shadow-xl text-center space-y-6">
             <h3 className="text-2xl sm:text-3xl font-black">Ready to start growing with The Kada?</h3>
             <p className="text-sm font-medium text-indigo-100 max-w-xl mx-auto">
-              Join 500+ restaurants already powering their kitchens with Kada Dine POS and delivery network.
+              Join the restaurants already running their kitchens on Kada Dine POS and our delivery network.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -23,7 +25,6 @@ import { toast } from "@/components/Toast";
 import { VegDot } from "@/components/bits";
 
 const TIPS = [10, 20, 30, 50];
-const FREE_DELIVERY_THRESHOLD = 199;
 
 const INSTRUCTIONS = [
   { id: "door", label: "Leave at door", icon: DoorClosed },
@@ -38,6 +39,13 @@ export default function Cart() {
   const [promo, setPromo] = useState("");
   const [noCutlery, setNoCutlery] = useState(false);
   const [selectedInstructions, setSelectedInstructions] = useState<string[]>([]);
+  // The free-delivery threshold the server prices with (0 / missing = no such offer).
+  const [freeAbove, setFreeAbove] = useState(0);
+  useEffect(() => {
+    getDoc(doc(db, "config", "platform"))
+      .then((snap) => setFreeAbove(Number(snap.data()?.freeDeliveryAbove) || 0))
+      .catch(() => {});
+  }, []);
 
   const totals = cart.totals();
   const cur = cart.restaurant?.currency;
@@ -74,8 +82,8 @@ export default function Cart() {
     );
   }
 
-  const freeDeliveryDiff = Math.max(0, FREE_DELIVERY_THRESHOLD - totals.subtotal);
-  const freeDeliveryPercent = Math.min(100, Math.round((totals.subtotal / FREE_DELIVERY_THRESHOLD) * 100));
+  const freeDeliveryDiff = Math.max(0, freeAbove - totals.subtotal);
+  const freeDeliveryPercent = freeAbove > 0 ? Math.min(100, Math.round((totals.subtotal / freeAbove) * 100)) : 0;
 
   return (
     <div className="min-h-screen bg-slate-50 pb-24 animate-in fade-in duration-200 antialiased selection:bg-primary/20 selection:text-primary">
@@ -118,6 +126,7 @@ export default function Cart() {
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 pt-6 sm:pt-8">
         {/* Free Delivery Goal Tracker */}
+        {freeAbove > 0 && (
         <div className="mb-6 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
           <div className="flex items-center justify-between text-xs font-black">
             <span className="flex items-center gap-1.5 text-slate-800">
@@ -135,6 +144,7 @@ export default function Cart() {
             />
           </div>
         </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Items, Cutlery, Instructions, Tip (7 Cols) */}
@@ -376,19 +386,24 @@ export default function Cart() {
                   <Row l="Promo discount" r={`-${formatMoney(totals.discount, cur)}`} green />
                 )}
                 {totals.tip > 0 && <Row l="Rider tip" r={formatMoney(totals.tip, cur)} />}
-                <Row l="Delivery fee" r="FREE" green />
+                <Row l="Delivery fee" r="At checkout" />
                 <div className="my-2 border-t border-slate-100" />
                 <div className="flex items-center justify-between text-base font-black text-slate-900 pt-1">
-                  <span>To pay</span>
+                  <span>Estimated total</span>
                   <span>{formatMoney(totals.total, cur)}</span>
                 </div>
+                <p className="text-[11px] font-semibold text-slate-400">
+                  Your final bill, with delivery for your address, is confirmed at checkout.
+                </p>
               </div>
             </div>
 
             {/* Checkout CTA */}
             <div className="space-y-3">
               <button
-                onClick={() => navigate("/checkout")}
+                onClick={() =>
+                  navigate("/checkout", { state: { instructions: selectedInstructions, noCutlery } })
+                }
                 className="w-full rounded-2xl bg-gradient-to-r from-primary to-indigo-600 py-4 text-base font-black text-white shadow-xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
               >
                 <span>Proceed to Checkout</span>

@@ -58,12 +58,17 @@ function precisionForRadius(radiusKm: number): number {
 export function queryBounds(lat: number, lng: number, radiusKm: number): [string, string][] {
   const precision = precisionForRadius(radiusKm);
   const prefixes = new Set<string>([encodeGeohash(lat, lng, precision)]);
-  const cellDeg = 360 / Math.pow(2, 2.5 * precision);
+  // A cell is not square: longitude gets the extra bit on odd bit counts, so
+  // its latitude span is half its longitude span at even precisions. Stepping
+  // both axes by the longitude span skipped the north/south neighbours.
+  const bits = 5 * precision;
+  const latCellDeg = 180 / Math.pow(2, Math.floor(bits / 2));
+  const lngCellDeg = 360 / Math.pow(2, Math.ceil(bits / 2));
   const dirs = [-1, 0, 1];
   for (const dLat of dirs) {
     for (const dLng of dirs) {
-      const nLat = Math.min(90, Math.max(-90, lat + dLat * cellDeg));
-      let nLng = lng + dLng * cellDeg;
+      const nLat = Math.min(90, Math.max(-90, lat + dLat * latCellDeg));
+      let nLng = lng + dLng * lngCellDeg;
       if (nLng > 180) nLng -= 360;
       if (nLng < -180) nLng += 360;
       prefixes.add(encodeGeohash(nLat, nLng, precision));

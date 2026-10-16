@@ -26,28 +26,29 @@ export interface PlatformStats {
   };
 }
 
+// Shown while loading or if Firestore is unreachable: never a made-up number.
 export const DEFAULT_PLATFORM_STATS: PlatformStats = {
   restaurants: {
-    stat: "500+",
-    mobileStat: "500+",
-    rating: "4.9",
-    badgeText: "4.9/5 Quality Score",
-    badgeMobileText: "4.9 Score",
-    count: 500,
+    stat: "—",
+    mobileStat: "—",
+    rating: "",
+    badgeText: "Verified partners",
+    badgeMobileText: "Verified",
+    count: 0,
   },
   districts: {
-    stat: "14 Districts",
-    mobileStat: "14",
-    count: 14,
-    badgeText: "Avg 28-min delivery",
-    badgeMobileText: "28m Avg",
+    stat: "—",
+    mobileStat: "—",
+    count: 0,
+    badgeText: "Live order tracking",
+    badgeMobileText: "Live tracking",
   },
   orders: {
-    stat: "1 Million+",
-    mobileStat: "1M+",
-    count: 1000000,
-    badgeText: "100% Hygiene Verified",
-    badgeMobileText: "Verified",
+    stat: "—",
+    mobileStat: "—",
+    count: 0,
+    badgeText: "Live order tracking",
+    badgeMobileText: "Tracked",
   },
 };
 
@@ -142,7 +143,7 @@ export async function fetchPlatformStats(): Promise<PlatformStats> {
       }
     }
 
-    const calculatedAvgRating = ratingCount > 0 ? totalRating / ratingCount : 4.9;
+    const calculatedAvgRating = ratingCount > 0 ? totalRating / ratingCount : null;
 
     // 4. Sum orderCounter across active restaurants from Firestore
     const counterPromises = activeRestaurants.map(async (d) => {
@@ -167,11 +168,13 @@ export async function fetchPlatformStats(): Promise<PlatformStats> {
       Number(configPlatform?.totalOrders ?? 0)
     );
     const finalDistricts = Math.max(
-      districts.size > 0 ? districts.size : 14,
+      Math.max(districts.size, 1),
       Number(configPlatform?.districtsCount ?? 0)
     );
-    const finalRating = Number(configPlatform?.ratingAvg ?? calculatedAvgRating);
-    const avgDeliveryMin = Number(configPlatform?.avgDeliveryMinutes ?? 28);
+    const ratingRaw = configPlatform?.ratingAvg ?? calculatedAvgRating;
+    const finalRating = ratingRaw != null && Number(ratingRaw) > 0 ? Number(ratingRaw) : null;
+    const avgDeliveryMin =
+      configPlatform?.avgDeliveryMinutes != null ? Number(configPlatform.avgDeliveryMinutes) : null;
 
     const restFmt = formatCount(finalRestCount);
     const ordFmt = formatCount(finalOrders, true);
@@ -180,24 +183,24 @@ export async function fetchPlatformStats(): Promise<PlatformStats> {
       restaurants: {
         stat: restFmt.stat,
         mobileStat: restFmt.mobileStat,
-        rating: finalRating.toFixed(1),
-        badgeText: `${finalRating.toFixed(1)}/5 Quality Score`,
-        badgeMobileText: `${finalRating.toFixed(1)} Score`,
+        rating: finalRating != null ? finalRating.toFixed(1) : "",
+        badgeText: finalRating != null ? `${finalRating.toFixed(1)}/5 avg rating` : "Verified partners",
+        badgeMobileText: finalRating != null ? `${finalRating.toFixed(1)} rating` : "Verified",
         count: finalRestCount,
       },
       districts: {
-        stat: `${finalDistricts} Districts`,
+        stat: `${finalDistricts} ${finalDistricts === 1 ? "District" : "Districts"}`,
         mobileStat: `${finalDistricts}`,
         count: finalDistricts,
-        badgeText: `Avg ${avgDeliveryMin}-min delivery`,
-        badgeMobileText: `${avgDeliveryMin}m Avg`,
+        badgeText: avgDeliveryMin ? `Avg ${avgDeliveryMin}-min delivery` : "Live order tracking",
+        badgeMobileText: avgDeliveryMin ? `${avgDeliveryMin}m Avg` : "Live tracking",
       },
       orders: {
         stat: ordFmt.stat,
         mobileStat: ordFmt.mobileStat,
         count: finalOrders,
-        badgeText: "100% Hygiene Verified",
-        badgeMobileText: "Verified",
+        badgeText: "Live order tracking",
+        badgeMobileText: "Tracked",
       },
     };
 

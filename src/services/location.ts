@@ -67,21 +67,20 @@ export const POPULAR_AREAS = [
 export interface PopularLocality {
   name: string;
   city: string;
-  places: string;
   lat: number;
   lng: number;
 }
 
 export const POPULAR_LOCALITIES: PopularLocality[] = [
-  { name: "Kakkanad", city: "Kochi", places: "148 places", lat: 10.0159, lng: 76.3419 },
-  { name: "Edachira & Infopark", city: "Kochi", places: "92 places", lat: 10.0094, lng: 76.3619 },
-  { name: "Kaloor & Palarivattom", city: "Kochi", places: "124 places", lat: 9.9934, lng: 76.2929 },
-  { name: "MG Road & Marine Drive", city: "Kochi", places: "110 places", lat: 9.9675, lng: 76.2841 },
-  { name: "Fort Kochi & Mattancherry", city: "Kochi", places: "85 places", lat: 9.9638, lng: 76.2435 },
-  { name: "Panampilly Nagar", city: "Kochi", places: "64 places", lat: 9.9602, lng: 76.2952 },
-  { name: "Aluva & Kalamassery", city: "Kochi", places: "105 places", lat: 10.1076, lng: 76.3516 },
-  { name: "Koramangala", city: "Bengaluru", places: "210 places", lat: 12.9352, lng: 77.6245 },
-  { name: "Indiranagar", city: "Bengaluru", places: "175 places", lat: 12.9784, lng: 77.6408 },
+  { name: "Kakkanad", city: "Kochi", lat: 10.0159, lng: 76.3419 },
+  { name: "Edachira & Infopark", city: "Kochi", lat: 10.0094, lng: 76.3619 },
+  { name: "Kaloor & Palarivattom", city: "Kochi", lat: 9.9934, lng: 76.2929 },
+  { name: "MG Road & Marine Drive", city: "Kochi", lat: 9.9675, lng: 76.2841 },
+  { name: "Fort Kochi & Mattancherry", city: "Kochi", lat: 9.9638, lng: 76.2435 },
+  { name: "Panampilly Nagar", city: "Kochi", lat: 9.9602, lng: 76.2952 },
+  { name: "Aluva & Kalamassery", city: "Kochi", lat: 10.1076, lng: 76.3516 },
+  { name: "Koramangala", city: "Bengaluru", lat: 12.9352, lng: 77.6245 },
+  { name: "Indiranagar", city: "Bengaluru", lat: 12.9784, lng: 77.6408 },
 ];
 
 export function calculateDistanceKm(

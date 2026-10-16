@@ -14,7 +14,7 @@ import {
   Info,
 } from "lucide-react";
 import type { MenuItem, MenuVariant, Restaurant as R } from "@/types";
-import { displayRating } from "@/types";
+import { displayRating, isTakingOrders } from "@/types";
 import { fetchMenu, getCachedResults } from "@/services/discovery";
 import { getRestaurant } from "@/services/orders";
 import {
@@ -23,7 +23,8 @@ import {
   handleRestaurantImageError,
   handleFoodImageError,
 } from "@/lib/foodImages";
-import { etaMinutes } from "@/lib/geo";
+import { etaMinutes, haversineKm } from "@/lib/geo";
+import { getDiscoveryLocation } from "@/services/location";
 import { formatMoney } from "@/lib/currency";
 import { useCart } from "@/context/CartContext";
 import { VegDot, Spinner, RatingPill } from "@/components/bits";
@@ -72,6 +73,11 @@ export default function Restaurant() {
     (async () => {
       if (!restaurant) {
         const r = await getRestaurant(id);
+        // Opened directly (not from the feed): measure from the saved location.
+        const here = getDiscoveryLocation();
+        if (r && r.lat != null && r.lng != null) {
+          r.distanceKm = haversineKm(here.lat, here.lng, r.lat, r.lng);
+        }
         setRestaurant(r);
       }
       const m = await fetchMenu(id);
@@ -103,6 +109,10 @@ export default function Restaurant() {
   }, [menu, vegOnly, selectedCategory, query]);
 
   function addBase(item: MenuItem) {
+    if (restaurant && !isTakingOrders(restaurant)) {
+      toast(`${restaurant.name} isn't taking orders right now.`);
+      return;
+    }
     if (item.variants.length > 0 || item.addons.length > 0) {
       setModalItem(item);
       return;
@@ -171,7 +181,7 @@ export default function Restaurant() {
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                   {restaurant.name}
                 </h1>
-                {!restaurant.acceptingOrders && (
+                {!isTakingOrders(restaurant) && (
                   <span className="rounded-lg bg-red-100 px-2.5 py-1 text-xs font-black uppercase text-red-700">
                     Closed
                   </span>
@@ -194,7 +204,7 @@ export default function Restaurant() {
                   </span>
                 </div>
                 <p className="text-[10px] sm:text-[11px] font-bold text-slate-400 mt-0.5 truncate">
-                  {rating != null ? `${restaurant.ratingCount} reviews` : "No ratings"}
+                  {rating != null ? `${restaurant.ratingCount} ${restaurant.ratingCount === 1 ? "review" : "reviews"}` : "No ratings"}
                 </p>
               </div>
 

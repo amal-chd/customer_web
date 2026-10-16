@@ -34,7 +34,9 @@ export default function Login() {
   } = useAuth();
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const redirect = params.get("redirect") || "/order";
+  // Callers pass ?next= (some older links ?redirect=). Only in-site paths.
+  const requested = params.get("next") || params.get("redirect") || "";
+  const redirect = requested.startsWith("/") && !requested.startsWith("//") ? requested : "/order";
 
   // Login Method: Phone (default, popular & fast) vs Email
   const [authMethod, setAuthMethod] = useState<AuthMethod>("phone");

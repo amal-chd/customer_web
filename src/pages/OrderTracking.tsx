@@ -27,6 +27,8 @@ import { displayOrderNumber } from "@/lib/orderNumber";
 import { BillCard } from "@/components/BillCard";
 import { DeliveryTrackingMap } from "@/components/DeliveryTrackingMap";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { payForOrder } from "@/services/payment";
 
 const STAGES = [
   { key: "placed", label: "Order Placed", desc: "Sent to restaurant", icon: Check },
@@ -50,19 +52,50 @@ export default function OrderTracking() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const cart = useCart();
+  const { user, loading: authLoading } = useAuth();
   const [order, setOrder] = useState<CustomerOrder | null>(null);
+  const [missing, setMissing] = useState(false);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [reordering, setReordering] = useState(false);
+  const [paying, setPaying] = useState(false);
+
+  // Orders are only readable by their owner: wait for auth before listening.
+  useEffect(() => {
+    if (!id || authLoading) return;
+    return subscribeOrder(
+      id,
+      (ord) => {
+        setOrder(ord);
+        setMissing(false);
+      },
+      () => setMissing(true)
+    );
+  }, [id, authLoading, user?.uid]);
 
   useEffect(() => {
-    if (!id) return;
-    return subscribeOrder(id, (ord) => {
-      setOrder(ord);
-      if (ord.restaurantId && !restaurant) {
-        getRestaurant(ord.restaurantId).then((r) => setRestaurant(r));
-      }
-    });
-  }, [id, restaurant]);
+    if (!order?.restaurantId || restaurant?.id === order.restaurantId) return;
+    getRestaurant(order.restaurantId).then((r) => setRestaurant(r)).catch(() => {});
+  }, [order?.restaurantId, restaurant?.id]);
+
+  async function handlePayNow() {
+    if (!order) return;
+    setPaying(true);
+    try {
+      const result = await payForOrder({
+        orderId: order.id,
+        amountRupees: (order.bill?.totalPaise ?? order.total * 100) / 100,
+        name: user?.displayName ?? "",
+        email: user?.email ?? "",
+        contact: user?.phoneNumber ?? "",
+      });
+      if (result === "paid") toast("Payment received. Your order is on its way to the restaurant.");
+      else if (result === "pending") toast("Payment received. Confirming with the bank, this can take a minute.");
+    } catch (e: any) {
+      toast(e?.message ?? "Payment could not be completed.");
+    } finally {
+      setPaying(false);
+    }
+  }
 
   async function handleReorder() {
     if (!order) return;
@@ -109,6 +142,23 @@ export default function OrderTracking() {
     }
   }
 
+  if (missing) {
+    return (
+      <div className="flex h-[80vh] flex-col items-center justify-center gap-3 px-6 text-center">
+        <h1 className="text-lg font-black text-slate-900">We couldn't find this order</h1>
+        <p className="max-w-sm text-sm font-semibold text-slate-500">
+          It may belong to a different account. Sign in with the account you ordered from, or check your orders.
+        </p>
+        <button
+          onClick={() => navigate(user ? "/orders" : `/login?next=/orders/${id}`)}
+          className="rounded-2xl bg-primary px-5 py-2.5 text-sm font-black text-white"
+        >
+          {user ? "Go to my orders" : "Sign in"}
+        </button>
+      </div>
+    );
+  }
+
   if (!order) {
     return (
       <div className="flex h-[80vh] items-center justify-center">
@@ -121,6 +171,8 @@ export default function OrderTracking() {
   const cancelled = ["cancelled", "canceled", "rejected"].includes(order.status.toLowerCase());
   const delivered = idx === 4;
   const orderNumStr = displayOrderNumber(order.orderNumber, order.id);
+  const awaitingPayment =
+    !cancelled && order.paymentMethod === "razorpay" && order.paymentStatus !== "paid";
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
@@ -147,7 +199,11 @@ export default function OrderTracking() {
                 {order.restaurantName} ·{" "}
                 {order.paymentStatus === "paid"
                   ? "Paid Online"
-                  : order.paymentMethod.toUpperCase() || "COD"}
+                  : order.paymentMethod === "razorpay"
+                  ? "Payment pending"
+                  : order.paymentMethod === "wallet"
+                  ? "Wallet"
+                  : "Cash on delivery"}
               </p>
             </div>
           </div>
@@ -167,7 +223,28 @@ export default function OrderTracking() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
         {/* Placed Celebration Banner */}
-        {params.get("placed") === "1" && !cancelled && (
+        {awaitingPayment && (
+          <div className="mb-6 flex flex-col gap-4 rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-base font-black text-amber-950">
+                {params.get("payment") === "cancelled" ? "Payment not completed" : "Waiting for payment"}
+              </h2>
+              <p className="text-xs font-semibold text-amber-800 mt-0.5">
+                The restaurant gets your order once it's paid. If money already left your account, it will show
+                here within a few minutes — don't pay twice.
+              </p>
+            </div>
+            <button
+              onClick={handlePayNow}
+              disabled={paying}
+              className="shrink-0 rounded-2xl bg-primary px-5 py-2.5 text-sm font-black text-white shadow-md shadow-primary/20 disabled:opacity-60"
+            >
+              {paying ? "Opening…" : "Pay now"}
+            </button>
+          </div>
+        )}
+
+        {params.get("placed") === "1" && !cancelled && !awaitingPayment && (
           <div className="mb-6 flex items-center gap-4 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 shadow-xs">
             <div className="h-14 w-14 overflow-hidden rounded-2xl bg-white p-2 border border-emerald-200 shrink-0 flex items-center justify-center shadow-xs">
               <img
@@ -184,7 +261,8 @@ export default function OrderTracking() {
                 Order placed successfully!
               </h2>
               <p className="text-xs font-semibold text-emerald-700 mt-0.5">
-                The restaurant has accepted your order and is getting it ready.
+                We've sent it to {order.restaurantName || "the restaurant"}. This page updates live as they accept
+                and prepare it.
               </p>
             </div>
           </div>
@@ -201,11 +279,19 @@ export default function OrderTracking() {
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-primary" />
                     <span className="text-sm font-black text-slate-900">
-                      {delivered
+                      {cancelled
+                        ? "Order cancelled"
+                        : delivered
                         ? "Delivered to your address"
-                        : order.status === "out_for_delivery"
+                        : idx === 3
                         ? "Rider is on the way"
-                        : "Preparing your delicious meal"}
+                        : idx === 2
+                        ? "Ready, waiting for pickup"
+                        : idx === 1
+                        ? "The restaurant is preparing your meal"
+                        : order.status === "scheduled" && order.scheduledFor
+                        ? `Scheduled for ${order.scheduledFor.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+                        : "Waiting for the restaurant to accept"}
                     </span>
                   </div>
                   {order.estimatedDeliveryAt && !delivered && !cancelled && (
@@ -321,7 +407,7 @@ export default function OrderTracking() {
                 <div>
                   <h3 className="text-sm font-black text-slate-900">Need help with this order?</h3>
                   <p className="text-xs font-medium text-slate-500">
-                    Our 24/7 resolution desk is available via WhatsApp or Phone
+                    Reach our support team on WhatsApp or phone
                   </p>
                 </div>
               </div>
@@ -344,7 +430,7 @@ export default function OrderTracking() {
                   className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 py-3 text-xs font-black text-slate-800 hover:bg-slate-100 transition-colors"
                 >
                   <Phone className="h-4 w-4 text-slate-600" />
-                  <span>Call Toll-Free Helpline</span>
+                  <span>Call Support</span>
                 </a>
               </div>
             </div>

@@ -125,8 +125,16 @@ export function subscribeMyOrders(cb: (orders: CustomerOrder[]) => void): () => 
   });
 }
 
-export function subscribeOrder(orderId: string, cb: (order: CustomerOrder) => void): () => void {
-  return onSnapshot(doc(db, "orders", orderId), (snap) => cb(orderFromDoc(snap)));
+export function subscribeOrder(
+  orderId: string,
+  cb: (order: CustomerOrder) => void,
+  onMissing?: () => void
+): () => void {
+  return onSnapshot(
+    doc(db, "orders", orderId),
+    (snap) => (snap.exists() ? cb(orderFromDoc(snap)) : onMissing?.()),
+    () => onMissing?.()
+  );
 }
 
 export async function getRestaurant(id: string): Promise<Restaurant | null> {

@@ -365,9 +365,6 @@ export function LocationPickerSheet({
                         </p>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-md border border-slate-200/60">
-                          {loc.places}
-                        </span>
                         {isSelected && <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />}
                       </div>
                     </button>

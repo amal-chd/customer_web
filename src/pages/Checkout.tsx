@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Banknote,
@@ -29,6 +29,7 @@ import { payWithWallet } from "@/services/wallet";
 import {
   getDiscoveryLocation,
   getSavedAddresses,
+  getSavedLocation,
   requestBrowserLocation,
   reverseGeocode,
   saveAddressToStorage,
@@ -50,21 +51,28 @@ export default function Checkout() {
   const cart = useCart();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  // Choices made on the cart page carry over.
+  const fromCart = (useLocation().state ?? {}) as { instructions?: string[]; noCutlery?: boolean };
   const totals = cart.totals();
   const cur = cart.restaurant?.currency;
 
+  // Only a GPS fix is a real doorstep. A picked locality or the default city
+  // centre is just an area: prefill the area, but make the customer pin the
+  // exact spot before an order can go out.
   const discoveryLoc = getDiscoveryLocation();
+  const fromGps = getSavedLocation()?.isGps === true;
 
   const [name, setName] = useState(user?.displayName ?? "");
   const [phone, setPhone] = useState(user?.phoneNumber ?? "");
-  const [line1, setLine1] = useState(discoveryLoc.line1 || "");
-  const [area, setArea] = useState(discoveryLoc.area || discoveryLoc.label || "");
+  const [line1, setLine1] = useState(fromGps ? discoveryLoc.line1 || "" : "");
+  const [area, setArea] = useState(getSavedLocation() ? discoveryLoc.area || discoveryLoc.label || "" : "");
   const [landmark, setLandmark] = useState("");
-  const [pincode, setPincode] = useState(discoveryLoc.pincode || "");
+  const [pincode, setPincode] = useState(fromGps ? discoveryLoc.pincode || "" : "");
   const [gps, setGps] = useState<{ lat: number; lng: number }>({
     lat: discoveryLoc.lat,
     lng: discoveryLoc.lng,
   });
+  const [pinConfirmed, setPinConfirmed] = useState(fromGps);
 
   const [locating, setLocating] = useState(false);
   const [showMapModal, setShowMapModal] = useState(false);
@@ -75,8 +83,8 @@ export default function Checkout() {
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [fulfillmentType, setFulfillmentType] = useState<"now" | "scheduled">("now");
   const [scheduledSlot, setScheduledSlot] = useState<number>(45); // minutes from now
-  const [note, setNote] = useState("");
-  const [optCutlery, setOptCutlery] = useState(false);
+  const [note, setNote] = useState((fromCart.instructions ?? []).join(", "));
+  const [optCutlery, setOptCutlery] = useState(fromCart.noCutlery === true);
   const [placing, setPlacing] = useState(false);
   const idempotencyKey = useRef(crypto.randomUUID());
 
@@ -160,6 +168,7 @@ export default function Checkout() {
       setLocating(true);
       const l = await requestBrowserLocation();
       setGps({ lat: l.lat, lng: l.lng });
+      setPinConfirmed(true);
       if (l.area) setArea(l.area);
       if (l.line1) setLine1(l.line1);
       if (l.pincode) setPincode(l.pincode);
@@ -179,6 +188,7 @@ export default function Checkout() {
     setPincode(addr.pincode);
     if (addr.lat && addr.lng) {
       setGps({ lat: addr.lat, lng: addr.lng });
+      setPinConfirmed(true);
     }
     toast(`Using saved address: ${addr.label}`);
   }
@@ -195,7 +205,10 @@ export default function Checkout() {
     if (!line1.trim() || !area.trim()) return toast("Please enter your delivery street and area.");
     if (phone.trim().length < 8) return toast("Please enter a valid phone number.");
     if (!cart.restaurant) return;
-    if (!gps) return toast("Please confirm your location pin on the map.");
+    if (!pinConfirmed) {
+      setShowMapModal(true);
+      return toast("Please pin your exact delivery location on the map.");
+    }
 
     setPlacing(true);
     try {
@@ -269,17 +282,18 @@ export default function Checkout() {
       if (payment === "wallet") {
         await payWithWallet(orderId);
       } else if (payment === "razorpay") {
-        const paid = await payForOrder({
+        const result = await payForOrder({
           orderId,
           amountRupees: placed.totalPaise / 100,
           name: name.trim(),
           email: user?.email ?? "",
           contact: phone.trim(),
         });
-        if (!paid) {
-          navigate(`/orders/${orderId}?payment=failed`);
-          return;
-        }
+        // The order exists but is unpaid: the tracking page offers "Pay now".
+        // The cart is cleared either way so a retry can't create a second order.
+        cart.clear();
+        navigate(`/orders/${orderId}?${result === "cancelled" ? "payment=cancelled" : "placed=1"}`);
+        return;
       }
 
       cart.clear();
@@ -428,23 +442,47 @@ export default function Checkout() {
                 </div>
               </div>
 
-              {/* GPS Confirmation Banner */}
-              <div className="flex items-center justify-between rounded-2xl bg-emerald-50 border border-emerald-100 p-3.5 text-emerald-800">
-                <div className="flex items-center gap-2 min-w-0">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                  <span className="text-xs font-bold truncate">
-                    Pin confirmed ({gps.lat.toFixed(4)}, {gps.lng.toFixed(4)})
-                  </span>
+              {/* Pin status */}
+              {pinConfirmed ? (
+                <div className="flex items-center justify-between rounded-2xl bg-emerald-50 border border-emerald-100 p-3.5 text-emerald-800">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                    <span className="text-xs font-bold truncate">Delivery pin set</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={pinLocation}
+                    disabled={locating}
+                    className="text-xs font-black text-emerald-700 hover:underline shrink-0 ml-2"
+                  >
+                    {locating ? "Locating..." : "Use GPS"}
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={pinLocation}
-                  disabled={locating}
-                  className="text-xs font-black text-emerald-700 hover:underline shrink-0 ml-2"
-                >
-                  {locating ? "Locating..." : "Use GPS"}
-                </button>
-              </div>
+              ) : (
+                <div className="flex items-center justify-between gap-2 rounded-2xl bg-amber-50 border border-amber-200 p-3.5 text-amber-900">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <MapPin className="h-4 w-4 text-amber-600 shrink-0" />
+                    <span className="text-xs font-bold">Pin your exact location so the rider can find you</span>
+                  </div>
+                  <div className="flex shrink-0 gap-3">
+                    <button
+                      type="button"
+                      onClick={pinLocation}
+                      disabled={locating}
+                      className="text-xs font-black text-amber-800 hover:underline"
+                    >
+                      {locating ? "Locating..." : "Use GPS"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowMapModal(true)}
+                      className="text-xs font-black text-amber-800 hover:underline"
+                    >
+                      Map
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Contact Details Card */}
@@ -552,7 +590,7 @@ export default function Checkout() {
                 >
                   <p className="text-xs font-black text-slate-900">Deliver Now</p>
                   <p className="text-[11px] font-semibold text-slate-500 mt-0.5">
-                    Standard Hyperlocal (~30–45m)
+                    As soon as possible
                   </p>
                 </button>
 
@@ -790,14 +828,17 @@ export default function Checkout() {
                   <span>Subtotal</span>
                   <span>{formatMoney(totals.subtotal, cur)}</span>
                 </div>
-                <div className="flex justify-between text-xs font-bold text-slate-600">
-                  <span>Delivery fee</span>
-                  <span className="text-emerald-600 font-black">FREE</span>
-                </div>
-                <div className="flex justify-between border-t border-slate-100 pt-3 text-base font-black text-slate-900">
-                  <span>Estimated Total</span>
-                  <span>{formatMoney(totals.total, cur)}</span>
-                </div>
+                <p className="text-[11px] font-semibold text-slate-400">
+                  Delivery fee, taxes and offers are added once your address is confirmed.
+                </p>
+              </div>
+            )}
+
+            {fresh && quote && quote.problems.length > 0 && (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs font-bold text-amber-800 space-y-1">
+                {quote.problems.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
               </div>
             )}
 
@@ -816,10 +857,7 @@ export default function Checkout() {
                 ) : (
                   <>
                     <span>
-                      Place Order ·{" "}
-                      {quote
-                        ? formatPaise(quote.totalPaise)
-                        : formatMoney(totals.total, cur)}
+                      {quote ? `Place Order · ${formatPaise(quote.totalPaise)}` : "Place Order"}
                     </span>
                     <ChevronRight className="h-5 w-5" />
                   </>
@@ -842,6 +880,7 @@ export default function Checkout() {
           initialLng={gps.lng}
           onSelect={(res) => {
             setGps({ lat: res.lat, lng: res.lng });
+            setPinConfirmed(true);
             setArea(res.area);
             setLine1(res.line1);
             if (res.pincode) setPincode(res.pincode);

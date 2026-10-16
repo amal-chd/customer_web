@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { CartLine, MenuItem, MenuVariant, Restaurant } from "@/types";
 
 export interface Promo {
@@ -55,11 +55,49 @@ function lineUnitPrice(l: CartLine) {
   return (l.variant?.price ?? l.item.price) + l.addons.reduce((s, a) => s + a.price, 0);
 }
 
+// The cart survives a refresh or a sign-in round trip, but not a stale day.
+const CART_KEY = "kada_web_cart_v1";
+const CART_TTL_MS = 12 * 60 * 60 * 1000;
+
+interface StoredCart {
+  savedAt: number;
+  restaurant: Restaurant | null;
+  lines: CartLine[];
+  promoCode: string | null;
+  tip: number;
+}
+
+function loadCart(): StoredCart | null {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    if (!raw) return null;
+    const c = JSON.parse(raw) as StoredCart;
+    if (!c || !Array.isArray(c.lines) || Date.now() - c.savedAt > CART_TTL_MS) return null;
+    if (c.restaurant?.pausedUntil) c.restaurant.pausedUntil = new Date(c.restaurant.pausedUntil);
+    return c;
+  } catch {
+    return null;
+  }
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-  const [lines, setLines] = useState<CartLine[]>([]);
-  const [promoCode, setPromoCode] = useState<string | null>(null);
-  const [tip, setTipState] = useState(0);
+  const [stored] = useState(loadCart);
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(stored?.restaurant ?? null);
+  const [lines, setLines] = useState<CartLine[]>(stored?.lines ?? []);
+  const [promoCode, setPromoCode] = useState<string | null>(stored?.promoCode ?? null);
+  const [tip, setTipState] = useState(stored?.tip ?? 0);
+
+  useEffect(() => {
+    try {
+      if (lines.length === 0) localStorage.removeItem(CART_KEY);
+      else {
+        const c: StoredCart = { savedAt: Date.now(), restaurant, lines, promoCode, tip };
+        localStorage.setItem(CART_KEY, JSON.stringify(c));
+      }
+    } catch {
+      // Storage blocked (private mode): the cart just won't survive a refresh.
+    }
+  }, [restaurant, lines, promoCode, tip]);
 
   const value = useMemo<CartValue>(() => {
     const subtotal = lines.reduce((s, l) => s + lineUnitPrice(l) * l.qty, 0);
