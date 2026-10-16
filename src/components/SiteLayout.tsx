@@ -26,7 +26,6 @@ export function SiteLayout() {
   const isLanding = pathname === "/";
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     setOpen(false);
   }, [pathname]);
 

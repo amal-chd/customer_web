@@ -51,7 +51,7 @@ import type { CustomerOrder, MenuItem } from "@/types";
 import { formatMoney } from "@/lib/currency";
 import { displayOrderNumber } from "@/lib/orderNumber";
 import { Spinner } from "@/components/bits";
-import { MapLocationPickerModal } from "@/components/MapLocationPickerModal";
+import { MapLocationPickerModal } from "@/components/LazyMapPicker";
 
 const FAQS = [
   {

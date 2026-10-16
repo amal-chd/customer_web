@@ -19,15 +19,12 @@ import {
   getDiscoveryLocation,
   saveLocation,
   requestBrowserLocation,
-  searchPlaces,
   POPULAR_AREAS,
   POPULAR_LOCALITIES,
   onLocationChange,
   type DeliveryLocation,
-  type PlaceSuggestion,
 } from "@/services/location";
 import { toast } from "@/components/Toast";
-import { Spinner } from "@/components/bits";
 import { getVendorOnboardingUrl } from "@/lib/urls";
 import { EcosystemSection } from "@/components/EcosystemSection";
 import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
@@ -35,7 +32,7 @@ import { BetterFoodSection } from "@/components/BetterFoodSection";
 import { GetAppSection } from "@/components/GetAppSection";
 import { handleFoodImageError } from "@/lib/foodImages";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
-import { MapLocationPickerModal } from "@/components/MapLocationPickerModal";
+import { MapLocationPickerModal } from "@/components/LazyMapPicker";
 
 export interface CollectionItem {
   id: string;
@@ -47,6 +44,12 @@ export interface CollectionItem {
   to: string;
 }
 
+const SEARCH_SUGGESTIONS = [
+  "Biryani", "Burger", "Pizza", "Shawarma", "Fried Chicken", "Porotta", "Beef Fry", "Mandhi",
+  "Al Faham", "Dosa", "Meals", "Thali", "Noodles", "Fried Rice", "Momos", "Rolls", "Sandwich",
+  "Cakes", "Desserts", "Ice Cream", "Juices", "Tea & Snacks", "Coffee", "Kerala", "Chinese", "Arabic",
+];
+
 const COLLECTIONS: CollectionItem[] = [
   {
     id: "trending",
@@ -54,7 +57,7 @@ const COLLECTIONS: CollectionItem[] = [
     subtitle: "The most popular dining destinations this week",
     image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
     badge: "🔥 TRENDING",
-    badgeColor: "bg-rose-500/95 text-white",
+    badgeColor: "bg-rose-600 text-white",
     to: "/search?q=Trending",
   },
   {
@@ -63,7 +66,7 @@ const COLLECTIONS: CollectionItem[] = [
     subtitle: "Aromatic dum, Malabar, & Thalassery biryanis",
     image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
     badge: "👑 ICONIC MUST-TRY",
-    badgeColor: "bg-amber-500/95 text-white",
+    badgeColor: "bg-amber-400 text-amber-950",
     to: "/search?q=Biryani",
   },
   {
@@ -95,13 +98,21 @@ export default function Landing() {
   const [locating, setLocating] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
-  const [searching, setSearching] = useState(false);
+  const [suggestions, setSuggestions] = useState<{ label: string; secondary: string }[]>([]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Phones get the 480p cut (~1.3 MB), larger screens 720p (~2.8 MB). Data
+  // saver or reduced motion: just the poster frame, no download.
+  const [heroVideoSrc] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
+    return window.innerWidth < 768 ? "/hero-480.mp4" : "/hero-720.mp4";
+  });
 
   // Scroll-driven transforms for cinematic hero entrance and slide-up transition
   const { scrollYProgress: heroScroll } = useScroll({
@@ -127,6 +138,7 @@ export default function Landing() {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setShowLocationDropdown(false);
+        setSuggestions([]);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -161,17 +173,19 @@ export default function Landing() {
     toast(`Location set to ${loc.name}`);
   }
 
-  async function handleSearchChange(val: string) {
+  // Instant, local suggestions: the real matching happens on /search.
+  function handleSearchChange(val: string) {
     setSearchQuery(val);
-    if (val.trim().length < 2) {
+    const q = val.trim().toLowerCase();
+    if (q.length < 1) {
       setSuggestions([]);
-      setSearching(false);
       return;
     }
-    setSearching(true);
-    const results = await searchPlaces(val);
-    setSuggestions(results);
-    setSearching(false);
+    const matches = SEARCH_SUGGESTIONS.filter((t) => t.toLowerCase().includes(q))
+      .filter((t) => t.toLowerCase() !== q)
+      .slice(0, 5)
+      .map((t) => ({ label: t, secondary: "Dish or cuisine" }));
+    setSuggestions([{ label: val.trim(), secondary: "Search restaurants and dishes" }, ...matches]);
   }
 
   function handleSearchSubmit(e: React.FormEvent) {
@@ -188,7 +202,7 @@ export default function Landing() {
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative z-10 h-[75dvh] min-h-[520px] sm:h-auto sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-12 pb-6 sm:pt-20 sm:pb-10 select-none bg-slate-950"
+        className={`relative ${showLocationDropdown || suggestions.length > 0 ? "z-40" : "z-10"} h-[75dvh] min-h-[520px] sm:h-auto sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-12 pb-6 sm:pt-20 sm:pb-10 select-none bg-slate-950`}
       >
         {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -197,14 +211,15 @@ export default function Landing() {
             className="absolute inset-0 will-change-transform"
           >
             <video
-              autoPlay
+              autoPlay={heroVideoSrc != null}
               loop
               muted
               playsInline
-              poster="https://b.zmtcdn.com/web_assets/8313a97515fcb0447d2d77c276532a511583262271.png"
+              preload={heroVideoSrc ? "auto" : "none"}
+              poster="/hero-poster.jpg"
+              src={heroVideoSrc ?? undefined}
               className="absolute -top-16 sm:-top-24 md:-top-32 inset-x-0 h-[calc(100%+8rem)] sm:h-[calc(100%+12rem)] md:h-[calc(100%+16rem)] w-full object-cover object-center translate-y-16 sm:translate-y-24 md:translate-y-32 scale-110"
             >
-              <source src="/food-hero.mp4" type="video/mp4" />
             </video>
 
             {/* Ambient Overlay Gradient (Zomato style) */}
@@ -217,14 +232,14 @@ export default function Landing() {
 
         {/* ── Hero Center Content ── */}
         <motion.div
-          style={{ y: contentY, opacity: contentOpacity }}
+          style={{ y: contentY, opacity: showLocationDropdown || suggestions.length > 0 ? 1 : contentOpacity }}
           className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12 will-change-transform"
         >
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white/95 tracking-tight drop-shadow-md"
+            className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white/95 tracking-tight drop-shadow-md text-balance"
           >
             Discover the best food &amp; drinks in{" "}
             <span className="text-white underline decoration-primary decoration-4 underline-offset-4">
@@ -235,7 +250,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 text-sm sm:text-base md:text-lg font-medium text-white/85 max-w-lg mx-auto drop-shadow-sm"
+            className="mt-2 text-sm sm:text-base md:text-lg font-medium text-white/85 max-w-lg mx-auto drop-shadow-sm text-balance"
           >
             Experience fast &amp; easy online ordering on The Kada app
           </motion.p>
@@ -264,7 +279,7 @@ export default function Landing() {
                       setShowLocationDropdown((prev) => !prev);
                     }
                   }}
-                  className="flex-1 flex items-center justify-between text-left truncate outline-none cursor-pointer group"
+                  className="flex-1 flex h-10 items-center justify-between text-left truncate outline-none cursor-pointer group"
                   title="Change location"
                 >
                   <span className="truncate text-sm font-bold text-slate-800 group-hover:text-primary transition-colors">
@@ -287,9 +302,18 @@ export default function Landing() {
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e.target.value)}
                   placeholder="Search for restaurant, cuisine or a dish"
-                  className="flex-1 bg-transparent text-sm font-bold text-slate-800 placeholder-slate-400 outline-none"
+                  enterKeyHint="search"
+                  aria-label="Search for restaurant, cuisine or a dish"
+                  onKeyDown={(e) => e.key === "Escape" && setSuggestions([])}
+                  className="flex-1 h-10 min-w-0 bg-transparent text-base sm:text-sm font-bold text-slate-800 placeholder-slate-400 outline-none"
                 />
-                {searching && <Spinner className="h-4 w-4 text-primary shrink-0" />}
+                <button
+                  type="submit"
+                  aria-label="Search"
+                  className="hidden sm:flex h-9 shrink-0 items-center rounded-xl bg-primary px-4 text-xs font-black text-white transition-colors hover:bg-primary-dark"
+                >
+                  Search
+                </button>
               </div>
             </form>
 

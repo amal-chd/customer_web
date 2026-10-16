@@ -200,7 +200,7 @@ export default function Discover() {
   // Filters & Verticals
   const [activeVertical, setActiveVertical] = useState<string>(params.get("vertical") || "all");
   const [selectedCategory, setSelectedCategory] = useState<string>(params.get("category") || "");
-  const [vegOnly, setVegOnly] = useState(false);
+  const [vegOnly, setVegOnly] = useState(params.get("veg") === "true");
   const [minRating, setMinRating] = useState<number | null>(null);
   const [fastDeliveryOnly, setFastDeliveryOnly] = useState(false);
   const [sortBy, setSortBy] = useState<"distance" | "rating">("distance");

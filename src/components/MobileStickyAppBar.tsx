@@ -1,9 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 
 export function MobileStickyAppBar() {
-  const [visible, setVisible] = useState(true);
+  // Once dismissed, stay dismissed for the visit.
+  const [visible, setVisible] = useState(() => {
+    try {
+      return sessionStorage.getItem("kada_app_bar_dismissed") !== "1";
+    } catch {
+      return true;
+    }
+  });
+  function dismiss() {
+    setVisible(false);
+    try {
+      sessionStorage.setItem("kada_app_bar_dismissed", "1");
+    } catch {
+      // ignore
+    }
+  }
   const { pathname } = useLocation();
 
   // Hide on checkout / order tracking / login pages to keep clear action space
@@ -16,6 +31,9 @@ export function MobileStickyAppBar() {
   if (!visible || isExcludedPage) return null;
 
   return (
+    <>
+    {/* Keeps the end of the page (footer) from hiding under the bar. */}
+    <div aria-hidden="true" className="h-20 md:hidden" />
     <div className="fixed bottom-3 left-3 right-3 max-w-md mx-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[92%] md:hidden z-[100] pointer-events-auto animate-in slide-in-from-bottom-4 duration-300">
       <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 p-2.5 pl-3 pr-3 shadow-[0_14px_40px_-8px_rgba(15,23,42,0.18),0_4px_12px_rgba(15,23,42,0.06)]">
         {/* Left Side: App Icon + Descriptive Text */}
@@ -31,10 +49,10 @@ export function MobileStickyAppBar() {
 
           <div className="min-w-0 leading-tight">
             <p className="text-[12px] font-black text-slate-900 tracking-tight truncate">
-              Order food on The Kada app
+              Order on The Kada
             </p>
             <p className="text-[10px] font-semibold text-slate-500 truncate">
-              Live GPS tracking & faster checkout
+              Live order tracking
             </p>
           </div>
         </div>
@@ -43,19 +61,20 @@ export function MobileStickyAppBar() {
         <div className="flex items-center gap-1.5 shrink-0">
           <Link
             to="/order"
-            className="rounded-full bg-primary hover:bg-blue-600 active:scale-95 text-white px-3.5 py-1.5 text-[11px] font-black shadow-md shadow-primary/25 transition-all tracking-tight whitespace-nowrap"
+            className="rounded-full bg-primary hover:bg-blue-600 active:scale-95 text-white px-4 py-2 text-xs font-black shadow-md shadow-primary/25 transition-all tracking-tight whitespace-nowrap"
           >
-            Open App
+            Order now
           </Link>
           <button
-            onClick={() => setVisible(false)}
+            onClick={dismiss}
             aria-label="Dismiss app banner"
-            className="p-1 text-slate-400 hover:text-slate-600 transition-colors"
+            className="-mr-1.5 flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:text-slate-600 transition-colors"
           >
             <X className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
     </div>
+    </>
   );
 }

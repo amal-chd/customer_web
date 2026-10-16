@@ -1,24 +1,34 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { lazy, Suspense, useLayoutEffect } from "react";
+import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnalyticsTracker } from "./hooks/useAnalytics";
 import { SiteLayout } from "./components/SiteLayout";
 import { AppLayout } from "./components/AppLayout";
 import Landing from "./pages/Landing";
-import Discover from "./pages/Discover";
-import Search from "./pages/Search";
-import Restaurant from "./pages/Restaurant";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import Orders from "./pages/Orders";
-import OrderTracking from "./pages/OrderTracking";
-import Account from "./pages/Account";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import { About, Contact, Faq } from "./pages/Info";
-import { Privacy, Terms, Refund, Cookies, Shipping } from "./pages/Legal";
-import DeleteAccount from "./pages/DeleteAccount";
-import PartnerWithUs from "./pages/PartnerWithUs";
-import InvestorRelations from "./pages/InvestorRelations";
+
+// The landing page ships in the main bundle; everything else loads on demand
+// so a first visit doesn't download checkout, maps and account code.
+const Discover = lazy(() => import("./pages/Discover"));
+const Search = lazy(() => import("./pages/Search"));
+const Restaurant = lazy(() => import("./pages/Restaurant"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const Orders = lazy(() => import("./pages/Orders"));
+const OrderTracking = lazy(() => import("./pages/OrderTracking"));
+const Account = lazy(() => import("./pages/Account"));
+const Login = lazy(() => import("./pages/Login"));
+const About = lazy(() => import("./pages/Info").then((m) => ({ default: m.About })));
+const Contact = lazy(() => import("./pages/Info").then((m) => ({ default: m.Contact })));
+const Faq = lazy(() => import("./pages/Info").then((m) => ({ default: m.Faq })));
+const Privacy = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Privacy })));
+const Terms = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Terms })));
+const Refund = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Refund })));
+const Cookies = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Cookies })));
+const Shipping = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Shipping })));
+const DeleteAccount = lazy(() => import("./pages/DeleteAccount"));
+const PartnerWithUs = lazy(() => import("./pages/PartnerWithUs"));
+const InvestorRelations = lazy(() => import("./pages/InvestorRelations"));
 import RouteSeo from "./components/RouteSeo";
 
 const pageVariants = {
@@ -28,6 +38,12 @@ const pageVariants = {
 };
 
 function PageTransition({ children }: { children: React.ReactNode }) {
+  // A new page starts at the top; Back/Forward keeps the browser's position.
+  const navType = useNavigationType();
+  useLayoutEffect(() => {
+    if (navType !== "POP") window.scrollTo(0, 0);
+  }, [navType]);
+
   return (
     <motion.div
       initial="initial"
@@ -36,7 +52,7 @@ function PageTransition({ children }: { children: React.ReactNode }) {
       variants={pageVariants}
       className="w-full min-h-full"
     >
-      {children}
+      <Suspense fallback={<div className="min-h-[60vh]" />}>{children}</Suspense>
     </motion.div>
   );
 }

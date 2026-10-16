@@ -38,7 +38,7 @@ import {
 import { formatMoney } from "@/lib/currency";
 import { Spinner } from "@/components/bits";
 import { toast } from "@/components/Toast";
-import { MapLocationPickerModal } from "@/components/MapLocationPickerModal";
+import { MapLocationPickerModal } from "@/components/LazyMapPicker";
 
 const INSTRUCTION_TAGS = [
   "Leave at door",

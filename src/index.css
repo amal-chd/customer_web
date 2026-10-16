@@ -12,6 +12,19 @@
     @apply bg-slate-50 text-slate-900 font-sans antialiased;
     min-height: 100dvh;
     overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* iOS Safari zooms the page when a field under 16px gets focus. */
+  @media (max-width: 640px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+  :focus-visible {
+    outline: 2px solid theme("colors.primary.DEFAULT", #2563eb);
+    outline-offset: 2px;
   }
 }
 

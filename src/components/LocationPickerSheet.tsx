@@ -28,7 +28,7 @@ import {
   type PlaceSuggestion,
   type PopularLocality,
 } from "@/services/location";
-import { MapLocationPickerModal } from "@/components/MapLocationPickerModal";
+import { MapLocationPickerModal } from "@/components/LazyMapPicker";
 import { useAuth } from "@/context/AuthContext";
 import { Spinner } from "@/components/bits";
 import { toast } from "@/components/Toast";

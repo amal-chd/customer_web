@@ -148,7 +148,7 @@ export const Footer: React.FC = () => {
                               href={link.to}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="hover:text-white transition-colors flex items-center justify-between py-1 group"
+                              className="hover:text-white transition-colors flex items-center justify-between py-2.5 group"
                             >
                               <span>{link.label}</span>
                               <ExternalLink className="h-3 w-3 opacity-40 group-hover:opacity-100 transition-opacity" />
@@ -157,7 +157,7 @@ export const Footer: React.FC = () => {
                             <Link
                               to={link.to}
                               className={cn(
-                                "hover:text-white transition-colors block py-1",
+                                "hover:text-white transition-colors block py-2.5",
                                 link.highlight && "text-blue-400 font-bold"
                               )}
                             >
