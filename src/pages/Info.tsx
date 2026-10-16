@@ -91,7 +91,7 @@ export function About() {
 // ─── CONTACT PAGE ────────────────────────────────────────────────────────────
 export function Contact() {
   return (
-    <div className="bg-slate-50 min-h-screen py-8 sm:py-12">
+    <div className="bg-slate-50 min-h-screen overflow-x-clip">
       <UnifiedContactHub
         brand="customer"
         initialMode="contact"

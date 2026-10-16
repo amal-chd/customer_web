@@ -1,0 +1,23 @@
+/* Motion the kit needs on every site, whether or not the site has tailwindcss-animate. */
+@keyframes kada-kit-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.kk-fade-in {
+  animation: kada-kit-fade-in 300ms ease-out both;
+}
+
+.kk-no-scrollbar { scrollbar-width: none; }
+.kk-no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kk-fade-in { animation: none; }
+}
+
+/* Lenis smooth scrolling (see smooth-scroll.ts). */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }

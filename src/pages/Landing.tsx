@@ -477,13 +477,13 @@ export default function Landing() {
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (SHADE 1: DEEP MIDNIGHT NAVY BLUE) ─── */}
-      <StackCard className="z-10 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("navy")}>
+      <StackCard className="z-10 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("navy")}>
         <SectionBackdrop variant="navy" fadeTop />
         <BetterFoodSection />
       </StackCard>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SHADE 2: ROYAL SAPPHIRE BLUE) ─── */}
-      <StackCard className="z-20 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pt-7 pb-[3.75rem] sm:pt-11 sm:pb-[5.25rem]" style={shadeBackground("royal")}>
+      <StackCard className="z-20 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pt-7 pb-[3.75rem] sm:pt-11 sm:pb-[5.25rem]" style={shadeBackground("royal")}>
         <SectionBackdrop variant="royal" />
         <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden flex flex-col justify-center">
           <div className="mb-4 sm:mb-6 text-center">
@@ -563,13 +563,13 @@ export default function Landing() {
       </StackCard>
 
       {/* ─── CARD 3: APP FEATURES SHOWCASE (SHADE 3: COBALT CERULEAN OCEAN BLUE) ─── */}
-      <StackCard className="z-30 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("vivid")}>
+      <StackCard className="z-30 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("vivid")}>
         <SectionBackdrop variant="vivid" />
         <AppFeaturesShowcase />
       </StackCard>
 
-      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SHADE 4: BRIGHT AZURE SKY BLUE) ─── */}
-      <StackCard className="z-40 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("azure")}>
+      {/* ─── CARD 4: THE KADAVERSE ECOSYSTEM SECTION (SHADE 4: BRIGHT AZURE SKY BLUE) ─── */}
+      <StackCard className="z-40 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("azure")}>
         <SectionBackdrop variant="azure" />
         <EcosystemSection />
       </StackCard>
@@ -577,7 +577,7 @@ export default function Landing() {
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SOFT GLACIER ICE LIGHT BLUE) ─── */}
       <StackCard
         id="get-app-section"
-        className="z-50 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden"
+        className="z-50 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden"
         style={shadeBackground("ice")}
       >
         <SectionBackdrop variant="ice" />
@@ -621,33 +621,13 @@ export default function Landing() {
 }
 
 /**
- * A landing "card" that pins while the next one slides over it. A card taller
- * than the screen pins by its bottom edge instead of its top, so every part of
- * it scrolls into view before it gets covered.
+ * A landing section card with clean layered depth. Cards naturally slide over
+ * each other with rounded corners and elevated shadows without sticky freezing
+ * or layout jumping.
  */
 function StackCard({ className = "", style, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [top, setTop] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const update = () => {
-      const header = window.innerWidth >= 1024 ? 64 : window.innerWidth >= 768 ? 56 : 0;
-      setTop(Math.min(header, window.innerHeight - el.offsetHeight));
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    window.addEventListener("resize", update);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
   return (
-    <div ref={ref} {...rest} style={{ ...style, top }} className={`sticky ${className}`}>
+    <div {...rest} style={style} className={`relative ${className}`}>
       {children}
     </div>
   );
