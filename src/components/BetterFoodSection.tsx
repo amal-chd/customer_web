@@ -82,7 +82,7 @@ export function BetterFoodSection() {
         {/* 5. Cherry Tomato (Bottom Left Gutter) */}
         <motion.div
           style={{ y: tomato2Y }}
-          className="absolute bottom-6 left-3 sm:bottom-8 sm:left-14 w-5 h-5 sm:w-7 sm:h-7 max-w-[32px] max-h-[32px] opacity-85 will-change-transform"
+          className="absolute bottom-1 left-3 sm:bottom-2 sm:left-14 w-5 h-5 sm:w-7 sm:h-7 max-w-[32px] max-h-[32px] opacity-85 will-change-transform"
         >
           <img
             src="/zomato_assets/tomato.png"
@@ -95,7 +95,7 @@ export function BetterFoodSection() {
         {/* 6. Crispy Pizza Slice (Bottom Right Gutter) */}
         <motion.div
           style={{ y: pizzaY, rotate: pizzaRotate }}
-          className="absolute bottom-4 right-2 sm:bottom-6 sm:right-10 w-11 h-11 sm:w-15 sm:h-15 max-w-[64px] max-h-[64px] opacity-90 will-change-transform"
+          className="absolute bottom-0 right-2 sm:bottom-1 sm:right-10 w-11 h-11 sm:w-16 sm:h-16 max-w-[64px] max-h-[64px] opacity-90 will-change-transform"
         >
           <img
             src="/zomato_assets/pizza.png"

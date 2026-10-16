@@ -554,12 +554,12 @@ export default function Landing() {
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (CRISP WHITE) ─── */}
-      <div className="sticky top-0 z-10 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-6 sm:-mt-8 overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
+      <div className="sticky top-0 z-10 w-full flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-6 sm:-mt-8 overflow-hidden pt-5 sm:pt-7 pb-4 sm:pb-6">
         <BetterFoodSection />
       </div>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SLATE/ICE #F8FAFC) ─── */}
-      <div className="sticky top-0 z-20 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
+      <div className="sticky top-0 z-20 w-full flex flex-col justify-start bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-4 sm:pb-6">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-3 sm:mb-5">
             <div>
@@ -638,17 +638,17 @@ export default function Landing() {
       </div>
 
       {/* ─── CARD 3: APP FEATURES SHOWCASE (SOFT ROYAL BLUE TINT #EFF6FF) ─── */}
-      <div className="sticky top-0 z-30 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
+      <div className="sticky top-0 z-30 w-full flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-4 sm:pb-6">
         <AppFeaturesShowcase />
       </div>
 
       {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (CRISP WHITE LIKE ZOMATO ETERNAL) ─── */}
-      <div className="sticky top-0 z-40 w-full min-h-[420px] sm:min-h-[460px] md:min-h-[500px] flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-5 sm:pt-6 pb-6 sm:pb-8">
+      <div className="sticky top-0 z-40 w-full flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] overflow-hidden pt-5 sm:pt-6 pb-4 sm:pb-6">
         <EcosystemSection />
       </div>
 
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SOFT ROYAL TINT #EFF6FF) ─── */}
-      <div className="sticky top-0 z-50 w-full min-h-[440px] sm:min-h-[480px] md:min-h-[520px] flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-6 pb-8 sm:pb-12">
+      <div className="sticky top-0 z-50 w-full flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-6 pb-6 sm:pb-8">
         <GetAppSection />
       </div>
 
