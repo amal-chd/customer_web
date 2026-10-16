@@ -169,7 +169,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 bg-gradient-to-b from-[#EFF6FF] via-[#E8F2FC] to-[#DBEAFE] ${className}`}
+      className={`relative overflow-hidden w-full h-full flex flex-col justify-center items-center py-3 sm:py-5 select-none z-10 ${className}`}
     >
       {/* ── SPECIAL BACKGROUND PATTERN: Precision Micro-Pattern + Soft Ambient Spotlight ── */}
       <div
