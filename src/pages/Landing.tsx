@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { motion, useScroll, useTransform, useReducedMotion, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import {
   MapPin,
   Search,
@@ -92,74 +92,6 @@ const COLLECTIONS: CollectionItem[] = [
   },
 ];
 
-const CUISINES = [
-  "Bakery",
-  "Beverages",
-  "Biryani",
-  "Burger",
-  "Chinese",
-  "Continental",
-  "Desserts",
-  "Ice Cream",
-  "Juices",
-  "Kerala Sadya",
-  "Lebanese",
-  "Malabar",
-  "North Indian",
-  "Pizza",
-  "Rolls",
-  "Sandwich",
-  "Seafood",
-  "Shawarma",
-  "South Indian",
-  "Street Food",
-];
-
-const RESTAURANT_TYPES = [
-  "Bakeries",
-  "Bars & Pubs",
-  "Beverage Shops",
-  "Cafes",
-  "Casual Dining",
-  "Cloud Kitchens",
-  "Dessert Parlours",
-  "Dhabas",
-  "Fine Dining",
-  "Food Courts",
-  "Kiosks",
-  "Quick Bites",
-  "Sweet Shops",
-];
-
-const CHAINS = [
-  "Paragon",
-  "Domino's Pizza",
-  "Burger King",
-  "KFC",
-  "Haldiram's",
-  "Chicking",
-  "Subway",
-  "Pizza Hut",
-  "Baskin Robbins",
-  "Thalassery Kitchens",
-  "Madras Cafe",
-  "Sagar",
-];
-
-const CITIES = [
-  "Kochi",
-  "Kozhikode",
-  "Thiruvananthapuram",
-  "Thrissur",
-  "Kannur",
-  "Kollam",
-  "Kottayam",
-  "Alappuzha",
-  "Palakkad",
-  "Malappuram",
-  "Bengaluru",
-];
-
 export default function Landing() {
   const navigate = useNavigate();
   const [currentLoc, setCurrentLoc] = useState<DeliveryLocation>(getDiscoveryLocation());
@@ -171,9 +103,6 @@ export default function Landing() {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
   const [searching, setSearching] = useState(false);
-
-  // Accordion open states
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -249,34 +178,6 @@ export default function Landing() {
     const results = await searchPlaces(val);
     setSuggestions(results);
     setSearching(false);
-  }
-
-  function handleSelectCity(cityName: string) {
-    const coords: Record<string, { lat: number; lng: number }> = {
-      Kochi: { lat: 10.0159, lng: 76.3419 },
-      Kozhikode: { lat: 11.2588, lng: 75.7804 },
-      Thiruvananthapuram: { lat: 8.5241, lng: 76.9366 },
-      Thrissur: { lat: 10.5276, lng: 76.2144 },
-      Kannur: { lat: 11.8745, lng: 75.3704 },
-      Kollam: { lat: 8.8932, lng: 76.6141 },
-      Kottayam: { lat: 9.5916, lng: 76.5222 },
-      Alappuzha: { lat: 9.4981, lng: 76.3388 },
-      Palakkad: { lat: 10.7867, lng: 76.6548 },
-      Malappuram: { lat: 11.0732, lng: 76.0740 },
-      Bengaluru: { lat: 12.9716, lng: 77.5946 },
-    };
-    const target = coords[cityName] || { lat: 10.0159, lng: 76.3419 };
-    const deliveryLoc: DeliveryLocation = {
-      lat: target.lat,
-      lng: target.lng,
-      label: `${cityName}, India`,
-      area: cityName,
-      isGps: false,
-    };
-    saveLocation(deliveryLoc);
-    setCurrentLoc(deliveryLoc);
-    toast(`Location set to ${cityName}`);
-    navigate("/order");
   }
 
   function handleSearchSubmit(e: React.FormEvent) {
@@ -648,177 +549,8 @@ export default function Landing() {
       </div>
 
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SOFT ROYAL TINT TO SEAMLESS SLATE-ICE) ─── */}
-      <div className="sticky top-0 z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#EFF6FF] via-[#F8FAFC] to-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-6 pb-6 sm:pb-8">
+      <div className="relative z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#EFF6FF] via-[#F8FAFC] to-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-6 sm:pt-8 pb-12 sm:pb-16">
         <GetAppSection />
-      </div>
-
-      {/* ─── SECTION 6: EXPLORE OPTIONS NEAR YOU (SLATE/ICE #F8FAFC - NATURAL FLOW TO FOOTER) ─── */}
-      <div className="relative z-60 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] pt-8 sm:pt-12 pb-20 sm:pb-24">
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
-            Explore options near you
-          </h2>
-
-          {/* Accordion 1: Cuisines */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-xs hover:border-primary/40 hover:shadow-sm transition-all">
-            <button
-              type="button"
-              onClick={() => setOpenFaq(openFaq === 1 ? null : 1)}
-              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800 cursor-pointer"
-            >
-              <span>Popular cuisines near me</span>
-              <ChevronDown
-                className={`h-5 w-5 text-slate-400 transition-transform duration-300 shrink-0 ${
-                  openFaq === 1 ? "rotate-180 text-primary" : ""
-                }`}
-              />
-            </button>
-            <AnimatePresence initial={false}>
-              {openFaq === 1 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="overflow-hidden"
-                >
-                  <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                    {CUISINES.map((c, i) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
-                        className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                      >
-                        {c}{i < CUISINES.length - 1 ? " ·" : ""}
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Accordion 2: Restaurant Types */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-xs hover:border-primary/40 hover:shadow-sm transition-all">
-            <button
-              type="button"
-              onClick={() => setOpenFaq(openFaq === 2 ? null : 2)}
-              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800 cursor-pointer"
-            >
-              <span>Popular restaurant types near me</span>
-              <ChevronDown
-                className={`h-5 w-5 text-slate-400 transition-transform duration-300 shrink-0 ${
-                  openFaq === 2 ? "rotate-180 text-primary" : ""
-                }`}
-              />
-            </button>
-            <AnimatePresence initial={false}>
-              {openFaq === 2 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="overflow-hidden"
-                >
-                  <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                    {RESTAURANT_TYPES.map((t, i) => (
-                      <button
-                        key={t}
-                        type="button"
-                        onClick={() => navigate(`/search?q=${encodeURIComponent(t)}`)}
-                        className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                      >
-                        {t}{i < RESTAURANT_TYPES.length - 1 ? " ·" : ""}
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Accordion 3: Top Restaurant Chains */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-xs hover:border-primary/40 hover:shadow-sm transition-all">
-            <button
-              type="button"
-              onClick={() => setOpenFaq(openFaq === 3 ? null : 3)}
-              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800 cursor-pointer"
-            >
-              <span>Top Restaurant Chains</span>
-              <ChevronDown
-                className={`h-5 w-5 text-slate-400 transition-transform duration-300 shrink-0 ${
-                  openFaq === 3 ? "rotate-180 text-primary" : ""
-                }`}
-              />
-            </button>
-            <AnimatePresence initial={false}>
-              {openFaq === 3 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="overflow-hidden"
-                >
-                  <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                    {CHAINS.map((c, i) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => navigate(`/search?q=${encodeURIComponent(c)}`)}
-                        className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                      >
-                        {c}{i < CHAINS.length - 1 ? " ·" : ""}
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Accordion 4: Cities We Deliver To */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-xs hover:border-primary/40 hover:shadow-sm transition-all">
-            <button
-              type="button"
-              onClick={() => setOpenFaq(openFaq === 4 ? null : 4)}
-              className="flex w-full items-center justify-between p-5 text-left font-black text-base text-slate-800 cursor-pointer"
-            >
-              <span>Cities We Deliver To</span>
-              <ChevronDown
-                className={`h-5 w-5 text-slate-400 transition-transform duration-300 shrink-0 ${
-                  openFaq === 4 ? "rotate-180 text-primary" : ""
-                }`}
-              />
-            </button>
-            <AnimatePresence initial={false}>
-              {openFaq === 4 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="overflow-hidden"
-                >
-                  <div className="p-5 pt-0 border-t border-slate-100 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-                    {CITIES.map((c, i) => (
-                      <button
-                        key={c}
-                        type="button"
-                        onClick={() => handleSelectCity(c)}
-                        className="hover:text-primary hover:underline transition-colors cursor-pointer text-xs font-semibold text-slate-600"
-                      >
-                        {c}{i < CITIES.length - 1 ? " ·" : ""}
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
       </div>
 
       {/* Interactive Map Picker Modal */}
