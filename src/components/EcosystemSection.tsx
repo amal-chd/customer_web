@@ -19,7 +19,7 @@ const PRODUCTS: EcosystemProduct[] = [
     id: "the-kada",
     name: "the kada",
     category: "Hyperlocal Food & Grocery",
-    desc: "Experience lightning-fast hyper-local food delivery, 1-tap table reservations & live GPS tracking.",
+    desc: "Hyperlocal food delivery, dining & live GPS tracking",
     logo: "/ecosystem/the-kada.png",
     href: "/order",
     cta: "Order now",
@@ -30,7 +30,7 @@ const PRODUCTS: EcosystemProduct[] = [
     id: "kada-dine",
     name: "kada dine",
     category: "Restaurant POS & QR Dine-in",
-    desc: "Complete cloud POS, QR table ordering, kitchen displays & automated billing for modern restaurants.",
+    desc: "Cloud POS, QR table ordering & automated billing",
     logo: "/ecosystem/kada-dine.png",
     href: "https://kadadine.thekada.in",
     cta: "Explore dine",
@@ -41,7 +41,7 @@ const PRODUCTS: EcosystemProduct[] = [
     id: "kada-delivery",
     name: "kada delivery",
     category: "Fleet Logistics & Rider Shifts",
-    desc: "The best fleet network for lightning-fast deliveries, daily automated payouts & flexible rider shifts.",
+    desc: "Hyperlocal fleet delivery network & flexible shifts",
     logo: "/ecosystem/kada-delivery.png",
     href: "https://rider.thekada.in",
     cta: "Deliver with us",
@@ -52,7 +52,7 @@ const PRODUCTS: EcosystemProduct[] = [
     id: "kada-host",
     name: "kada host",
     category: "Hotels & QR Room Service",
-    desc: "Front desk check-ins, guest QR room service, automated housekeeping boards & direct hotel bookings.",
+    desc: "Front desk PMS, QR room service & guest bookings",
     logo: "/ecosystem/kada-host.png",
     href: "https://host.thekada.in",
     cta: "Host guests",
@@ -213,20 +213,20 @@ export function EcosystemSection() {
             className="relative bg-white rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)] p-6 sm:p-7 text-center overflow-hidden transition-all duration-300"
           >
             {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
-            <div className="relative h-24 sm:h-28 flex items-center justify-center mb-2 select-none">
+            <div className="relative h-32 sm:h-36 flex items-center justify-center mb-1 select-none">
               {/* Left Peeking Icon */}
               <button
                 type="button"
                 onClick={handlePrev}
                 aria-label={`Previous: ${prevProduct.name}`}
-                className="absolute -left-5 sm:-left-7 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden opacity-40 hover:opacity-90 transition-all cursor-pointer shadow-md shrink-0 flex items-center justify-center"
+                className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden opacity-35 hover:opacity-90 transition-all cursor-pointer shadow-md shrink-0 flex items-center justify-center"
               >
                 {renderAppIcon(prevProduct)}
               </button>
 
               {/* Center Active App Icon */}
               {renderCardLink(
-                <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl ring-2 ring-black/10 transition-transform duration-300 hover:scale-105 group bg-white flex items-center justify-center shrink-0">
+                <div className="relative z-10 w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden shadow-2xl ring-2 ring-black/10 transition-transform duration-300 hover:scale-105 group bg-white flex items-center justify-center shrink-0">
                   <div key={activeProduct.id} className="w-full h-full animate-in fade-in duration-300 flex items-center justify-center overflow-hidden">
                     {renderAppIcon(activeProduct)}
                   </div>
@@ -239,26 +239,14 @@ export function EcosystemSection() {
                 type="button"
                 onClick={handleNext}
                 aria-label={`Next: ${nextProduct.name}`}
-                className="absolute -right-5 sm:-right-7 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden opacity-40 hover:opacity-90 transition-all cursor-pointer shadow-md shrink-0 flex items-center justify-center"
+                className="absolute -right-6 sm:-right-8 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden opacity-35 hover:opacity-90 transition-all cursor-pointer shadow-md shrink-0 flex items-center justify-center"
               >
                 {renderAppIcon(nextProduct)}
               </button>
             </div>
 
-            {/* App Category Tag */}
-            <p className="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-0.5 mt-1">
-              {activeProduct.category}
-            </p>
-
-            {/* App Title */}
-            {renderCardLink(
-              <span className="inline-block font-black text-xl sm:text-2xl text-slate-900 tracking-tight lowercase hover:text-primary transition-colors">
-                {activeProduct.name}
-              </span>
-            )}
-
-            {/* App Description */}
-            <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[260px] mx-auto leading-relaxed min-h-[36px]">
+            {/* Small Description Only */}
+            <p className="mt-3 text-xs sm:text-[13px] font-semibold text-slate-600 max-w-[260px] mx-auto leading-relaxed">
               {activeProduct.desc}
             </p>
 
