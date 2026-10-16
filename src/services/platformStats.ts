@@ -40,8 +40,8 @@ export const DEFAULT_PLATFORM_STATS: PlatformStats = {
     stat: "—",
     mobileStat: "—",
     count: 0,
-    badgeText: "Live order tracking",
-    badgeMobileText: "Live tracking",
+    badgeText: "Local kitchens",
+    badgeMobileText: "Local",
   },
   orders: {
     stat: "—",
@@ -192,8 +192,8 @@ export async function fetchPlatformStats(): Promise<PlatformStats> {
         stat: `${finalDistricts} ${finalDistricts === 1 ? "District" : "Districts"}`,
         mobileStat: `${finalDistricts}`,
         count: finalDistricts,
-        badgeText: avgDeliveryMin ? `Avg ${avgDeliveryMin}-min delivery` : "Live order tracking",
-        badgeMobileText: avgDeliveryMin ? `${avgDeliveryMin}m Avg` : "Live tracking",
+        badgeText: avgDeliveryMin ? `Avg ${avgDeliveryMin}-min delivery` : "Local kitchens",
+        badgeMobileText: avgDeliveryMin ? `${avgDeliveryMin}m Avg` : "Local",
       },
       orders: {
         stat: ordFmt.stat,

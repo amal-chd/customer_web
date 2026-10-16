@@ -147,17 +147,7 @@ export function EcosystemSection() {
   };
 
   return (
-    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 text-white bg-gradient-to-b from-[#1d4ed8] via-[#2563eb] to-[#38bdf8]">
-      {/* ── SPECIAL BACKGROUND PATTERN: Deep Space Orbit Rings + Constellation Matrix Grid ── */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.25) 1.2px, transparent 1.2px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
-
+    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-7 sm:py-11 select-none z-10 text-white">
       {/* Planetary Orbit Vector Rings (Left & Right) */}
       <div
         aria-hidden="true"
@@ -334,7 +324,7 @@ export function EcosystemSection() {
                   className={`px-3.5 py-1.5 rounded-full text-xs font-black lowercase tracking-tight transition-all cursor-pointer ${
                     isActive
                       ? "bg-white text-blue-900 shadow-md shadow-blue-900/25 scale-105"
-                      : "bg-white/15 text-white/90 hover:bg-white/25 hover:text-white border border-white/25"
+                      : "bg-blue-950/30 text-white hover:bg-blue-950/45 border border-white/20"
                   }`}
                 >
                   {prod.name}

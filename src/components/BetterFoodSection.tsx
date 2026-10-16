@@ -110,22 +110,8 @@ export function BetterFoodSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-full flex flex-col justify-center items-center overflow-hidden select-none z-20 py-3 sm:py-5"
+      className="relative w-full h-full flex flex-col justify-center items-center overflow-hidden select-none z-20 py-7 sm:py-11"
     >
-      {/* ── SPECIAL BACKGROUND PATTERN: Precision Micro-Dot Matrix + Ambient Radial Bloom ── */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: "radial-gradient(#0284c7 1.2px, transparent 1.2px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[360px] bg-sky-400/20 rounded-full blur-[110px]"
-      />
-
       {/* ── Scroll-Linked Parallax Food Stickers ── */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden hidden sm:block">
         {/* 1. Fresh Basil Leaf (Top Left) */}

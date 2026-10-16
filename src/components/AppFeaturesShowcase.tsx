@@ -86,17 +86,7 @@ const FEATURE_COLUMNS: FeatureTile[][] = [
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 bg-gradient-to-b from-[#133e85] via-[#1a4fad] to-[#2563eb] text-white">
-      {/* ── SPECIAL BACKGROUND PATTERN: High-Tech Wave Radar Arcs & Micro-Grid ── */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.2) 1.2px, transparent 1.2px)",
-          backgroundSize: "20px 20px",
-        }}
-      />
-
+    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-7 sm:py-11 select-none z-10 text-white">
       {/* Decorative Ambient Radial Wave Circles (Left and Right) */}
       <div
         aria-hidden="true"

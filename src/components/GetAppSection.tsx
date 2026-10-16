@@ -123,22 +123,8 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden w-full h-full flex flex-col justify-center items-center py-3 sm:py-5 select-none z-10 ${className}`}
+      className={`relative overflow-hidden w-full h-full flex flex-col justify-center items-center py-7 sm:py-11 select-none z-10 ${className}`}
     >
-      {/* ── SPECIAL BACKGROUND PATTERN: Precision Micro-Pattern + Soft Ambient Spotlight ── */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-25"
-        style={{
-          backgroundImage: "radial-gradient(#2563eb 1.2px, transparent 1.2px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[380px] bg-blue-400/15 rounded-full blur-[120px]"
-      />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* ─────────────────────────────────────────────────────────────
             MOBILE VIEW: Dedicated Zomato-Style Living Phone Experience

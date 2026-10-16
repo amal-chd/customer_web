@@ -33,6 +33,7 @@ import { GetAppSection } from "@/components/GetAppSection";
 import { handleFoodImageError } from "@/lib/foodImages";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
 import { MapLocationPickerModal } from "@/components/LazyMapPicker";
+import { SectionBackdrop, shadeBackground } from "@/components/SectionBackdrop";
 
 export interface CollectionItem {
   id: string;
@@ -198,11 +199,11 @@ export default function Landing() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-[#0f1f4f] text-slate-900 font-sans antialiased selection:bg-primary/20 selection:text-primary">
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className={`relative ${showLocationDropdown || suggestions.length > 0 ? "z-40" : "z-10"} h-[75dvh] min-h-[520px] sm:h-auto sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-12 pb-6 sm:pt-20 sm:pb-10 select-none bg-slate-950`}
+        className={`relative ${showLocationDropdown || suggestions.length > 0 ? "z-40" : "z-10"} h-[75dvh] min-h-[520px] sm:h-auto sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-12 pb-14 sm:pt-20 sm:pb-20 select-none bg-slate-950`}
       >
         {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -225,7 +226,7 @@ export default function Landing() {
             {/* Ambient Overlay Gradient (Zomato style) */}
             <motion.div
               style={{ opacity: videoDim }}
-              className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/40 to-black/90"
+              className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/35 to-black/55"
             />
           </motion.div>
         </div>
@@ -455,37 +456,24 @@ export default function Landing() {
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (SHADE 1: DEEP MIDNIGHT NAVY BLUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-10 w-full flex flex-col justify-start bg-gradient-to-b from-[#030d22] via-[#071a3d] to-[#0c285e] shadow-[0_-20px_50px_rgba(0,0,0,0.45)] border-t border-sky-500/20 overflow-hidden py-4 sm:py-6">
+      <StackCard className="z-10 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("navy")}>
+        <SectionBackdrop variant="navy" fadeTop />
         <BetterFoodSection />
-      </div>
+      </StackCard>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SHADE 2: ROYAL SAPPHIRE BLUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-20 w-full flex flex-col justify-start bg-gradient-to-b from-[#0a224f] via-[#0e3272] to-[#154699] shadow-[0_-20px_50px_rgba(0,0,0,0.4)] border-t border-sky-400/30 overflow-hidden py-4 sm:py-6">
-        {/* Special Architectural Blueprint Grid Pattern */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-25"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[360px] bg-sky-500/15 rounded-full blur-[110px]"
-        />
-
+      <StackCard className="z-20 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pt-7 pb-[3.75rem] sm:pt-11 sm:pb-[5.25rem]" style={shadeBackground("royal")}>
+        <SectionBackdrop variant="royal" />
         <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden flex flex-col justify-center">
-          <div className="mb-3 sm:mb-4">
+          <div className="mb-4 sm:mb-6 text-center">
             <div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight text-balance">
                 Collections in{" "}
                 <span className="bg-gradient-to-r from-sky-300 via-cyan-200 to-white bg-clip-text text-transparent">
                   {currentLoc.label.split(",")[0]}
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm md:text-base font-semibold text-blue-100/90 mt-1 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base font-semibold text-blue-100/90 mt-2 max-w-2xl mx-auto leading-relaxed text-balance">
                 Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
               </p>
             </div>
@@ -551,25 +539,29 @@ export default function Landing() {
             <span className="hover:text-sky-300 transition-colors cursor-pointer">Trivandrum Coastal Dine</span>
           </div>
         </section>
-      </div>
+      </StackCard>
 
       {/* ─── CARD 3: APP FEATURES SHOWCASE (SHADE 3: COBALT CERULEAN OCEAN BLUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-30 w-full flex flex-col justify-start bg-gradient-to-b from-[#133e85] via-[#1a4fad] to-[#2563eb] shadow-[0_-20px_50px_rgba(0,0,0,0.35)] border-t border-sky-300/40 overflow-hidden py-4 sm:py-6">
+      <StackCard className="z-30 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("vivid")}>
+        <SectionBackdrop variant="vivid" />
         <AppFeaturesShowcase />
-      </div>
+      </StackCard>
 
       {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SHADE 4: BRIGHT AZURE SKY BLUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-40 w-full flex flex-col justify-start bg-gradient-to-b from-[#1d4ed8] via-[#2563eb] to-[#38bdf8] shadow-[0_-25px_60px_rgba(0,0,0,0.3)] border-t border-cyan-300/40 overflow-hidden py-4 sm:py-6">
+      <StackCard className="z-40 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("azure")}>
+        <SectionBackdrop variant="azure" />
         <EcosystemSection />
-      </div>
+      </StackCard>
 
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SOFT GLACIER ICE LIGHT BLUE) ─── */}
-      <div
+      <StackCard
         id="get-app-section"
-        className="sticky top-0 md:top-14 lg:top-16 z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#7dd3fc] via-[#bae6fd] to-[#f0f9ff] shadow-[0_-20px_50px_rgba(0,0,0,0.2)] border-t border-white/80 overflow-hidden py-4 sm:py-6"
+        className="z-50 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] w-full flex flex-col justify-start overflow-hidden"
+        style={shadeBackground("ice")}
       >
+        <SectionBackdrop variant="ice" />
         <GetAppSection />
-      </div>
+      </StackCard>
 
       {/* Interactive Map Picker Modal */}
       {showMapModal && (
@@ -603,6 +595,39 @@ export default function Landing() {
           setCurrentLoc(loc);
         }}
       />
+    </div>
+  );
+}
+
+/**
+ * A landing "card" that pins while the next one slides over it. A card taller
+ * than the screen pins by its bottom edge instead of its top, so every part of
+ * it scrolls into view before it gets covered.
+ */
+function StackCard({ className = "", style, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [top, setTop] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const header = window.innerWidth >= 1024 ? 64 : window.innerWidth >= 768 ? 56 : 0;
+      setTop(Math.min(header, window.innerHeight - el.offsetHeight));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return (
+    <div ref={ref} {...rest} style={{ ...style, top }} className={`sticky ${className}`}>
+      {children}
     </div>
   );
 }
