@@ -293,7 +293,7 @@ export default function Landing() {
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative z-10 min-h-[560px] sm:min-h-[620px] md:min-h-[680px] w-full flex flex-col justify-center pt-20 pb-12 sm:pt-24 sm:pb-16 select-none"
+        className="relative z-10 min-h-[480px] sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-16 pb-6 sm:pt-20 sm:pb-10 select-none"
       >
         {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -551,21 +551,19 @@ export default function Landing() {
           </motion.div>
         </motion.div>
 
-        {/* Bottom spacer */}
-        <div className="relative z-20 h-10" />
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (CRISP WHITE) ─── */}
-      <div className="sticky top-0 z-10 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-8 sm:-mt-12 overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-0 z-10 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] -mt-6 sm:-mt-8 overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
         <BetterFoodSection />
       </div>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SLATE/ICE #F8FAFC) ─── */}
-      <div className="sticky top-0 z-20 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-0 z-20 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-4 sm:mb-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-3 sm:mb-5">
             <div>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[11px] sm:text-xs font-black uppercase tracking-wider text-primary mb-2 sm:mb-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[11px] sm:text-xs font-black uppercase tracking-wider text-primary mb-2 sm:mb-2.5">
                 <Sparkles className="h-3.5 w-3.5" />
                 Curated City Guides
               </span>
@@ -575,7 +573,7 @@ export default function Landing() {
                   {currentLoc.label.split(",")[0]}
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm md:text-base font-semibold text-slate-500 mt-1 sm:mt-2 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base font-semibold text-slate-500 mt-1 sm:mt-1.5 max-w-2xl leading-relaxed">
                 Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
               </p>
             </div>
@@ -593,12 +591,12 @@ export default function Landing() {
             <span>Swipe collections</span>
             <span className="text-primary font-bold">Scroll →</span>
           </div>
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-3.5 pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 lg:gap-6 no-scrollbar touch-pan-x-scroll">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 lg:gap-6 no-scrollbar touch-pan-x-scroll">
             {COLLECTIONS.map((c) => (
               <Link
                 key={c.id}
                 to={c.to}
-                className="group relative snap-start shrink-0 w-[74vw] max-w-[270px] sm:w-auto h-[260px] sm:h-[320px] lg:h-[360px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
+                className="group relative snap-start shrink-0 w-[72vw] max-w-[260px] sm:w-auto h-[220px] sm:h-[280px] lg:h-[320px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xs hover:shadow-xl hover:border-primary/40 border border-slate-200/80 transition-all duration-300 flex flex-col justify-end"
               >
                 <img
                   src={c.image}
@@ -609,7 +607,7 @@ export default function Landing() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
 
                 {/* Floating Badge Tag at top */}
-                <div className="absolute top-3 left-3 z-20">
+                <div className="absolute top-2.5 left-2.5 z-20">
                   <span
                     className={`inline-flex items-center rounded-lg px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-xs ${c.badgeColor}`}
                   >
@@ -618,16 +616,16 @@ export default function Landing() {
                 </div>
 
                 {/* Card Content at bottom */}
-                <div className="relative z-20 p-3.5 sm:p-5 text-white">
-                  <h3 className="text-sm sm:text-base lg:text-lg font-black tracking-tight leading-snug drop-shadow-sm group-hover:text-blue-200 transition-colors">
+                <div className="relative z-20 p-3 sm:p-4 text-white">
+                  <h3 className="text-xs sm:text-sm lg:text-base font-black tracking-tight leading-snug drop-shadow-sm group-hover:text-blue-200 transition-colors">
                     {c.title}
                   </h3>
-                  <p className="text-[11px] sm:text-xs text-slate-300 font-medium line-clamp-1 mt-0.5">
+                  <p className="text-[10px] sm:text-xs text-slate-300 font-medium line-clamp-1 mt-0.5">
                     {c.subtitle}
                   </p>
-                  <div className="mt-2.5 flex items-center justify-between text-xs font-bold text-white/90 pt-1.5 border-t border-white/10">
-                    <span className="text-[11px] sm:text-xs text-blue-300 font-black">{c.places}</span>
-                    <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs text-white/90 font-bold group-hover:text-blue-300 group-hover:translate-x-1 transition-all">
+                  <div className="mt-2 flex items-center justify-between text-xs font-bold text-white/90 pt-1.5 border-t border-white/10">
+                    <span className="text-[10px] sm:text-xs text-blue-300 font-black">{c.places}</span>
+                    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-white/90 font-bold group-hover:text-blue-300 group-hover:translate-x-1 transition-all">
                       <span>Explore</span>
                       <ChevronRight className="h-3 w-3" />
                     </span>
@@ -640,22 +638,22 @@ export default function Landing() {
       </div>
 
       {/* ─── CARD 3: APP FEATURES SHOWCASE (SOFT ROYAL BLUE TINT #EFF6FF) ─── */}
-      <div className="sticky top-0 z-30 min-h-[100svh] w-full flex flex-col justify-center bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-0 z-30 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
         <AppFeaturesShowcase />
       </div>
 
       {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SLATE/ICE #F8FAFC) ─── */}
-      <div className="sticky top-0 z-40 min-h-[100svh] w-full flex flex-col justify-center bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-0 z-40 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
         <EcosystemSection />
       </div>
 
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (CRISP WHITE) ─── */}
-      <div className="sticky top-0 z-50 min-h-[100svh] w-full flex flex-col justify-center bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-4 sm:pt-8 pb-20 sm:pb-16">
+      <div className="sticky top-0 z-50 w-full min-h-[480px] sm:min-h-[540px] md:min-h-[600px] flex flex-col justify-start bg-white rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-7 pb-10 sm:pb-14">
         <GetAppSection />
       </div>
 
       {/* ─── SECTION 6: EXPLORE OPTIONS NEAR YOU (SLATE/ICE #F8FAFC - NATURAL FLOW TO FOOTER) ─── */}
-      <div className="relative z-60 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] pt-12 sm:pt-16 pb-24 sm:pb-28">
+      <div className="relative z-60 w-full bg-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] pt-8 sm:pt-12 pb-20 sm:pb-24">
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-6">
             Explore options near you
