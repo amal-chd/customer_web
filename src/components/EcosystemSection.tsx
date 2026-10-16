@@ -126,11 +126,11 @@ export function EcosystemSection() {
   const renderAppIcon = (prod: EcosystemProduct) => {
     if (prod.id === "the-kada") {
       return (
-        <div className="w-full h-full bg-gradient-to-br from-blue-600 via-primary to-indigo-700 p-2.5 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl shadow-inner">
+        <div className="w-full h-full bg-white p-2.5 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl shadow-sm">
           <img
             src={prod.logo}
             alt={prod.name}
-            className="w-full h-full object-contain filter brightness-0 invert drop-shadow-sm"
+            className="w-full h-full object-contain drop-shadow-sm"
           />
         </div>
       );
@@ -286,7 +286,7 @@ export function EcosystemSection() {
         </div>
 
         {/* ── Bottom Interactive Product Switcher Pills ── */}
-        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full max-w-xl">
+        <div className="mt-5 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full max-w-xl pb-10 sm:pb-0">
           {PRODUCTS.map((prod, idx) => {
             const isActive = idx === activeIndex;
             return (
