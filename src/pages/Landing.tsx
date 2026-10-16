@@ -225,38 +225,11 @@ export default function Landing() {
           style={{ y: contentY, opacity: contentOpacity }}
           className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12 will-change-transform"
         >
-          {/* Brand Logo & Text Logo Lockup */}
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center justify-center mb-5 sm:mb-6"
-          >
-            <Link
-              to="/order"
-              className="inline-flex items-center justify-center gap-3 sm:gap-4 md:gap-5 group hover:scale-[1.02] active:scale-[0.98] transition-transform"
-            >
-              {/* Logo Icon with crisp white squircle */}
-              <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-2xl sm:rounded-3xl bg-white p-2 sm:p-2.5 shadow-2xl shadow-black/40 flex items-center justify-center shrink-0 border border-white/40 group-hover:shadow-primary/20 transition-all">
-                <img
-                  src="/logo.png"
-                  alt="The Kada"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-
-              {/* Text Logo */}
-              <span className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white drop-shadow-lg">
-                The <span className="text-primary italic">Kada</span>
-              </span>
-            </Link>
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white/95 tracking-tight drop-shadow-md"
+            className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white/95 tracking-tight drop-shadow-md"
           >
             Discover the best food &amp; drinks in{" "}
             <span className="text-white underline decoration-primary decoration-4 underline-offset-4">
