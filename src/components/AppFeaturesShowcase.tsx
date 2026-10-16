@@ -86,13 +86,13 @@ const FEATURE_COLUMNS: FeatureTile[][] = [
 
 export function AppFeaturesShowcase() {
   return (
-    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 bg-gradient-to-b from-[#E0F2FE] via-[#BAE6FD] to-[#A5F3FC]">
+    <section className="relative overflow-hidden w-full flex flex-col justify-start items-center py-3 sm:py-5 select-none z-10 bg-gradient-to-b from-[#133e85] via-[#1a4fad] to-[#2563eb] text-white">
       {/* ── SPECIAL BACKGROUND PATTERN: High-Tech Wave Radar Arcs & Micro-Grid ── */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-25"
+        className="pointer-events-none absolute inset-0 opacity-20"
         style={{
-          backgroundImage: "radial-gradient(#0284c7 1.2px, transparent 1.2px)",
+          backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.2) 1.2px, transparent 1.2px)",
           backgroundSize: "20px 20px",
         }}
       />
@@ -102,7 +102,7 @@ export function AppFeaturesShowcase() {
         aria-hidden="true"
         className="pointer-events-none absolute -top-16 -left-16 w-80 h-80 sm:w-96 sm:h-96 opacity-45"
       >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-blue-500/30 fill-none" strokeWidth="1.2">
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-sky-300/30 fill-none" strokeWidth="1.2">
           <circle cx="100" cy="100" r="80" strokeDasharray="4 4" />
           <circle cx="100" cy="100" r="140" strokeDasharray="6 6" />
           <circle cx="100" cy="100" r="200" />
@@ -113,7 +113,7 @@ export function AppFeaturesShowcase() {
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-16 -right-16 w-80 h-80 sm:w-96 sm:h-96 opacity-45"
       >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-blue-500/30 fill-none" strokeWidth="1.2">
+        <svg viewBox="0 0 400 400" className="w-full h-full stroke-sky-300/30 fill-none" strokeWidth="1.2">
           <circle cx="300" cy="300" r="80" strokeDasharray="4 4" />
           <circle cx="300" cy="300" r="140" strokeDasharray="6 6" />
           <circle cx="300" cy="300" r="200" />
@@ -128,15 +128,15 @@ export function AppFeaturesShowcase() {
 
       {/* ── Section Header in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-6 text-center w-full">
-        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
           What&apos;s waiting for you on the{" "}
-          <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-sky-300 via-cyan-200 to-white bg-clip-text text-transparent">
             Kada app
           </span>
           ?
         </h2>
 
-        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm md:text-base font-semibold text-slate-600 max-w-lg mx-auto leading-relaxed">
+        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm md:text-base font-semibold text-blue-100/90 max-w-lg mx-auto leading-relaxed">
           Our app is packed with features designed to make hyperlocal food delivery & dining seamless across Kerala
         </p>
       </div>

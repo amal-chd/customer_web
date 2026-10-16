@@ -438,54 +438,54 @@ export default function Landing() {
 
       </section>
 
-      {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (SHADE 1: ICE GLACIER BLUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-10 w-full flex flex-col justify-start bg-gradient-to-b from-[#F0F9FF] via-[#E0F2FE] to-[#D5ECFD] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] border-t border-sky-200/50 overflow-hidden py-4 sm:py-6">
+      {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (SHADE 1: DEEP MIDNIGHT NAVY BLUE) ─── */}
+      <div className="sticky top-0 md:top-14 lg:top-16 z-10 w-full flex flex-col justify-start bg-gradient-to-b from-[#030d22] via-[#071a3d] to-[#0c285e] shadow-[0_-20px_50px_rgba(0,0,0,0.45)] border-t border-sky-500/20 overflow-hidden py-4 sm:py-6">
         <BetterFoodSection />
       </div>
 
-      {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SHADE 2: ROYAL PERIWINKLE BLUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-20 w-full flex flex-col justify-start bg-gradient-to-b from-[#EEF2FF] via-[#E0E7FF] to-[#D5E3FF] shadow-[0_-20px_50px_rgba(0,0,0,0.13)] border-t border-indigo-200/50 overflow-hidden py-4 sm:py-6">
+      {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SHADE 2: ROYAL SAPPHIRE BLUE) ─── */}
+      <div className="sticky top-0 md:top-14 lg:top-16 z-20 w-full flex flex-col justify-start bg-gradient-to-b from-[#0a224f] via-[#0e3272] to-[#154699] shadow-[0_-20px_50px_rgba(0,0,0,0.4)] border-t border-sky-400/30 overflow-hidden py-4 sm:py-6">
         {/* Special Architectural Blueprint Grid Pattern */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-30"
+          className="pointer-events-none absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              "linear-gradient(to right, rgba(37, 99, 235, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(37, 99, 235, 0.08) 1px, transparent 1px)",
+              "linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
           }}
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[360px] bg-indigo-400/15 rounded-full blur-[110px]"
+          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[360px] bg-sky-500/15 rounded-full blur-[110px]"
         />
 
         <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden flex flex-col justify-center">
           <div className="mb-3 sm:mb-4">
             <div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
                 Collections in{" "}
-                <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-sky-300 via-cyan-200 to-white bg-clip-text text-transparent">
                   {currentLoc.label.split(",")[0]}
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm md:text-base font-semibold text-slate-600 mt-1 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base font-semibold text-blue-100/90 mt-1 max-w-2xl leading-relaxed">
                 Explore handpicked lists of top-rated spots, iconic food trails, and hidden dining gems based on local trends
               </p>
             </div>
           </div>
 
           {/* Collections Cards: Smooth horizontal scroll snap rail on mobile, clean 4-col grid on desktop */}
-          <div className="flex sm:hidden items-center justify-between text-[10px] font-black uppercase tracking-wider text-slate-500 mb-1.5 px-1">
+          <div className="flex sm:hidden items-center justify-between text-[10px] font-black uppercase tracking-wider text-blue-200/80 mb-1.5 px-1">
             <span>Swipe collections</span>
-            <span className="text-primary font-bold">Scroll →</span>
+            <span className="text-sky-300 font-bold">Scroll →</span>
           </div>
           <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-4 lg:gap-5 pb-2 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 no-scrollbar touch-pan-x-scroll">
             {COLLECTIONS.map((c) => (
               <Link
                 key={c.id}
                 to={c.to}
-                className="group relative snap-start shrink-0 w-[72vw] max-w-[260px] sm:w-auto h-[220px] sm:h-[250px] lg:h-[270px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:border-primary/40 border border-white transition-all duration-300 flex flex-col justify-end"
+                className="group relative snap-start shrink-0 w-[72vw] max-w-[260px] sm:w-auto h-[220px] sm:h-[250px] lg:h-[270px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:border-primary/40 border border-white/20 transition-all duration-300 flex flex-col justify-end"
               >
                 <img
                   src={c.image}
@@ -525,33 +525,33 @@ export default function Landing() {
           </div>
 
           {/* ── Bottom Trail Chips to anchor the section ── */}
-          <div className="mt-3.5 sm:mt-4 hidden sm:flex items-center justify-center gap-2 text-xs font-bold text-slate-600 bg-white/60 backdrop-blur-sm border border-white/80 py-1.5 px-4 rounded-full shadow-xs mx-auto">
-            <span className="text-slate-800 font-black">Trending Trails:</span>
-            <span className="hover:text-primary transition-colors cursor-pointer">Thalassery Dum Trail</span>
-            <span className="text-slate-300">·</span>
-            <span className="hover:text-primary transition-colors cursor-pointer">Fort Kochi Heritage Cafes</span>
-            <span className="text-slate-300">·</span>
-            <span className="hover:text-primary transition-colors cursor-pointer">Kozhikode Beach Snacks</span>
-            <span className="text-slate-300">·</span>
-            <span className="hover:text-primary transition-colors cursor-pointer">Trivandrum Coastal Dine</span>
+          <div className="mt-3.5 sm:mt-4 hidden sm:flex items-center justify-center gap-2 text-xs font-bold text-blue-100 bg-white/10 backdrop-blur-sm border border-white/20 py-1.5 px-4 rounded-full shadow-xs mx-auto">
+            <span className="text-white font-black">Trending Trails:</span>
+            <span className="hover:text-sky-300 transition-colors cursor-pointer">Thalassery Dum Trail</span>
+            <span className="text-blue-300/40">·</span>
+            <span className="hover:text-sky-300 transition-colors cursor-pointer">Fort Kochi Heritage Cafes</span>
+            <span className="text-blue-300/40">·</span>
+            <span className="hover:text-sky-300 transition-colors cursor-pointer">Kozhikode Beach Snacks</span>
+            <span className="text-blue-300/40">·</span>
+            <span className="hover:text-sky-300 transition-colors cursor-pointer">Trivandrum Coastal Dine</span>
           </div>
         </section>
       </div>
 
-      {/* ─── CARD 3: APP FEATURES SHOWCASE (SHADE 3: CERULEAN SKY BLUE - 100% OPAQUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-30 w-full flex flex-col justify-start bg-gradient-to-b from-[#E0F2FE] via-[#BAE6FD] to-[#A5F3FC] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] border-t border-sky-200/50 overflow-hidden py-4 sm:py-6">
+      {/* ─── CARD 3: APP FEATURES SHOWCASE (SHADE 3: COBALT CERULEAN OCEAN BLUE) ─── */}
+      <div className="sticky top-0 md:top-14 lg:top-16 z-30 w-full flex flex-col justify-start bg-gradient-to-b from-[#133e85] via-[#1a4fad] to-[#2563eb] shadow-[0_-20px_50px_rgba(0,0,0,0.35)] border-t border-sky-300/40 overflow-hidden py-4 sm:py-6">
         <AppFeaturesShowcase />
       </div>
 
-      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SHADE 4: DEEP SAPPHIRE MIDNIGHT BLUE - SPECIAL SECTION - 100% OPAQUE) ─── */}
-      <div className="sticky top-0 md:top-14 lg:top-16 z-40 w-full flex flex-col justify-start bg-gradient-to-br from-[#071329] via-[#0B2149] to-[#143B7A] shadow-[0_-25px_60px_rgba(0,0,0,0.4)] border-t border-cyan-500/30 overflow-hidden py-4 sm:py-6">
+      {/* ─── CARD 4: THE KADA ECOSYSTEM SECTION (SHADE 4: BRIGHT AZURE SKY BLUE) ─── */}
+      <div className="sticky top-0 md:top-14 lg:top-16 z-40 w-full flex flex-col justify-start bg-gradient-to-b from-[#1d4ed8] via-[#2563eb] to-[#38bdf8] shadow-[0_-25px_60px_rgba(0,0,0,0.3)] border-t border-cyan-300/40 overflow-hidden py-4 sm:py-6">
         <EcosystemSection />
       </div>
 
-      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SLATE-ICE AZURE BLUE - 100% OPAQUE) ─── */}
+      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SOFT GLACIER ICE LIGHT BLUE) ─── */}
       <div
         id="get-app-section"
-        className="sticky top-0 md:top-14 lg:top-16 z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#EFF6FF] via-[#E8F2FC] to-[#DBEAFE] shadow-[0_-20px_50px_rgba(0,0,0,0.18)] border-t border-white/80 overflow-hidden py-4 sm:py-6"
+        className="sticky top-0 md:top-14 lg:top-16 z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#7dd3fc] via-[#bae6fd] to-[#f0f9ff] shadow-[0_-20px_50px_rgba(0,0,0,0.2)] border-t border-white/80 overflow-hidden py-4 sm:py-6"
       >
         <GetAppSection />
       </div>

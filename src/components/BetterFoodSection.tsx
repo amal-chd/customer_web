@@ -124,14 +124,14 @@ export function BetterFoodSection() {
       {/* ── Section Content in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center w-full flex flex-col items-center">
         <div className="max-w-xl mx-auto">
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
             Better food for{" "}
-            <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-sky-400 via-blue-300 to-cyan-200 bg-clip-text text-transparent">
               everyone
             </span>
           </h2>
 
-          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg font-semibold text-slate-600 max-w-lg mx-auto leading-relaxed">
+          <p className="mt-2.5 sm:mt-3 text-sm sm:text-base md:text-lg font-semibold text-blue-100/90 max-w-lg mx-auto leading-relaxed">
             Connecting you with authentic restaurants, cloud kitchens, and iconic food spots delivered fresh across the state
           </p>
         </div>
@@ -218,19 +218,19 @@ export function BetterFoodSection() {
         </div>
 
         {/* ── Bottom Trust Chips for Balanced Height ── */}
-        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs font-bold text-slate-600 bg-white/60 backdrop-blur-sm border border-white/80 py-2 px-4 rounded-full shadow-xs">
-          <span className="flex items-center gap-1 text-slate-700">
-            <Zap className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs font-bold text-white/90 bg-white/10 backdrop-blur-md border border-white/20 py-2 px-4 rounded-full shadow-xs">
+          <span className="flex items-center gap-1 text-white">
+            <Zap className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
             Avg 28-min delivery
           </span>
-          <span className="text-slate-300">·</span>
-          <span className="flex items-center gap-1 text-slate-700">
-            <Star className="h-3.5 w-3.5 text-primary fill-primary" />
+          <span className="text-white/40">·</span>
+          <span className="flex items-center gap-1 text-white">
+            <Star className="h-3.5 w-3.5 text-sky-400 fill-sky-400" />
             4.9/5 Food quality
           </span>
-          <span className="text-slate-300">·</span>
-          <span className="flex items-center gap-1 text-slate-700">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+          <span className="text-white/40">·</span>
+          <span className="flex items-center gap-1 text-white">
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
             100% Hygiene verified
           </span>
         </div>
