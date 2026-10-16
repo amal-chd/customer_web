@@ -190,12 +190,6 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
             MOBILE VIEW: Dedicated Zomato-Style Living Phone Experience
            ───────────────────────────────────────────────────────────── */}
         <div className="lg:hidden text-center max-w-sm mx-auto">
-          {/* Official App Badge */}
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-primary mb-1.5">
-            <Smartphone className="h-3 w-3" />
-            Official Mobile App
-          </span>
-
           {/* Section Typography */}
           <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
             Download the app now!

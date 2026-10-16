@@ -74,7 +74,7 @@ export function Stars({ value, size = 16 }: { value: number; size?: number }) {
 export function ShimmerCard() {
   return (
     <div className="overflow-hidden rounded-2xl">
-      <div className="shimmer aspect-[4/3] w-full rounded-2xl" />
+      <div className="shimmer aspect-[16/11] sm:aspect-[4/3] w-full rounded-2xl" />
       <div className="mt-2 space-y-1.5">
         <div className="shimmer h-3.5 w-3/4 rounded" />
         <div className="shimmer h-3 w-1/2 rounded" />

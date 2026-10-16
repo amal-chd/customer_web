@@ -33,9 +33,6 @@ export const Footer: React.FC = () => {
               <h2 className="text-3xl font-black italic tracking-tighter text-white">
                 The <span className="text-blue-500">Kada</span>
               </h2>
-              <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                Customer App
-              </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-medium">
               Order food and chef specials from top local kitchens and restaurants near you. Built for transparent pricing, live kitchen tracking, and lightning-fast hyperlocal delivery.

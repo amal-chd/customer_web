@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface EcosystemProduct {
   id: string;
@@ -189,12 +189,6 @@ export function EcosystemSection() {
       />
 
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center z-10 w-full flex flex-col items-center">
-        {/* Brand Tagline Badge */}
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/25 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-cyan-300 mb-3 shadow-xs">
-          <Sparkles className="h-3.5 w-3.5" />
-          The Unified Platform
-        </span>
-
         {/* Brand Wordmark (matching Zomato eternal reference: bold, lowercase, tight tracking) */}
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight lowercase">
           the <span className="text-cyan-400">kada</span>

@@ -632,7 +632,7 @@ export default function Discover() {
 
             <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
               {recommendedRestaurants.map((r) => (
-                <div key={r.id} className="w-64 sm:w-72 shrink-0">
+                <div key={r.id} className="w-44 sm:w-60 shrink-0">
                   <RestaurantCard r={r} />
                 </div>
               ))}
@@ -972,20 +972,20 @@ export default function Discover() {
 
         {/* ── 10. MAIN RESTAURANTS FEED ── */}
         <div id="restaurants-feed">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div>
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-base sm:text-xl font-black text-slate-900 tracking-tight">
                 {selectedCategory
                   ? `${selectedCategory} places near ${loc.label.split(",")[0]}`
                   : `All Restaurants & Kitchens near ${loc.label.split(",")[0]}`}
               </h2>
-              <p className="text-xs font-semibold text-slate-500 mt-0.5">
+              <p className="text-[11px] sm:text-xs font-semibold text-slate-500 mt-0.5">
                 {filtered.length} place{filtered.length === 1 ? "" : "s"} ready to deliver
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => <ShimmerCard key={i} />)
             ) : error ? (

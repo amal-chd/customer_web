@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Navigation, Clock, Gift, ShieldCheck, HeartHandshake } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface FeatureTile {
@@ -129,11 +128,6 @@ export function AppFeaturesShowcase() {
 
       {/* ── Section Header in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-6 text-center w-full">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-primary mb-2">
-          <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-          The Kada Experience
-        </span>
-
         <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           What&apos;s waiting for you on the{" "}
           <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -189,24 +183,6 @@ export function AppFeaturesShowcase() {
               ))}
             </div>
           ))}
-        </div>
-
-        {/* ── Bottom Feature Highlights Pill Bar ── */}
-        <div className="mt-3.5 sm:mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px] sm:text-xs font-bold text-slate-700 bg-white/60 backdrop-blur-sm border border-white/80 py-1.5 px-4 rounded-full shadow-xs">
-          <span className="flex items-center gap-1.5">
-            <Navigation className="h-3.5 w-3.5 text-primary" />
-            Live Rider GPS Tracking
-          </span>
-          <span className="text-slate-300">·</span>
-          <span className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 text-blue-600" />
-            Instant Order Scheduling
-          </span>
-          <span className="text-slate-300">·</span>
-          <span className="flex items-center gap-1.5">
-            <HeartHandshake className="h-3.5 w-3.5 text-emerald-600" />
-            Zero Cancellation Fee
-          </span>
         </div>
       </div>
     </section>

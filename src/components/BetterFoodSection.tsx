@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { Sparkles, ShieldCheck, Zap, Star } from "lucide-react";
+import { ShieldCheck, Zap, Star } from "lucide-react";
 
 export function BetterFoodSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -124,11 +124,6 @@ export function BetterFoodSection() {
       {/* ── Section Content in The Kada Style ── */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center w-full flex flex-col items-center">
         <div className="max-w-xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-primary mb-3">
-            <Sparkles className="h-3.5 w-3.5" />
-            The Kada Quality
-          </span>
-
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight">
             Better food for{" "}
             <span className="bg-gradient-to-r from-primary via-blue-600 to-indigo-600 bg-clip-text text-transparent">
