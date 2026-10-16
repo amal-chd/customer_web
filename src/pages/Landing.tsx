@@ -236,6 +236,27 @@ export default function Landing() {
           style={{ y: contentY, opacity: showLocationDropdown || suggestions.length > 0 ? 1 : contentOpacity }}
           className="relative z-20 mx-auto w-full max-w-4xl px-4 sm:px-6 text-center my-auto py-12 will-change-transform"
         >
+          {/* Logo + wordmark: phones only, where the site header is hidden (md:block). */}
+          <motion.div
+            initial={{ opacity: 0, y: -12, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-5 flex items-center justify-center md:hidden"
+          >
+            <Link
+              to="/"
+              aria-label="The Kada home"
+              className="inline-flex items-center gap-3 transition-transform active:scale-[0.98]"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/40 bg-white p-2 shadow-2xl shadow-black/40">
+                <img src="/logo.png" alt="" className="h-full w-full object-contain" />
+              </span>
+              <span className="text-4xl font-black tracking-tight text-white drop-shadow-lg">
+                The <span className="italic text-primary-light">Kada</span>
+              </span>
+            </Link>
+          </motion.div>
+
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
