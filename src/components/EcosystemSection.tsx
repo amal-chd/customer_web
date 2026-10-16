@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Sparkles, ExternalLink } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 
 interface EcosystemProduct {
   id: string;
@@ -126,21 +126,23 @@ export function EcosystemSection() {
   const renderAppIcon = (prod: EcosystemProduct) => {
     if (prod.id === "the-kada") {
       return (
-        <div className="w-full h-full bg-gradient-to-br from-blue-600 via-primary to-indigo-700 p-2.5 sm:p-3.5 flex items-center justify-center">
+        <div className="w-full h-full bg-gradient-to-br from-blue-600 via-primary to-indigo-700 p-2.5 sm:p-3 flex items-center justify-center rounded-2xl sm:rounded-3xl shadow-inner">
           <img
             src={prod.logo}
             alt={prod.name}
-            className="w-full h-full object-contain filter brightness-0 invert"
+            className="w-full h-full object-contain filter brightness-0 invert drop-shadow-sm"
           />
         </div>
       );
     }
     return (
-      <img
-        src={prod.logo}
-        alt={prod.name}
-        className="w-full h-full object-cover scale-110"
-      />
+      <div className="w-full h-full overflow-hidden rounded-2xl sm:rounded-3xl bg-blue-600 flex items-center justify-center">
+        <img
+          src={prod.logo}
+          alt={prod.name}
+          className="w-full h-full object-cover scale-[1.12]"
+        />
+      </div>
     );
   };
 
@@ -208,7 +210,7 @@ export function EcosystemSection() {
         </div>
 
         {/* Center Stage Card Container */}
-        <div className="relative mx-auto max-w-[300px] sm:max-w-[360px] w-full">
+        <div className="relative mx-auto max-w-[300px] sm:max-w-[340px] w-full">
           <div
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
@@ -217,24 +219,25 @@ export function EcosystemSection() {
             className="relative bg-white rounded-3xl border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.4)] p-6 sm:p-7 text-center overflow-hidden transition-all duration-300"
           >
             {/* Top Row: Left Peeking Icon, Center Active Icon, Right Peeking Icon */}
-            <div className="relative h-24 sm:h-28 flex items-center justify-center mb-3 select-none">
+            <div className="relative h-24 sm:h-28 flex items-center justify-center mb-2 select-none">
               {/* Left Peeking Icon */}
               <button
                 type="button"
                 onClick={handlePrev}
                 aria-label={`Previous: ${prevProduct.name}`}
-                className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden opacity-35 hover:opacity-85 transition-all cursor-pointer shadow-md"
+                className="absolute -left-5 sm:-left-7 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden opacity-40 hover:opacity-90 transition-all cursor-pointer shadow-md shrink-0 flex items-center justify-center"
               >
                 {renderAppIcon(prevProduct)}
               </button>
 
               {/* Center Active App Icon */}
               {renderCardLink(
-                <div className="relative z-10 w-22 h-22 sm:w-26 sm:h-26 rounded-3xl overflow-hidden shadow-2xl ring-2 ring-black/10 transition-transform duration-300 hover:scale-105 group bg-white flex items-center justify-center">
-                  <div key={activeProduct.id} className="w-full h-full animate-in fade-in duration-300 flex items-center justify-center">
+                <div className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl ring-2 ring-black/10 transition-transform duration-300 hover:scale-105 group bg-white flex items-center justify-center shrink-0">
+                  <div key={activeProduct.id} className="w-full h-full animate-in fade-in duration-300 flex items-center justify-center overflow-hidden">
                     {renderAppIcon(activeProduct)}
                   </div>
-                </div>
+                </div>,
+                "relative z-10 inline-flex items-center justify-center shrink-0"
               )}
 
               {/* Right Peeking Icon */}
@@ -242,14 +245,14 @@ export function EcosystemSection() {
                 type="button"
                 onClick={handleNext}
                 aria-label={`Next: ${nextProduct.name}`}
-                className="absolute -right-6 sm:-right-8 top-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden opacity-35 hover:opacity-85 transition-all cursor-pointer shadow-md"
+                className="absolute -right-5 sm:-right-7 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden opacity-40 hover:opacity-90 transition-all cursor-pointer shadow-md shrink-0 flex items-center justify-center"
               >
                 {renderAppIcon(nextProduct)}
               </button>
             </div>
 
             {/* App Category Tag */}
-            <p className="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-0.5">
+            <p className="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-0.5 mt-1">
               {activeProduct.category}
             </p>
 
@@ -261,12 +264,12 @@ export function EcosystemSection() {
             )}
 
             {/* App Description */}
-            <p className="mt-1.5 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[270px] mx-auto leading-relaxed min-h-[38px]">
+            <p className="mt-1 text-xs sm:text-[13px] font-medium text-slate-500 max-w-[260px] mx-auto leading-relaxed min-h-[36px]">
               {activeProduct.desc}
             </p>
 
             {/* Direct Call to Action with Brand Colored Arrow */}
-            <div className="mt-3.5">
+            <div className="mt-3">
               {renderCardLink(
                 <span className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-slate-900 hover:text-primary transition-colors">
                   <span>{activeProduct.cta}</span>
