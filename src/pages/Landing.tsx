@@ -193,7 +193,7 @@ export default function Landing() {
       {/* ─── 1. HERO SECTION WITH VIDEO BACKGROUND ─────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative z-10 min-h-[480px] sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-16 pb-6 sm:pt-20 sm:pb-10 select-none bg-slate-950"
+        className="relative z-10 h-[75dvh] min-h-[520px] sm:h-auto sm:min-h-[540px] md:min-h-[600px] w-full flex flex-col justify-center pt-12 pb-6 sm:pt-20 sm:pb-10 select-none bg-slate-950"
       >
         {/* Background Video Wrapper (Clipped strictly to hero bounds) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -207,7 +207,7 @@ export default function Landing() {
               muted
               playsInline
               poster="https://b.zmtcdn.com/web_assets/8313a97515fcb0447d2d77c276532a511583262271.png"
-              className="absolute inset-0 h-full w-full object-cover scale-105"
+              className="absolute -top-16 sm:-top-24 md:-top-32 inset-x-0 h-[calc(100%+8rem)] sm:h-[calc(100%+12rem)] md:h-[calc(100%+16rem)] w-full object-cover object-center translate-y-16 sm:translate-y-24 md:translate-y-32 scale-110"
             >
               <source src="/food-hero.mp4" type="video/mp4" />
             </video>
@@ -215,7 +215,7 @@ export default function Landing() {
             {/* Ambient Overlay Gradient (Zomato style) */}
             <motion.div
               style={{ opacity: videoDim }}
-              className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85"
+              className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/40 to-black/90"
             />
           </motion.div>
         </div>
