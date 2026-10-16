@@ -647,8 +647,8 @@ export default function Landing() {
         <EcosystemSection />
       </div>
 
-      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SOFT ROYAL TINT #EFF6FF) ─── */}
-      <div className="sticky top-0 z-50 w-full flex flex-col justify-start bg-[#EFF6FF] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-6 pb-6 sm:pb-8">
+      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SOFT ROYAL TINT TO SEAMLESS SLATE-ICE) ─── */}
+      <div className="sticky top-0 z-50 w-full flex flex-col justify-start bg-gradient-to-b from-[#EFF6FF] via-[#F8FAFC] to-[#F8FAFC] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pt-5 sm:pt-6 pb-6 sm:pb-8">
         <GetAppSection />
       </div>
 

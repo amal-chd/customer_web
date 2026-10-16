@@ -172,65 +172,79 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
       className={`relative overflow-hidden bg-transparent pt-1 pb-4 sm:pb-6 z-10 w-full ${className}`}
     >
 
-      {/* Top Decorative Ambient Side Curves (Left and Right) */}
+      {/* Soft Ambient Radial Glow (Continuous, zero harsh cut-offs) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-20 -left-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
-      >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-blue-400/25 fill-none" strokeWidth="1.2">
-          <circle cx="100" cy="100" r="140" strokeDasharray="6 6" />
-          <circle cx="100" cy="100" r="190" />
-          <circle cx="100" cy="100" r="240" strokeDasharray="4 4" />
-        </svg>
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 opacity-40"
-      >
-        <svg viewBox="0 0 400 400" className="w-full h-full stroke-blue-400/25 fill-none" strokeWidth="1.2">
-          <circle cx="300" cy="100" r="140" strokeDasharray="6 6" />
-          <circle cx="300" cy="100" r="190" />
-          <circle cx="300" cy="100" r="240" strokeDasharray="4 4" />
-        </svg>
-      </div>
-
-      {/* Background Decorative Ambient Blurs */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 -left-40 h-96 w-96 rounded-full bg-blue-400/10 blur-3xl"
-      >
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-indigo-400/10 blur-3xl"
-      >
-      </div>
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-96 bg-gradient-to-b from-blue-500/10 via-primary/5 to-transparent blur-3xl"
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* ─────────────────────────────────────────────────────────────
-            MOBILE VIEW: Dedicated Zomato-Style App Download Experience
+            MOBILE VIEW: Dedicated Zomato-Style Living Phone Experience
            ───────────────────────────────────────────────────────────── */}
         <div className="lg:hidden text-center max-w-sm mx-auto">
-          {/* Dual Phone Mockup Graphic */}
-          <div className="relative w-44 sm:w-52 max-w-[58vw] mx-auto mb-2 drop-shadow-xl animate-float-slow">
-            <img
-              src="/images/kada_app_phones.png"
-              alt="The Kada Mobile App"
-              className="w-full h-auto object-contain mx-auto max-h-[130px] sm:max-h-[160px]"
-              loading="lazy"
-            />
-          </div>
+          {/* Official App Badge */}
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-0.5 text-[10px] sm:text-xs font-black uppercase tracking-wider text-primary mb-1.5">
+            <Smartphone className="h-3 w-3" />
+            Official Mobile App
+          </span>
 
           {/* Section Typography */}
-          <h3 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
             Download the app now!
           </h3>
           <p className="text-slate-500 text-xs sm:text-sm font-semibold mt-1 max-w-xs mx-auto leading-relaxed">
-            Experience seamless food ordering with the Kada app
+            Experience lightning-fast hyper-local food delivery &amp; live GPS tracking on The Kada
           </p>
 
+          {/* Living Mini Phone Mockup (100% Vector-Sharp, Transparent, Authentic Kerala Hyperlocal UI) */}
+          <div className="relative mx-auto my-3 w-56 sm:w-64 rounded-[2.2rem] bg-slate-950 p-2 shadow-2xl border-2 border-slate-800 ring-1 ring-black/10 select-none transform hover:scale-[1.02] transition-transform duration-300">
+            {/* Dynamic Island Pill */}
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-4 bg-black rounded-full z-20 flex items-center justify-between px-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[7px] font-black text-white/90">The Kada</span>
+              <span className="w-2 h-2 rounded-full bg-slate-900" />
+            </div>
+
+            {/* Screen Content */}
+            <div className="h-44 sm:h-52 w-full rounded-[1.8rem] overflow-hidden bg-gradient-to-b from-slate-900 to-slate-950 text-white p-3 pt-6 flex flex-col justify-between">
+              {/* Top Status */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
+                <div className="flex items-center gap-1.5">
+                  <div className="h-4 w-4 rounded-md bg-white p-0.5 flex items-center justify-center">
+                    <img src="/logo.png" alt="The Kada" className="w-full h-full object-contain" />
+                  </div>
+                  <span className="text-[10px] font-black text-white">The Kada App</span>
+                </div>
+                <span className="text-[8px] font-black text-emerald-400 bg-emerald-500/20 px-1.5 py-0.5 rounded-full">
+                  ⚡ 24 MINS
+                </span>
+              </div>
+
+              {/* Mini Featured Dish Card */}
+              <div className="bg-white/5 border border-white/10 rounded-xl p-2 flex items-center gap-2.5">
+                <img
+                  src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=200&q=80"
+                  alt="Dum Biryani"
+                  className="h-12 w-12 rounded-lg object-cover shrink-0"
+                />
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="text-[10px] font-black text-white truncate">Thalassery Dum Biryani</p>
+                  <p className="text-[8px] text-slate-300">⭐ 4.9 · Malabar Spices</p>
+                  <p className="text-[9px] font-bold text-emerald-400 mt-0.5">₹180 <span className="line-through text-slate-500 text-[8px]">₹240</span></p>
+                </div>
+              </div>
+
+              {/* 1-Tap CTA Pill */}
+              <div className="w-full py-1.5 rounded-lg bg-primary text-center text-[10px] font-black text-white shadow-sm flex items-center justify-center gap-1">
+                <span>Order on App • Flat 50% OFF</span>
+                <ArrowRight className="h-2.5 w-2.5" />
+              </div>
+            </div>
+          </div>
+
           {/* Official Store Download Badges Side-by-Side */}
-          <div className="flex items-center justify-center gap-3 mt-3.5 sm:mt-5">
+          <div className="flex items-center justify-center gap-3 mt-3 sm:mt-4">
             {/* Apple App Store Badge */}
             <a
               href={appStoreUrl}
