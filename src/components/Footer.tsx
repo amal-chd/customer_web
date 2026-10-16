@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-slate-950 text-slate-400 overflow-hidden relative border-t border-slate-800 selection:bg-blue-600/30 selection:text-white">
+    <footer className="bg-slate-950 text-slate-400 overflow-hidden relative z-60 border-t border-slate-800 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] selection:bg-blue-600/30 selection:text-white">
       {/* Ambient Top Light Beam */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />

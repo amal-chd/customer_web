@@ -575,8 +575,11 @@ export default function Landing() {
         <EcosystemSection />
       </div>
 
-      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SLATE-ICE AZURE BLUE) ─── */}
-      <div className="relative z-50 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-b from-[#EFF6FF] via-[#F8FAFC] to-[#E2E8F0]/70 rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.14)] overflow-hidden pb-10 sm:pb-14">
+      {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SLATE-ICE AZURE BLUE - 100% OPAQUE) ─── */}
+      <div
+        id="get-app-section"
+        className="sticky top-0 z-50 w-full min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-center items-center bg-gradient-to-b from-[#EFF6FF] via-[#E8F2FC] to-[#DBEAFE] rounded-t-[36px] sm:rounded-t-[48px] shadow-[0_-20px_50px_rgba(0,0,0,0.18)] overflow-hidden pb-4 sm:pb-8"
+      >
         <GetAppSection />
       </div>
 

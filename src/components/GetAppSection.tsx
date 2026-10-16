@@ -368,7 +368,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
              ───────────────────────────────────────────────────────────── */}
           <div className="hidden lg:flex lg:col-span-5 flex-col items-center justify-center">
             {/* Phone Screen Selector Tabs */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200 shadow-xs mb-6 max-w-full overflow-x-auto">
+            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200 shadow-xs mb-3 max-w-full overflow-x-auto">
               <button
                 type="button"
                 onClick={() => setActiveScreen("tracking")}
@@ -421,7 +421,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
 
             {/* Smartphone Device Shell */}
             <div
-              className="relative w-64 sm:w-72 h-[520px] rounded-[3rem] bg-slate-950 p-3 shadow-2xl border-4 border-slate-800 ring-1 ring-white/10 transition-transform duration-500 hover:scale-[1.02]"
+              className="relative w-64 sm:w-68 h-[460px] rounded-[2.6rem] bg-slate-950 p-2.5 shadow-2xl border-4 border-slate-800 ring-1 ring-white/10 transition-transform duration-500 hover:scale-[1.02]"
               onMouseEnter={() => setIsHoveringPhone(true)}
               onMouseLeave={() => setIsHoveringPhone(false)}
             >
@@ -650,7 +650,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
             </div>
 
             {/* Micro Floating Badges */}
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-slate-600">
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-slate-600">
               <span className="flex items-center gap-1 bg-white/90 px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
                 <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                 <span>4.8 / 5 Rating</span>
@@ -669,7 +669,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
           {/* ─────────────────────────────────────────────────────────────
               RIGHT COLUMN: Action Center, Mode Selector, Forms, and Store Buttons
              ───────────────────────────────────────────────────────────── */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-7 space-y-4">
             {/* Header Badge & Title */}
             <div>
               <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3.5 py-1 text-xs font-black text-primary border border-blue-200/80 mb-3">
