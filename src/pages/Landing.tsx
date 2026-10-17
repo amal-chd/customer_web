@@ -34,6 +34,7 @@ import { handleFoodImageError } from "@/lib/foodImages";
 import { LocationPickerSheet } from "@/components/LocationPickerSheet";
 import { MapLocationPickerModal } from "@/components/LazyMapPicker";
 import { SectionBackdrop, shadeBackground } from "@/components/SectionBackdrop";
+import { StackCard } from "@/components/kada-kit/shades";
 
 export interface CollectionItem {
   id: string;
@@ -114,6 +115,22 @@ export default function Landing() {
     if (saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
     return window.innerWidth < 768 ? "/hero-480.mp4" : "/hero-720.mp4";
   });
+
+  // Pause the hero video once it's scrolled out of view. A playing, transformed
+  // video kept the GPU busy under the stacked cards, so they painted late (dark
+  // gaps for a moment) when scrolling quickly further down the page.
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    const hero = heroRef.current;
+    if (!video || !hero || heroVideoSrc == null) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) void video.play().catch(() => undefined);
+      else video.pause();
+    });
+    io.observe(hero);
+    return () => io.disconnect();
+  }, [heroVideoSrc]);
 
   // Scroll-driven transforms for cinematic hero entrance and slide-up transition
   const { scrollYProgress: heroScroll } = useScroll({
@@ -212,6 +229,7 @@ export default function Landing() {
             className="absolute inset-0 will-change-transform"
           >
             <video
+              ref={heroVideoRef}
               autoPlay={heroVideoSrc != null}
               loop
               muted
@@ -477,13 +495,13 @@ export default function Landing() {
       </section>
 
       {/* ─── CARD 1: BETTER FOOD FOR EVERYONE (SHADE 1: DEEP MIDNIGHT NAVY BLUE) ─── */}
-      <StackCard className="z-10 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("navy")}>
+      <StackCard fill className="z-10 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-center overflow-hidden pb-8 sm:pb-10" style={shadeBackground("navy")}>
         <SectionBackdrop variant="navy" fadeTop />
         <BetterFoodSection />
       </StackCard>
 
       {/* ─── CARD 2: CURATED CITY GUIDES / COLLECTIONS (SHADE 2: ROYAL SAPPHIRE BLUE) ─── */}
-      <StackCard className="z-20 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pt-7 pb-[3.75rem] sm:pt-11 sm:pb-[5.25rem]" style={shadeBackground("royal")}>
+      <StackCard fill className="z-20 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-center overflow-hidden pt-7 pb-[3.75rem] sm:pt-11 sm:pb-[5.25rem]" style={shadeBackground("royal")}>
         <SectionBackdrop variant="royal" />
         <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full overflow-hidden flex flex-col justify-center">
           <div className="mb-4 sm:mb-6 text-center">
@@ -563,13 +581,13 @@ export default function Landing() {
       </StackCard>
 
       {/* ─── CARD 3: APP FEATURES SHOWCASE (SHADE 3: COBALT CERULEAN OCEAN BLUE) ─── */}
-      <StackCard className="z-30 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("vivid")}>
+      <StackCard fill className="z-30 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-center overflow-hidden pb-8 sm:pb-10" style={shadeBackground("vivid")}>
         <SectionBackdrop variant="vivid" />
         <AppFeaturesShowcase />
       </StackCard>
 
       {/* ─── CARD 4: THE KADAVERSE ECOSYSTEM SECTION (SHADE 4: BRIGHT AZURE SKY BLUE) ─── */}
-      <StackCard className="z-40 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden pb-8 sm:pb-10" style={shadeBackground("azure")}>
+      <StackCard fill className="z-40 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-center overflow-hidden pb-8 sm:pb-10" style={shadeBackground("azure")}>
         <SectionBackdrop variant="azure" />
         <EcosystemSection />
       </StackCard>
@@ -577,7 +595,7 @@ export default function Landing() {
       {/* ─── CARD 5: DOWNLOAD THE KADA APP SECTION (SHADE 5: SOFT GLACIER ICE LIGHT BLUE) ─── */}
       <StackCard
         id="get-app-section"
-        className="z-50 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden"
+        className="z-50 -mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.22)] border-t border-white/10 w-full flex flex-col justify-center overflow-hidden"
         style={shadeBackground("ice")}
       >
         <SectionBackdrop variant="ice" />
@@ -620,15 +638,3 @@ export default function Landing() {
   );
 }
 
-/**
- * A landing section card with clean layered depth. Cards naturally slide over
- * each other with rounded corners and elevated shadows without sticky freezing
- * or layout jumping.
- */
-function StackCard({ className = "", style, children, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div {...rest} style={style} className={`relative ${className}`}>
-      {children}
-    </div>
-  );
-}

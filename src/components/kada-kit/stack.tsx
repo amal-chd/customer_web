@@ -50,8 +50,9 @@ export function ShadeStack({
           fadeTop={i === 0}
           headerOffset={headerOffset}
           pin={c.pin}
+          fullPage={i < cards.length - 1 || cards.length === 1}
         >
-          <section id={c.id} className="pt-7 sm:pt-11">
+          <section id={c.id} className="py-6 sm:py-8">
             <ShadeHeading title={c.title} highlight={c.highlight} subtitle={c.subtitle} />
             {c.tiles && <TileGrid tiles={c.tiles} />}
             {c.rail && <ImageRail items={c.rail} />}

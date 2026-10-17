@@ -17,7 +17,10 @@
 
 /* Lenis smooth scrolling (see smooth-scroll.ts). */
 html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
+/* Lenis does the smoothing, so the browser must not smooth as well. The sites'
+   own CSS sets html { scroll-behavior: smooth }; with both on, every scroll Lenis
+   or a link made was animated twice and the page lagged ~1s, then snapped. */
+html.lenis, html.lenis body, .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 .lenis.lenis-scrolling iframe { pointer-events: none; }

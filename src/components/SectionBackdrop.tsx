@@ -63,13 +63,17 @@ const PATTERNS: Record<BackdropVariant, CSSProperties> = {
   },
 };
 
+// Radial gradients, not blurred circles: blur filters on pinned cards were
+// repainted on every scroll frame and made the stack stutter.
 const GLOWS: Record<BackdropVariant, [string, string]> = {
-  navy: ["bg-indigo-500/25", "bg-sky-500/15"],
-  royal: ["bg-violet-500/20", "bg-sky-400/15"],
-  vivid: ["bg-cyan-300/20", "bg-indigo-400/20"],
-  azure: ["bg-white/15", "bg-cyan-200/20"],
-  ice: ["bg-blue-300/40", "bg-sky-200/50"],
+  navy: ["rgba(99,102,241,0.25)", "rgba(14,165,233,0.15)"],
+  royal: ["rgba(139,92,246,0.2)", "rgba(56,189,248,0.15)"],
+  vivid: ["rgba(103,232,249,0.2)", "rgba(129,140,248,0.2)"],
+  azure: ["rgba(255,255,255,0.15)", "rgba(165,243,252,0.2)"],
+  ice: ["rgba(147,197,253,0.4)", "rgba(186,230,253,0.5)"],
 };
+
+const glow = (color: string) => ({ backgroundImage: `radial-gradient(closest-side, ${color}, transparent)` });
 
 /** Texture + glow layer; place as the first child of a positioned section. */
 export function SectionBackdrop({ variant, fadeTop = false }: { variant: BackdropVariant; fadeTop?: boolean }) {
@@ -89,8 +93,8 @@ export function SectionBackdrop({ variant, fadeTop = false }: { variant: Backdro
           WebkitMaskComposite: "source-in",
         }}
       />
-      <div className={`absolute -top-24 -left-24 h-72 w-72 rounded-full blur-[100px] ${glowA}`} />
-      <div className={`absolute -bottom-24 -right-16 h-80 w-80 rounded-full blur-[110px] ${glowB}`} />
+      <div className="absolute -top-48 -left-48 h-[30rem] w-[30rem]" style={glow(glowA)} />
+      <div className="absolute -bottom-48 -right-40 h-[32rem] w-[32rem]" style={glow(glowB)} />
     </div>
   );
 }

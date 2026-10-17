@@ -35,7 +35,7 @@ export function MobileStickyAppBar() {
     {/* Keeps the end of the page (footer) from hiding under the bar. */}
     <div aria-hidden="true" className="h-20 md:hidden" />
     <div className="fixed bottom-3 left-3 right-3 max-w-md mx-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-[92%] md:hidden z-[100] pointer-events-auto animate-in slide-in-from-bottom-4 duration-300">
-      <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 p-2.5 pl-3 pr-3 shadow-[0_14px_40px_-8px_rgba(15,23,42,0.18),0_4px_12px_rgba(15,23,42,0.06)]">
+      <div className="relative flex items-center justify-between gap-3 rounded-2xl bg-white border border-slate-200/90 p-2.5 pl-3 pr-3 shadow-[0_14px_40px_-8px_rgba(15,23,42,0.18),0_4px_12px_rgba(15,23,42,0.06)]">
         {/* Left Side: App Icon + Descriptive Text */}
         <div className="flex items-center gap-2.5 min-w-0">
           {/* App Squircle Icon with The Kada Logo */}

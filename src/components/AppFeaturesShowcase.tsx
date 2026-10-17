@@ -113,7 +113,7 @@ export function AppFeaturesShowcase() {
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-cyan-400/20 rounded-full blur-[120px]"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px]" style={{ backgroundImage: "radial-gradient(closest-side, rgba(34,211,238,0.2), transparent)" }}
       />
 
       {/* ── Section Header in The Kada Style ── */}
@@ -132,7 +132,7 @@ export function AppFeaturesShowcase() {
       </div>
 
       {/* ── Staggered 3-Column App Tiles Grid Redesigned for Equal Size ── */}
-      <div className="relative z-10 mx-auto max-w-sm sm:max-w-lg md:max-w-xl lg:max-w-2xl px-4 mt-3 sm:mt-5 w-full">
+      <div className="relative z-10 mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl px-4 mt-3 sm:mt-5 w-full">
         <div className="grid grid-cols-3 gap-2.5 sm:gap-3.5 md:gap-4 items-start pt-1">
           {FEATURE_COLUMNS.map((column, colIdx) => (
             <div
@@ -150,10 +150,10 @@ export function AppFeaturesShowcase() {
                 >
                   <Link
                     to={item.to}
-                    className="group flex flex-col items-center justify-between p-2 sm:p-2.5 md:p-3 rounded-2xl bg-white/95 backdrop-blur-md border border-white shadow-[0_6px_20px_rgba(2,132,199,0.08)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.16)] hover:border-primary/40 transition-all duration-300 text-center min-h-[82px] sm:min-h-[96px] md:min-h-[105px] w-full ring-1 ring-black/5"
+                    className="group flex flex-col items-center justify-between p-3 sm:p-2.5 md:p-3 rounded-2xl bg-white/95 border border-white shadow-[0_6px_20px_rgba(2,132,199,0.08)] hover:shadow-[0_12px_28px_rgba(37,99,235,0.16)] hover:border-primary/40 transition-all duration-300 text-center min-h-[82px] sm:min-h-[96px] md:min-h-[105px] w-full ring-1 ring-black/5"
                   >
                     <div className="flex-1 flex items-center justify-center w-full py-0.5">
-                      <div className="h-7 w-7 sm:h-9 sm:w-9 md:h-10 md:w-10 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
+                      <div className="h-10 w-10 sm:h-9 sm:w-9 md:h-10 md:w-10 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
                         <img
                           src={item.image}
                           alt={item.name}
@@ -163,8 +163,8 @@ export function AppFeaturesShowcase() {
                       </div>
                     </div>
 
-                    <div className="mt-0.5">
-                      <span className="block text-[10px] sm:text-xs md:text-sm font-black text-slate-800 tracking-tight leading-tight group-hover:text-primary transition-colors">
+                    <div className="mt-1.5 sm:mt-0.5">
+                      <span className="block text-[12.5px] sm:text-xs md:text-sm font-black text-slate-800 tracking-tight leading-tight group-hover:text-primary transition-colors">
                         {item.name}
                       </span>
                     </div>

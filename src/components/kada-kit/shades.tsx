@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 /**
@@ -63,13 +64,20 @@ const PATTERNS: Record<BackdropVariant, CSSProperties> = {
   },
 };
 
+// Glow colours (top-left, bottom-right). Drawn as radial gradients rather than
+// blurred circles: a 100px blur filter on every pinned card had to be
+// repainted while scrolling, which is what made the stack stutter.
 const GLOWS: Record<BackdropVariant, [string, string]> = {
-  navy: ["bg-indigo-500/25", "bg-sky-500/15"],
-  royal: ["bg-violet-500/20", "bg-sky-400/15"],
-  vivid: ["bg-cyan-300/20", "bg-indigo-400/20"],
-  azure: ["bg-white/15", "bg-cyan-200/20"],
-  ice: ["bg-blue-300/40", "bg-sky-200/50"],
+  navy: ["rgba(99,102,241,0.25)", "rgba(14,165,233,0.15)"],
+  royal: ["rgba(139,92,246,0.2)", "rgba(56,189,248,0.15)"],
+  vivid: ["rgba(103,232,249,0.2)", "rgba(129,140,248,0.2)"],
+  azure: ["rgba(255,255,255,0.15)", "rgba(165,243,252,0.2)"],
+  ice: ["rgba(147,197,253,0.4)", "rgba(186,230,253,0.5)"],
 };
+
+const glow = (color: string): CSSProperties => ({
+  backgroundImage: `radial-gradient(closest-side, ${color}, transparent)`,
+});
 
 /** Texture + glow layer; place as the first child of a positioned section. */
 export function SectionBackdrop({ variant, fadeTop = false }: { variant: BackdropVariant; fadeTop?: boolean }) {
@@ -89,8 +97,8 @@ export function SectionBackdrop({ variant, fadeTop = false }: { variant: Backdro
           WebkitMaskComposite: "source-in",
         }}
       />
-      <div className={`absolute -top-24 -left-24 h-72 w-72 rounded-full blur-[100px] ${glowA}`} />
-      <div className={`absolute -bottom-24 -right-16 h-80 w-80 rounded-full blur-[110px] ${glowB}`} />
+      <div className="absolute -top-48 -left-48 h-[30rem] w-[30rem]" style={glow(glowA)} />
+      <div className="absolute -bottom-48 -right-40 h-[32rem] w-[32rem]" style={glow(glowB)} />
     </div>
   );
 }
@@ -102,31 +110,74 @@ export type HeaderOffset = (viewportWidth: number) => number;
 export const DEFAULT_HEADER_OFFSET: HeaderOffset = (w) => (w >= 1024 ? 64 : w >= 768 ? 56 : 0);
 
 /**
- * A landing section card with clean layered depth. Cards naturally slide over
- * each other with rounded corners and elevated shadows without sticky freezing
- * or layout jumping.
+ * A landing "card" that pins while the next one slides over it. A card taller
+ * than the screen pins by its bottom edge instead of its top, so every part of
+ * it scrolls into view before it gets covered.
+ *
+ * The pin point is CSS — min(header, 100lvh − card height) — so it never moves
+ * while scrolling. The old version recomputed it from window.innerHeight on
+ * every resize, and phones resize whenever the address bar shows or hides,
+ * which made the cards jump mid-scroll.
  */
 export function StackCard({
   className = "",
   style,
   children,
   headerOffset = DEFAULT_HEADER_OFFSET,
-  pin = false,
+  pin = true,
+  fill = false,
   ...rest
 }: HTMLAttributes<HTMLDivElement> & {
   headerOffset?: HeaderOffset;
   /** false scrolls the card normally, so the next card never covers it (forms). */
   pin?: boolean;
+  /** At least one full screen tall (below the site header), like a page. */
+  fill?: boolean;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || (!pin && !fill)) return;
+    // Only the width changes the header height; ignore height-only resizes.
+    let lastWidth = -1;
+    const onResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      setOffset(headerOffset(lastWidth));
+    };
+    onResize();
+    const ro = new ResizeObserver(() => setHeight(el.offsetHeight));
+    ro.observe(el);
+    window.addEventListener("resize", onResize);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
+  }, [headerOffset, pin, fill]);
+
+  const top = `min(${offset}px, calc(100lvh - ${height}px))`;
+  // A full screen per card on large screens only. On phones and upright
+  // tablets a forced full screen left most of each card empty, so there the
+  // card is as tall as its content. svh: the screen with the browser bars
+  // showing, so a full card is never taller than what is actually visible.
+  const fillVar = fill ? ({ "--kk-fill": `calc(100svh - ${offset}px)` } as CSSProperties) : {};
   return (
-    <div {...rest} style={style} className={`relative ${className}`}>
+    <div
+      ref={ref}
+      {...rest}
+      style={{ ...style, ...(pin ? { top } : {}), ...fillVar }}
+      className={`${pin ? "sticky" : "relative"} ${fill ? "lg:min-h-[var(--kk-fill)]" : ""} ${className}`}
+    >
       {children}
     </div>
   );
 }
 
 const CARD_SHAPE =
-  "-mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.18)] border-t border-white/10 w-full flex flex-col justify-start overflow-hidden";
+  "-mt-8 sm:-mt-10 rounded-t-[2rem] sm:rounded-t-[2.5rem] shadow-[0_-12px_36px_rgba(0,0,0,0.18)] border-t border-white/10 w-full flex flex-col overflow-hidden";
 
 /**
  * One shaded landing card: the stack position, the shade gradient and its
@@ -140,6 +191,7 @@ export function ShadeCard({
   padded = true,
   headerOffset,
   pin = true,
+  fullPage = true,
   className = "",
   children,
 }: {
@@ -152,6 +204,8 @@ export function ShadeCard({
   headerOffset?: HeaderOffset;
   /** false scrolls the card normally, so the next card never covers it (forms). */
   pin?: boolean;
+  /** One full screen per card, content centred (the default). */
+  fullPage?: boolean;
   className?: string;
   children: ReactNode;
 }) {
@@ -160,7 +214,8 @@ export function ShadeCard({
       id={id}
       headerOffset={headerOffset}
       pin={pin}
-      className={`${CARD_SHAPE} ${padded ? "pb-16 sm:pb-20" : ""} ${className}`}
+      fill={fullPage}
+      className={`${CARD_SHAPE} ${fullPage ? "justify-start lg:justify-center" : "justify-start"} ${padded ? "pb-14 sm:pb-16" : ""} ${className}`}
       style={{ ...shadeBackground(variant), zIndex: layer * 10 }}
     >
       <SectionBackdrop variant={variant} fadeTop={fadeTop} />
@@ -197,14 +252,14 @@ export function ShadeHeading({
   className?: string;
 }) {
   return (
-    <div className={`mb-5 sm:mb-8 text-center ${className}`}>
+    <div className={`mb-6 sm:mb-10 [@media(min-width:1024px)_and_(min-height:760px)]:mb-12 [@media(min-width:1280px)_and_(min-height:860px)]:mb-16 text-center px-4 ${className}`}>
       {eyebrow && (
         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.18em] text-sky-200 backdrop-blur-sm">
           <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-3 text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight text-balance">
+      <h2 className="mt-3 text-[28px] sm:text-5xl [@media(min-width:1024px)_and_(min-height:760px)]:text-6xl [@media(min-width:1280px)_and_(min-height:860px)]:text-7xl font-black text-white tracking-tight leading-[1.05] text-balance">
         {title}
         {highlight && (
           <>
@@ -216,7 +271,7 @@ export function ShadeHeading({
         )}
       </h2>
       {subtitle && (
-        <p className="text-xs sm:text-sm md:text-base font-semibold text-blue-100/90 mt-2 max-w-2xl mx-auto leading-relaxed text-balance">
+        <p className="text-sm sm:text-base [@media(min-width:1024px)_and_(min-height:760px)]:text-xl font-semibold text-blue-100/90 mt-3 sm:mt-4 max-w-2xl mx-auto leading-relaxed text-balance">
           {subtitle}
         </p>
       )}

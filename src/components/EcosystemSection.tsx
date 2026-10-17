@@ -175,7 +175,7 @@ export function EcosystemSection() {
       {/* Central Cyan Ambient Spotlight */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[350px] bg-sky-300/20 rounded-full blur-[130px]"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[620px]" style={{ backgroundImage: "radial-gradient(closest-side, rgba(125,211,252,0.2), transparent)" }}
       />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 text-center z-10 w-full flex flex-col items-center">
@@ -291,7 +291,7 @@ export function EcosystemSection() {
               </div>
 
               {/* Small Description Only */}
-              <p className="mt-3 text-xs sm:text-[13px] font-semibold text-slate-600 max-w-[260px] mx-auto leading-relaxed">
+              <p className="mt-3 min-h-[3.75rem] sm:min-h-[4rem] flex items-center justify-center text-xs sm:text-[13px] font-semibold text-slate-600 max-w-[260px] mx-auto leading-relaxed">
                 {activeProduct.desc}
               </p>
 
@@ -321,10 +321,10 @@ export function EcosystemSection() {
                   key={prod.id}
                   type="button"
                   onClick={() => setActiveIndex(idx)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-black lowercase tracking-tight transition-all cursor-pointer ${
+                  className={`inline-flex h-8 items-center px-3.5 rounded-full border text-xs font-black lowercase tracking-tight transition-all cursor-pointer ${
                     isActive
-                      ? "bg-white text-blue-900 shadow-md shadow-blue-900/25 scale-105"
-                      : "bg-blue-950/30 text-white hover:bg-blue-950/45 border border-white/20"
+                      ? "bg-white border-white text-blue-900 shadow-md shadow-blue-900/25 scale-105"
+                      : "bg-blue-950/30 border-white/20 text-white hover:bg-blue-950/45"
                   }`}
                 >
                   {prod.name}
