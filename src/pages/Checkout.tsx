@@ -24,7 +24,7 @@ import { useAuth } from "@/context/AuthContext";
 import { placeQuotedOrder, quoteOrder, type OrderQuote } from "@/services/orders";
 import { BillCard } from "@/components/BillCard";
 import { formatPaise } from "@/lib/billFormat";
-import { payForOrder } from "@/services/payment";
+import { payForOrder, warmPayments } from "@/services/payment";
 import { payWithWallet } from "@/services/wallet";
 import {
   getDiscoveryLocation,
@@ -89,6 +89,11 @@ export default function Checkout() {
   const idempotencyKey = useRef(crypto.randomUUID());
 
   // Listen to customer wallet balance
+  // Boot the payment path while the bill is on screen (see warmPayments).
+  useEffect(() => {
+    warmPayments();
+  }, []);
+
   useEffect(() => {
     if (!user) return;
     const unsub = onSnapshot(doc(db, "customer_users", user.uid), (snap) => {

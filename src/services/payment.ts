@@ -32,6 +32,23 @@ function loadCheckoutScript(): Promise<boolean> {
  * A refused payment (order closed, paid twice) throws with the server's
  * explanation, which already says the money is on its way back.
  */
+/**
+ * Loads Razorpay's script and boots the checkout functions while the bill is
+ * on screen, so "Pay" opens checkout at once instead of after several cold
+ * starts. The server answers `{ __warm: true }` before auth or any read.
+ */
+let warmedAt = 0;
+export function warmPayments(): void {
+  if (Date.now() - warmedAt < 4 * 60_000) return;
+  warmedAt = Date.now();
+  void loadCheckoutScript();
+  // Only the next tap's functions: each warm instance holds 1 vCPU of a small
+  // regional ceiling. verifyRazorpayPayment is warmed once checkout opens.
+  for (const name of ["placeFoodOrder", "createRazorpayOrder"]) {
+    void httpsCallable(functions, name)({ __warm: true }).catch(() => undefined);
+  }
+}
+
 export async function payForOrder(opts: {
   orderId: string;
   amountRupees: number;
@@ -77,6 +94,8 @@ export async function payForOrder(opts: {
         modal: { ondismiss: () => resolve(null) },
       });
       rzp.open();
+      // Boot verification while the customer enters payment details.
+      void httpsCallable(functions, "verifyRazorpayPayment")({ __warm: true }).catch(() => undefined);
     }
   );
 
