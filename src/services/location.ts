@@ -1,6 +1,3 @@
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-
 export interface DeliveryLocation {
   lat: number;
   lng: number;
@@ -337,6 +334,10 @@ export async function getSavedAddresses(uid?: string): Promise<DeliveryAddress[]
   if (!uid) return localList;
 
   try {
+    const [{ doc, getDoc }, { db }] = await Promise.all([
+      import("firebase/firestore"),
+      import("@/lib/firebase"),
+    ]);
     const snap = await getDoc(doc(db, "customer_users", uid));
     if (snap.exists()) {
       const data = snap.data();
@@ -396,6 +397,10 @@ export async function saveAddressToStorage(
 
   if (uid) {
     try {
+      const [{ doc, getDoc, setDoc, updateDoc }, { db }] = await Promise.all([
+        import("firebase/firestore"),
+        import("@/lib/firebase"),
+      ]);
       const userDocRef = doc(db, "customer_users", uid);
       const snap = await getDoc(userDocRef);
       if (snap.exists()) {
@@ -440,6 +445,10 @@ export async function deleteAddressFromStorage(
 
   if (uid) {
     try {
+      const [{ doc, updateDoc }, { db }] = await Promise.all([
+        import("firebase/firestore"),
+        import("@/lib/firebase"),
+      ]);
       await updateDoc(doc(db, "customer_users", uid), {
         addresses: updated,
       });

@@ -35,11 +35,11 @@ function renderHead(page) {
     ["property", "og:type", "website"],
     ["property", "og:url", canonical],
     ["property", "og:site_name", "The Kada"],
-    ["property", "og:image", `${manifest.siteUrl}/og.png`],
+    ["property", "og:image", `${manifest.siteUrl}/hero-poster.jpg`],
     ["name", "twitter:card", "summary_large_image"],
     ["name", "twitter:title", title],
     ["name", "twitter:description", page.description],
-    ["name", "twitter:image", `${manifest.siteUrl}/og.png`],
+    ["name", "twitter:image", `${manifest.siteUrl}/hero-poster.jpg`],
   ];
 
   for (const [attribute, key, content] of tags) {

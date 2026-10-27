@@ -3,8 +3,10 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "redirects": [
+    { "source": "/how-it-works", "destination": "/faq", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/how-it-works", "destination": "/how-it-works.html" },
     { "source": "/about", "destination": "/about.html" },
     { "source": "/contact", "destination": "/contact.html" },
     { "source": "/faq", "destination": "/faq.html" },

@@ -29,7 +29,7 @@ import {
   type PopularLocality,
 } from "@/services/location";
 import { MapLocationPickerModal } from "@/components/LazyMapPicker";
-import { useAuth } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { Spinner } from "@/components/bits";
 import { toast } from "@/components/Toast";
 
@@ -39,7 +39,15 @@ interface LocationPickerSheetProps {
   onLocationSelected?: (loc: DeliveryLocation) => void;
 }
 
-export function LocationPickerSheet({
+export function LocationPickerSheet(props: LocationPickerSheetProps) {
+  return (
+    <AuthProvider>
+      <LocationPickerSheetContent {...props} />
+    </AuthProvider>
+  );
+}
+
+function LocationPickerSheetContent({
   isOpen,
   onClose,
   onLocationSelected,

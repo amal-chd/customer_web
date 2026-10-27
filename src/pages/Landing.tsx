@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import {
@@ -31,8 +31,11 @@ import { AppFeaturesShowcase } from "@/components/AppFeaturesShowcase";
 import { BetterFoodSection } from "@/components/BetterFoodSection";
 import { GetAppSection } from "@/components/GetAppSection";
 import { handleFoodImageError } from "@/lib/foodImages";
-import { LocationPickerSheet } from "@/components/LocationPickerSheet";
 import { MapLocationPickerModal } from "@/components/LazyMapPicker";
+
+const LocationPickerSheet = lazy(() =>
+  import("@/components/LocationPickerSheet").then((module) => ({ default: module.LocationPickerSheet }))
+);
 import { SectionBackdrop, shadeBackground } from "@/components/SectionBackdrop";
 import { StackCard } from "@/components/kada-kit/shades";
 
@@ -107,13 +110,13 @@ export default function Landing() {
   const heroRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  // Phones get the 480p cut (~1.3 MB), larger screens 720p (~2.8 MB). Data
-  // saver or reduced motion: just the poster frame, no download.
+  // Keep the poster on phones, data-saver connections, and reduced-motion
+  // devices. Only download the large background video on capable desktops.
   const [heroVideoSrc] = useState<string | null>(() => {
     if (typeof window === "undefined") return null;
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-    if (saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
-    return window.innerWidth < 768 ? "/hero-480.mp4" : "/hero-720.mp4";
+    if (window.innerWidth < 768 || saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
+    return "/hero-720.mp4";
   });
 
   // Pause the hero video once it's scrolled out of view. A playing, transformed
@@ -627,13 +630,17 @@ export default function Landing() {
       )}
 
       {/* Full Location Picker Sheet (Mobile bottom sheet / Desktop modal) */}
-      <LocationPickerSheet
-        isOpen={showLocationSheet}
-        onClose={() => setShowLocationSheet(false)}
-        onLocationSelected={(loc) => {
-          setCurrentLoc(loc);
-        }}
-      />
+      {showLocationSheet && (
+        <Suspense fallback={null}>
+          <LocationPickerSheet
+            isOpen
+            onClose={() => setShowLocationSheet(false)}
+            onLocationSelected={(loc) => {
+              setCurrentLoc(loc);
+            }}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

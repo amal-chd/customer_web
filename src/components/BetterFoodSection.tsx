@@ -28,8 +28,24 @@ export function BetterFoodSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const [statsData, setStatsData] = useState<PlatformStats>(DEFAULT_PLATFORM_STATS);
+  const [statsRequested, setStatsRequested] = useState(false);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setStatsRequested(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "300px" });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!statsRequested) return;
     let isMounted = true;
     fetchPlatformStats().then((data) => {
       if (isMounted) {
@@ -39,7 +55,7 @@ export function BetterFoodSection() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [statsRequested]);
 
   const stats: StatItem[] = [
     {

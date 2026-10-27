@@ -1,6 +1,3 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-
 export interface PlatformStats {
   restaurants: {
     stat: string;
@@ -104,6 +101,11 @@ export async function fetchPlatformStats(): Promise<PlatformStats> {
   }
 
   try {
+    const [{ collection, doc, getDoc, getDocs }, { db }] = await Promise.all([
+      import("firebase/firestore"),
+      import("@/lib/firebase"),
+    ]);
+
     // 1. Fetch platform config if available
     let configPlatform: Record<string, any> | null = null;
     try {

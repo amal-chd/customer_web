@@ -1,7 +1,3 @@
-import { httpsCallable } from "firebase/functions";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { functions, db } from "@/lib/firebase";
-
 export interface SendAppDownloadResult {
   success: boolean;
   message?: string;
@@ -22,6 +18,13 @@ export async function sendAppDownloadEmail(email: string): Promise<SendAppDownlo
   if (!cleanEmail || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cleanEmail)) {
     throw new Error("Please enter a valid email address.");
   }
+
+  const [{ httpsCallable }, firestore, { functions, db }] = await Promise.all([
+    import("firebase/functions"),
+    import("firebase/firestore"),
+    import("@/lib/firebase"),
+  ]);
+  const { collection, addDoc, serverTimestamp } = firestore;
 
   // 1. Primary path: Centralized comms Cloud Function
   try {
@@ -66,6 +69,11 @@ export async function recordAppDownloadWhatsApp(
   }
 
   const fullPhone = `${countryCode.trim()}${digits.slice(-10)}`;
+
+  const [{ collection, addDoc, serverTimestamp }, { db }] = await Promise.all([
+    import("firebase/firestore"),
+    import("@/lib/firebase"),
+  ]);
 
   try {
     await addDoc(collection(db, "newsletter_subscriptions"), {

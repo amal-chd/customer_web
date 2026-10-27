@@ -3,7 +3,8 @@ import { Routes, Route, useLocation, useNavigationType } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnalyticsTracker } from "./hooks/useAnalytics";
 import { SiteLayout } from "./components/SiteLayout";
-import { AppLayout } from "./components/AppLayout";
+const AppLayout = lazy(() => import("./components/AppLayout").then((module) => ({ default: module.AppLayout })));
+const CommerceProviders = lazy(() => import("./components/CommerceProviders"));
 import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
 
@@ -70,6 +71,14 @@ function PageTransition({ children }: { children: React.ReactNode }) {
   );
 }
 
+function CommerceRoute({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh]" />}>
+      <CommerceProviders>{children}</CommerceProviders>
+    </Suspense>
+  );
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
   useAnalyticsTracker();
@@ -101,10 +110,10 @@ function AnimatedRoutes() {
         </Route>
 
         {/* Login (standalone) */}
-        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/login" element={<CommerceRoute><PageTransition><Login /></PageTransition></CommerceRoute>} />
 
         {/* Ordering app */}
-        <Route element={<AppLayout />}>
+        <Route element={<CommerceRoute><AppLayout /></CommerceRoute>}>
           <Route path="/order" element={<PageTransition><Discover /></PageTransition>} />
           <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
           <Route path="/restaurant/:id" element={<PageTransition><Restaurant /></PageTransition>} />
@@ -114,8 +123,8 @@ function AnimatedRoutes() {
         </Route>
 
         {/* Full-screen app routes (no bottom nav) */}
-        <Route path="/checkout" element={<PageTransition><Checkout /></PageTransition>} />
-        <Route path="/orders/:id" element={<PageTransition><OrderTracking /></PageTransition>} />
+        <Route path="/checkout" element={<CommerceRoute><PageTransition><Checkout /></PageTransition></CommerceRoute>} />
+        <Route path="/orders/:id" element={<CommerceRoute><PageTransition><OrderTracking /></PageTransition></CommerceRoute>} />
 
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>

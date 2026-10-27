@@ -68,11 +68,11 @@ export function usePageSeo(page: SeoPage | null) {
     setMeta("property", "og:type", "website");
     setMeta("property", "og:url", canonical);
     setMeta("property", "og:site_name", "The Kada");
-    setMeta("property", "og:image", page.image ?? `${seoPages.siteUrl}/og.png`);
+    setMeta("property", "og:image", page.image ?? `${seoPages.siteUrl}/hero-poster.jpg`);
     setMeta("name", "twitter:card", "summary_large_image");
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", page.description);
-    setMeta("name", "twitter:image", page.image ?? `${seoPages.siteUrl}/og.png`);
+    setMeta("name", "twitter:image", page.image ?? `${seoPages.siteUrl}/hero-poster.jpg`);
     setCanonical(canonical);
     setStructuredData(jsonLd ? JSON.parse(jsonLd) as Record<string, unknown> : undefined);
   }, [page?.path, page?.canonicalPath, page?.title, page?.description, page?.indexable, page?.image, jsonLd]);
