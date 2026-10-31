@@ -27,7 +27,8 @@ import {
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { httpsCallable } from "firebase/functions";
+import { auth, db, functions } from "@/lib/firebase";
 
 export interface CustomerProfile {
   name?: string;
@@ -224,8 +225,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       await ensureUserProfile(cred.user, cleanName);
     },
+    // Kada's own reset email (requestPasswordReset: Kada styling, a
+    // www.thekada.in link). Firebase's email — locked, and branded "Kada Dine"
+    // — is only the fallback for when the function can't be reached.
     sendPasswordReset: async (email: string) => {
-      await sendPasswordResetEmail(auth, email.trim());
+      const clean = email.trim();
+      try {
+        await httpsCallable(functions, "requestPasswordReset")({ email: clean });
+      } catch (err) {
+        const code = (err as { code?: string }).code || "";
+        if (code === "functions/invalid-argument") throw err;
+        try {
+          await sendPasswordResetEmail(auth, clean);
+        } catch (fallbackErr) {
+          // Same answer whether or not the address has an account.
+          if ((fallbackErr as { code?: string }).code !== "auth/user-not-found") throw fallbackErr;
+        }
+      }
     },
     updateCustomerName: async (name: string) => {
       const cleanName = name.trim();

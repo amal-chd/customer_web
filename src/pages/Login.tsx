@@ -203,7 +203,7 @@ export default function Login() {
     try {
       await sendPasswordReset(resetEmail.trim());
       setResetSent(true);
-      toast("Password reset link sent to your email.");
+      toast("Check your email for the reset link.");
     } catch (err: any) {
       toast(getAuthErrorMessage(err));
     } finally {
@@ -560,16 +560,18 @@ export default function Login() {
               </div>
               <h3 className="text-xl font-black text-slate-900">Reset your password</h3>
               <p className="text-xs font-semibold text-slate-500">
-                Enter your registered email address and we will send you a password reset link.
+                Enter the email you log in with. Joined with your phone or Google? There's no password to reset —
+                use that instead.
               </p>
             </div>
 
             {resetSent ? (
               <div className="mt-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-4 text-center space-y-2">
                 <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-600" />
-                <h4 className="text-sm font-black text-emerald-950">Reset link sent!</h4>
+                <h4 className="text-sm font-black text-emerald-950">Check your email</h4>
                 <p className="text-xs font-semibold text-emerald-800">
-                  Check your inbox at <strong>{resetEmail}</strong> for instructions.
+                  If <strong>{resetEmail}</strong> has a Kada account, a link to choose a new password is on its
+                  way. It expires in 1 hour — look in spam too.
                 </p>
                 <button
                   onClick={() => setShowForgotModal(false)}
