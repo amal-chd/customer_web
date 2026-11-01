@@ -208,12 +208,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch (_) {}
       }
 
-      const verifier = new RecaptchaVerifier(auth, containerId, {
+      // grecaptcha refuses to render twice into the same element, so each
+      // attempt gets a fresh slot inside the container (retries used to fail
+      // with "reCAPTCHA has already been rendered in this element").
+      const host = document.getElementById(containerId);
+      if (!host) throw new Error(`Missing reCAPTCHA container #${containerId}`);
+      host.replaceChildren();
+      const slot = document.createElement("div");
+      host.appendChild(slot);
+
+      const verifier = new RecaptchaVerifier(auth, slot, {
         size: "invisible",
       });
       (window as any).recaptchaVerifier = verifier;
 
-      return await signInWithPhoneNumber(auth, cleanPhone, verifier);
+      try {
+        return await signInWithPhoneNumber(auth, cleanPhone, verifier);
+      } catch (err) {
+        try {
+          verifier.clear();
+        } catch (_) {}
+        (window as any).recaptchaVerifier = null;
+        throw err;
+      }
     },
     verifyPhoneOtp: async (confirmationResult: ConfirmationResult, otp: string, name?: string) => {
       const cred = await confirmationResult.confirm(otp.trim());
