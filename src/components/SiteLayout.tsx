@@ -17,6 +17,8 @@ const NAV = [
   { label: "Contact", to: "/contact" },
 ];
 
+const PARTNER_PAGES = ["/add-restaurant", "/partner", "/partner-with-us"];
+
 export function SiteLayout() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -24,6 +26,8 @@ export function SiteLayout() {
   const { pathname } = useLocation();
 
   const isLanding = pathname === "/";
+  // Partner onboarding pages are task pages: no footer or customer app bar.
+  const isPartnerPage = PARTNER_PAGES.includes(pathname.replace(/\/+$/, "") || "/");
 
   useEffect(() => {
     setOpen(false);
@@ -252,10 +256,10 @@ export function SiteLayout() {
       </main>
 
       {/* Unified Professional Footer */}
-      <Footer />
+      {!isPartnerPage && <Footer />}
 
       {/* Floating Bottom App Bar (Zomato Mobile Signature) */}
-      <MobileStickyAppBar />
+      {!isPartnerPage && <MobileStickyAppBar />}
     </div>
   );
 }
