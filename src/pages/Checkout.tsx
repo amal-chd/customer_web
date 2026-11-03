@@ -24,7 +24,7 @@ import { useAuth } from "@/context/AuthContext";
 import { placeQuotedOrder, quoteOrder, type OrderQuote } from "@/services/orders";
 import { BillCard } from "@/components/BillCard";
 import { formatPaise } from "@/lib/billFormat";
-import { payForOrder, warmPayments } from "@/services/payment";
+import { payForOrder, warmCheckout } from "@/services/payment";
 import { payWithWallet } from "@/services/wallet";
 import {
   getDiscoveryLocation,
@@ -89,9 +89,9 @@ export default function Checkout() {
   const idempotencyKey = useRef(crypto.randomUUID());
 
   // Listen to customer wallet balance
-  // Boot the payment path while the bill is on screen (see warmPayments).
+  // Boot the payment path while the bill is on screen (see warmCheckout).
   useEffect(() => {
-    warmPayments();
+    warmCheckout();
   }, []);
 
   useEffect(() => {
@@ -293,6 +293,8 @@ export default function Checkout() {
           name: name.trim(),
           email: user?.email ?? "",
           contact: phone.trim(),
+          // Online orders come back with their Razorpay order: no second call.
+          gateway: placed.gateway,
         });
         // The order exists but is unpaid: the tracking page offers "Pay now".
         // The cart is cleared either way so a retry can't create a second order.

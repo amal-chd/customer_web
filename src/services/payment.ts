@@ -1,21 +1,13 @@
 import { httpsCallable } from "firebase/functions";
 import { functions } from "@/lib/firebase";
+import { loadRazorpay, warmPayments } from "./razorpay";
 
-declare global {
-  interface Window {
-    Razorpay?: any;
-  }
-}
-
-function loadCheckoutScript(): Promise<boolean> {
-  return new Promise((resolve) => {
-    if (window.Razorpay) return resolve(true);
-    const s = document.createElement("script");
-    s.src = "https://checkout.razorpay.com/v1/checkout.js";
-    s.onload = () => resolve(true);
-    s.onerror = () => resolve(false);
-    document.body.appendChild(s);
-  });
+/** The Razorpay order placeFoodOrder creates alongside an online order. */
+export interface GatewayOrder {
+  razorpayOrderId: string;
+  amount: number;
+  currency: string;
+  keyId: string;
 }
 
 /**
@@ -33,20 +25,14 @@ function loadCheckoutScript(): Promise<boolean> {
  * explanation, which already says the money is on its way back.
  */
 /**
- * Loads Razorpay's script and boots the checkout functions while the bill is
- * on screen, so "Pay" opens checkout at once instead of after several cold
- * starts. The server answers `{ __warm: true }` before auth or any read.
+ * Loads Razorpay's script and boots the order function while the bill is on
+ * screen, so "Place order" opens checkout at once. placeFoodOrder now returns
+ * the Razorpay order itself, so createRazorpayOrder is only a fallback and is
+ * not worth holding a vCPU warm for; verify is warmed once checkout opens.
  */
-let warmedAt = 0;
-export function warmPayments(): void {
-  if (Date.now() - warmedAt < 4 * 60_000) return;
-  warmedAt = Date.now();
-  void loadCheckoutScript();
-  // Only the next tap's functions: each warm instance holds 1 vCPU of a small
-  // regional ceiling. verifyRazorpayPayment is warmed once checkout opens.
-  for (const name of ["placeFoodOrder", "createRazorpayOrder"]) {
-    void httpsCallable(functions, name)({ __warm: true }).catch(() => undefined);
-  }
+export function warmCheckout(): void {
+  void loadRazorpay();
+  warmPayments(["placeFoodOrder"]);
 }
 
 export async function payForOrder(opts: {
@@ -55,32 +41,36 @@ export async function payForOrder(opts: {
   name: string;
   email: string;
   contact: string;
+  /** placeFoodOrder's gateway order, when it made one: skips a server call. */
+  gateway?: GatewayOrder;
 }): Promise<"paid" | "pending" | "cancelled"> {
-  const loaded = await loadCheckoutScript();
-  if (!loaded) throw new Error("Could not load the payment gateway. Check your connection.");
-
-  // 1. Create the Razorpay order server-side.
-  const createFn = httpsCallable(functions, "createRazorpayOrder");
-  // Only the order id: the server prices the order itself.
-  let create;
-  try {
-    create = await createFn({ orderId: opts.orderId });
-  } catch (e: any) {
-    // A payment for this order already reached the gateway (e.g. an earlier
-    // tab): don't open a second checkout.
-    if (e?.details?.reason === "payment_confirming" || e?.details?.reason === "already_paid") return "pending";
-    throw e;
+  // 1. The Razorpay order: normally created by placeFoodOrder in the same
+  // call; otherwise ask for it now (only the order id — the server prices it).
+  // The script loads in parallel; checkout started it when the page opened.
+  const scriptReady = loadRazorpay();
+  let data = opts.gateway;
+  if (!data) {
+    try {
+      const create = await httpsCallable(functions, "createRazorpayOrder")({ orderId: opts.orderId });
+      data = create.data as GatewayOrder;
+    } catch (e: any) {
+      // A payment for this order already reached the gateway (e.g. an earlier
+      // tab): don't open a second checkout.
+      if (e?.details?.reason === "payment_confirming" || e?.details?.reason === "already_paid") return "pending";
+      throw e;
+    }
   }
-  const data = create.data as { razorpayOrderId: string; amount: number; currency: string; keyId: string };
+  if (!(await scriptReady)) throw new Error("Could not load the payment gateway. Check your connection.");
+  const gw = data;
 
   // 2. Open checkout and await the result.
   const result = await new Promise<{ paymentId: string; orderId: string; signature: string } | null>(
     (resolve) => {
       const rzp = new window.Razorpay({
-        key: data.keyId,
-        order_id: data.razorpayOrderId,
-        amount: data.amount,
-        currency: data.currency,
+        key: gw.keyId,
+        order_id: gw.razorpayOrderId,
+        amount: gw.amount,
+        currency: gw.currency,
         name: "The Kada",
         description: "Food order",
         prefill: { name: opts.name, email: opts.email, contact: opts.contact },
@@ -95,7 +85,7 @@ export async function payForOrder(opts: {
       });
       rzp.open();
       // Boot verification while the customer enters payment details.
-      void httpsCallable(functions, "verifyRazorpayPayment")({ __warm: true }).catch(() => undefined);
+      warmPayments(["verifyRazorpayPayment"]);
     }
   );
 
