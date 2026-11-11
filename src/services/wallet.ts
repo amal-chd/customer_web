@@ -1,28 +1,11 @@
 import { httpsCallable } from "firebase/functions";
 import { functions } from "@/lib/firebase";
+import { loadRazorpay, warmPayments } from "./razorpay";
 
-declare global {
-  interface Window {
-    Razorpay?: any;
-  }
-}
-
-function loadCheckoutScript(): Promise<boolean> {
-  return new Promise((resolve) => {
-    if (window.Razorpay) return resolve(true);
-    const existing = document.querySelector('script[src*="checkout.razorpay.com"]');
-    if (existing) {
-      existing.addEventListener("load", () => resolve(true));
-      existing.addEventListener("error", () => resolve(false));
-      return;
-    }
-    const s = document.createElement("script");
-    s.src = "https://checkout.razorpay.com/v1/checkout.js";
-    s.async = true;
-    s.onload = () => resolve(true);
-    s.onerror = () => resolve(false);
-    document.body.appendChild(s);
-  });
+/** Call as the wallet screen opens, so "Add money" opens Razorpay at once. */
+export function warmWalletTopup(): void {
+  void loadRazorpay();
+  warmPayments(["createWalletTopupOrder"]);
 }
 
 /** Razorpay top-up. The server prices the order and credits the wallet only after capture. */
@@ -32,11 +15,12 @@ export async function topUpWallet(opts: {
   email: string;
   contact: string;
 }): Promise<number | null> {
-  const loaded = await loadCheckoutScript();
-  if (!loaded) throw new Error("Could not load Razorpay. Check your connection.");
-
+  // Script and gateway order load side by side; they used to run in turn.
+  const scriptReady = loadRazorpay();
   const create = await httpsCallable(functions, "createWalletTopupOrder")({ amount: opts.amountRupees });
   const data = create.data as { razorpayOrderId: string; amount: number; currency: string; keyId: string };
+  if (!(await scriptReady)) throw new Error("Could not load Razorpay. Check your connection.");
+  warmPayments(["verifyWalletTopup"]);
 
   const result = await new Promise<{ paymentId: string; orderId: string; signature: string } | null>((resolve) => {
     const rzp = new window.Razorpay({

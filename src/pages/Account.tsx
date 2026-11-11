@@ -5,7 +5,7 @@ import { updateProfile } from "firebase/auth";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { db, auth } from "@/lib/firebase";
-import { topUpWallet } from "@/services/wallet";
+import { topUpWallet, warmWalletTopup } from "@/services/wallet";
 import {
   CreditCard,
   LogOut,
@@ -99,6 +99,12 @@ export default function Account() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const activeLoc = getDiscoveryLocation();
+
+  // Picking an amount is the signal a top-up is coming: get Razorpay and the
+  // top-up function ready so the pay button opens checkout at once.
+  useEffect(() => {
+    if (user && refillAmt) warmWalletTopup();
+  }, [user, refillAmt]);
 
   useEffect(() => {
     if (!user) return;

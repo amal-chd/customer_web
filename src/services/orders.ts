@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { auth, db, functions } from "@/lib/firebase";
+import type { GatewayOrder } from "./payment";
 import { orderFromDoc, restaurantFromDoc, type CartLine, type CustomerOrder, type DeliveryAddress, type Restaurant } from "@/types";
 
 export interface BillRow {
@@ -84,7 +85,7 @@ export async function placeQuotedOrder(opts: {
   scheduledFor?: Date;
   address: DeliveryAddress;
   idempotencyKey: string;
-}): Promise<{ orderId: string; totalPaise: number }> {
+}): Promise<{ orderId: string; totalPaise: number; gateway?: GatewayOrder }> {
   if (opts.quote.problems.length > 0) throw new Error(opts.quote.problems[0]);
   const placed = await httpsCallable(functions, "placeFoodOrder")({
     quoteId: opts.quote.quoteId,
@@ -106,9 +107,11 @@ export async function placeQuotedOrder(opts: {
         .join(", "),
     },
   });
-  const data = placed.data as { orderId?: string; totalPaise?: number };
+  const data = placed.data as { orderId?: string; totalPaise?: number; gateway?: GatewayOrder };
   if (!data.orderId) throw new Error("Couldn't place the order. Please try again.");
-  return { orderId: data.orderId, totalPaise: data.totalPaise ?? opts.quote.totalPaise };
+  // Online orders come back with their Razorpay order, so checkout can open
+  // without a second server call.
+  return { orderId: data.orderId, totalPaise: data.totalPaise ?? opts.quote.totalPaise, gateway: data.gateway };
 }
 
 export function subscribeMyOrders(cb: (orders: CustomerOrder[]) => void): () => void {
