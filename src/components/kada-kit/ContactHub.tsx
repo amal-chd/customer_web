@@ -472,6 +472,40 @@ export function UnifiedContactHub({
         brand === "customer" ? "customer" : brand === "host" ? "kadahost" : brand === "rider" ? "kadarider" : brand === "corp" ? "thekada" : "kadadine";
       const sourceTag =
         brand === "customer" ? `customer/${mode === "demo" ? "partner_demo" : "support"}` : `${sourcePrefix}/${mode === "demo" ? "demo" : "contact"}`;
+      const refCode = `LEAD-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      const pageTag = `${sourcePrefix}:${mode}`;
+      const topicTag = mode === "demo"
+        ? `Demo: ${cfg.name} Walkthrough`
+        : mode === "support"
+        ? `Support: ${supportPriority}`
+        : (topic || `${cfg.name} Enquiry`);
+
+      const leadMessage = mode === "demo"
+        ? (msg ? `[Demo Slot: ${preferredDate} ${preferredTimeSlot}] [Type: ${businessType}, Scale: ${scale}] ${msg}` : `Requested live ${cfg.name} walkthrough for ${businessType} (${scale}). Preferred slot: ${preferredDate} - ${preferredTimeSlot}`)
+        : msg;
+
+      const needsList = mode === "demo"
+        ? [businessType, scale, `Slot: ${preferredDate} (${preferredTimeSlot})`].filter(Boolean)
+        : [topic, businessType].filter(Boolean);
+
+      // Write to contact_requests so Kada Verse Mobile App receives and categorizes every lead
+      await addDoc(collection(dbInstance, "contact_requests"), {
+        name: (cName || bName).slice(0, 120),
+        email: em.slice(0, 254),
+        phone: ph.slice(0, 40),
+        topic: topicTag.slice(0, 40),
+        message: leadMessage.slice(0, 2000),
+        status: "new",
+        createdAt: serverTimestamp(),
+        createdAtIso: new Date().toISOString(),
+        source: "kadaverse-website",
+        brand: cfg.name,
+        company: bName.slice(0, 120),
+        city: city.trim().slice(0, 80),
+        page: pageTag.slice(0, 60),
+        needs: needsList.slice(0, 10),
+        referenceId: refCode,
+      });
 
       if (mode === "demo") {
         await addDoc(collection(dbInstance, "demo_requests"), {
@@ -480,7 +514,7 @@ export function UnifiedContactHub({
           phone: ph.slice(0, 40),
           city: city.trim().slice(0, 80),
           outlets: scale.slice(0, 40),
-          painPoint: (msg || `Requested live ${cfg.name} walkthrough for ${businessType} (${scale}). Preferred slot: ${preferredDate} - ${preferredTimeSlot}`).slice(0, 500),
+          painPoint: leadMessage.slice(0, 500),
           status: "new",
           createdAt: serverTimestamp(),
           createdAtIso: new Date().toISOString(),
@@ -490,21 +524,7 @@ export function UnifiedContactHub({
           preferredDate,
           preferredTimeSlot,
           businessType,
-        });
-      } else {
-        await addDoc(collection(dbInstance, "contact_requests"), {
-          name: (cName || bName).slice(0, 120),
-          email: em.slice(0, 254),
-          phone: ph.slice(0, 40),
-          topic: (mode === "support" ? `Support: ${supportPriority}` : topic).slice(0, 40),
-          message: msg.slice(0, 2000),
-          status: "new",
-          createdAt: serverTimestamp(),
-          createdAtIso: new Date().toISOString(),
-          source: sourceTag,
-          brand: cfg.name,
-          company: bName.slice(0, 120),
-          city: city.trim().slice(0, 80),
+          referenceId: refCode,
         });
       }
       setSubmitted(true);
