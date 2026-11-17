@@ -156,7 +156,7 @@ export default function Orders() {
           <img
             src="/logo.png"
             alt="The Kada"
-            className="relative w-full h-full object-contain"
+            className="relative w-full h-full rounded-2xl object-cover shadow-md"
           />
         </div>
         <p className="mt-4 text-2xl font-black text-slate-900 tracking-tight">No orders yet</p>

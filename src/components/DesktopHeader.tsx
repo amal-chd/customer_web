@@ -85,7 +85,7 @@ export function DesktopHeader() {
               <img
                 src="/logo.png"
                 alt="The Kada"
-                className="h-10 w-10 sm:h-11 sm:w-11 object-contain"
+                className="h-10 w-10 sm:h-11 sm:w-11 object-cover rounded-2xl shadow-xs"
               />
             </Link>
 

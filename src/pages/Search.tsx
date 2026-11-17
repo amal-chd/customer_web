@@ -408,7 +408,7 @@ export default function Search() {
                 <img
                   src="/logo.png"
                   alt="The Kada"
-                  className="relative w-full h-full object-contain"
+                  className="relative w-full h-full rounded-2xl object-cover shadow-md"
                 />
               </div>
               <h2 className="text-xl font-black text-slate-900 tracking-tight">
@@ -419,7 +419,7 @@ export default function Search() {
               </p>
 
               <div className="mt-6">
-                <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3">
+                <h3 className="text-xs font-black uppercase tracking-wider text-slate-500 mb-3">
                   Trending Searches
                 </h3>
                 <div className="flex flex-wrap justify-center gap-2">

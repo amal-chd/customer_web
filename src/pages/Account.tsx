@@ -259,7 +259,7 @@ export default function Account() {
           <img
             src="/logo.png"
             alt="The Kada"
-            className="relative w-full h-full object-contain"
+            className="relative w-full h-full rounded-3xl object-cover shadow-lg"
           />
         </div>
         <h2 className="mt-6 text-2xl font-black text-slate-900 tracking-tight">

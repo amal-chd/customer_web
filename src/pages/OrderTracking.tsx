@@ -246,11 +246,11 @@ export default function OrderTracking() {
 
         {params.get("placed") === "1" && !cancelled && !awaitingPayment && (
           <div className="mb-6 flex items-center gap-4 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5 shadow-xs">
-            <div className="h-14 w-14 overflow-hidden rounded-2xl bg-white p-2 border border-emerald-200 shrink-0 flex items-center justify-center shadow-xs">
+            <div className="h-14 w-14 overflow-hidden rounded-2xl border border-emerald-200 shrink-0 flex items-center justify-center shadow-xs">
               <img
                 src="/logo.png"
                 alt="The Kada"
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
             <div>
