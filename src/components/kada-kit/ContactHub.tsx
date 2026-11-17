@@ -369,7 +369,7 @@ const MODE_META: Record<ModeType, { icon: ReactNode; title: string; highlight: s
 
 const FIELD =
   "w-full h-11 rounded-xl border border-slate-200 bg-slate-50 px-3.5 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-medium focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-colors";
-const LABEL = "block text-[11px] font-black uppercase tracking-wider text-slate-500 mb-1.5";
+const LABEL = "block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5";
 
 function Field({ label, htmlFor, children, wide = false }: { label: string; htmlFor?: string; children: ReactNode; wide?: boolean }) {
   return (
@@ -703,7 +703,7 @@ export function UnifiedContactHub({
           >
             {submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <>{meta.submit} <ArrowRight className="h-4 w-4" /></>}
           </button>
-          <p className="text-center text-[11px] font-semibold text-slate-400">No spam — a real person from our team replies.</p>
+          <p className="text-center text-xs font-semibold text-slate-500">No spam — a real person from our team replies.</p>
         </form>
       )}
     </div>

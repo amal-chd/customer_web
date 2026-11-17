@@ -269,8 +269,8 @@ export default function Landing() {
               aria-label="The Kada home"
               className="inline-flex items-center gap-3 transition-transform active:scale-[0.98]"
             >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/40 bg-white p-2 shadow-2xl shadow-black/40">
-                <img src="/logo.png" alt="" className="h-full w-full object-contain" />
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl overflow-hidden border border-white/20 shadow-2xl shadow-black/40">
+                <img src="/logo.png" alt="" className="h-full w-full object-cover" />
               </span>
               <span className="text-4xl font-black tracking-tight text-white drop-shadow-lg">
                 The <span className="italic text-primary-light">Kada</span>

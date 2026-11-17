@@ -320,7 +320,7 @@ export const GetAppSection: React.FC<GetAppSectionProps> = ({
                   <div className="flex flex-col h-full justify-between animate-in fade-in duration-300">
                     <div className="flex items-center justify-between border-b border-white/10 pb-2">
                       <div className="flex items-center gap-1.5">
-                        <img src="/logo.png" alt="The Kada" className="h-5 w-5 object-contain" />
+                        <img src="/logo.png" alt="The Kada" className="h-5 w-5 rounded-md object-cover" />
                         <span className="text-xs font-black text-white">Order #KD-8831</span>
                       </div>
                       <span className="text-[9px] font-black text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full">

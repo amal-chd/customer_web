@@ -89,7 +89,7 @@ export default function PartnerWithUs() {
       <div className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200/70 bg-white/90 px-4 py-2.5 backdrop-blur-md md:hidden">
         <Link to="/" className="flex items-center gap-2 -ml-1 rounded-xl p-1 active:bg-slate-100">
           <ArrowLeft className="h-5 w-5 text-slate-700" />
-          <img src="/logo.png" alt="The Kada" className="h-7 w-7 object-contain" />
+          <img src="/logo.png" alt="The Kada" className="h-7 w-7 rounded-lg object-cover" />
           <span className="text-sm font-extrabold text-slate-900">For restaurants</span>
         </Link>
         <a href={loginUrl} className="rounded-full px-3 py-1.5 text-sm font-bold text-primary active:bg-primary/10">

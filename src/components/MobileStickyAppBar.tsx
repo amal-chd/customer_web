@@ -39,11 +39,11 @@ export function MobileStickyAppBar() {
         {/* Left Side: App Icon + Descriptive Text */}
         <div className="flex items-center gap-2.5 min-w-0">
           {/* App Squircle Icon with The Kada Logo */}
-          <div className="h-9 w-9 shrink-0 rounded-xl bg-slate-50 border border-slate-100 p-1.5 flex items-center justify-center shadow-xs">
+          <div className="h-9 w-9 shrink-0 rounded-xl overflow-hidden shadow-xs border border-slate-200/60">
             <img
               src="/logo.png"
               alt="The Kada"
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover"
             />
           </div>
 

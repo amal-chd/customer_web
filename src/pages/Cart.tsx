@@ -64,7 +64,7 @@ export default function Cart() {
           <img
             src="/logo.png"
             alt="The Kada"
-            className="relative w-full h-full object-contain"
+            className="relative w-full h-full rounded-3xl object-cover shadow-lg"
           />
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Your cart is empty</h2>

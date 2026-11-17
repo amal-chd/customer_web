@@ -275,7 +275,7 @@ export function BetterFoodSection() {
 
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[10px] font-semibold text-slate-500">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Statewide fast delivery · 100% contactless</span>
+            <span>Local kitchens · live order tracking</span>
           </div>
         </motion.div>
 

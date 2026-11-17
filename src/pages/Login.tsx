@@ -223,7 +223,7 @@ export default function Login() {
             <img
               src="/logo.png"
               alt="The Kada"
-              className="h-14 w-14 sm:h-16 sm:w-16 object-contain mx-auto"
+              className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl object-cover mx-auto shadow-md"
             />
           </Link>
           <div>
@@ -276,7 +276,7 @@ export default function Login() {
               <form onSubmit={handleSendOtp} className="space-y-4">
                 {isSignUp && (
                   <div className="space-y-1">
-                    <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                    <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                       Full Name
                     </label>
                     <div className="relative">
@@ -294,7 +294,7 @@ export default function Login() {
                 )}
 
                 <div className="space-y-1">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                     Phone Number
                   </label>
                   <div className="relative flex items-center">
@@ -313,7 +313,7 @@ export default function Login() {
                       autoFocus
                     />
                   </div>
-                  <p className="text-[11px] font-semibold text-slate-400 mt-1">
+                  <p className="text-xs font-medium text-slate-500 mt-1">
                     We will send an SMS with a 6-digit verification code.
                   </p>
                 </div>
@@ -347,7 +347,7 @@ export default function Login() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                     Enter 6-Digit OTP
                   </label>
                   <input
@@ -393,7 +393,7 @@ export default function Login() {
           <form onSubmit={handleEmailSubmit} className="space-y-4">
             {isSignUp && (
               <div className="space-y-1">
-                <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                   Full Name
                 </label>
                 <div className="relative">
@@ -411,7 +411,7 @@ export default function Login() {
             )}
 
             <div className="space-y-1">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+              <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                 Email Address
               </label>
               <div className="relative">
@@ -429,7 +429,7 @@ export default function Login() {
 
             <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                   Password
                 </label>
                 {!isSignUp && (
@@ -480,7 +480,7 @@ export default function Login() {
         {/* Divider */}
         <div className="relative flex py-1 items-center">
           <div className="flex-grow border-t border-slate-100"></div>
-          <span className="flex-shrink mx-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
+          <span className="flex-shrink mx-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
             Or continue with
           </span>
           <div className="flex-grow border-t border-slate-100"></div>
@@ -583,7 +583,7 @@ export default function Login() {
             ) : (
               <form onSubmit={handleResetPassword} className="mt-6 space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-black uppercase tracking-wider text-slate-400 block">
+                  <label className="text-xs font-black uppercase tracking-wider text-slate-500 block">
                     Email Address
                   </label>
                   <input
